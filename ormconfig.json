@@ -1,0 +1,26 @@
+{
+   "name": "production",
+   "type": "mysql",
+   "host": "den1.mysql1.gear.host",
+   "port": 3306,
+   "username": "comies",
+   "password": "Jc4A62Q0L~_7",
+   "database": "comies",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "bin/structures/**/*.js"
+   ],
+   "migrations": [
+      "bin/migration/**/*.js"
+   ],
+   "subscribers": [
+      "bin/subscriber/**/*.js"
+   ],
+   "cli": {
+      "entitiesDir": "src/structures",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+   }
+}
+
