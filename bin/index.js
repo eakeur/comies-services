@@ -58,6 +58,7 @@ var WebSocket = __importStar(require("ws"));
 var authentication_controller_1 = __importDefault(require("./controllers/authentication.controller"));
 var kitchen_controller_1 = require("./controllers/kitchen.controller");
 var screen_controller_1 = require("./controllers/screen.controller");
+var querystring_1 = require("querystring");
 var ServerInitializer = /** @class */ (function () {
     function ServerInitializer() {
         var _this = this;
@@ -119,7 +120,7 @@ var ServerInitializer = /** @class */ (function () {
                             case 0:
                                 _a.trys.push([0, 2, , 3]);
                                 routes_1 = req.url.split('/');
-                                return [4 /*yield*/, new authentication_controller_1.default().getOperatorBySocketToken(req.headers.authorization)];
+                                return [4 /*yield*/, new authentication_controller_1.default().getOperatorBySocketToken(req.headers.authorization || querystring_1.decode(req.headers.cookie).authorization)];
                             case 1:
                                 operator = _a.sent();
                                 if (operator) {

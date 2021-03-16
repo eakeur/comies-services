@@ -13,6 +13,7 @@ import { KitchenController } from './controllers/kitchen.controller';
 import { DeliveryController } from './controllers/delivery.controller';
 import { IncomingMessage, Server } from 'http';
 import { ScreenController } from './controllers/screen.controller';
+import {decode} from "querystring";
 
 class ServerInitializer {
 
@@ -51,7 +52,7 @@ class ServerInitializer {
         socket.on("connection", async (srv: WebSocket, req: IncomingMessage) => {
             try {
                 const routes = req.url.split('/');
-                const operator = await new AuthenticationController().getOperatorBySocketToken(req.headers.authorization);
+                const operator = await new AuthenticationController().getOperatorBySocketToken(req.headers.authorization || decode(req.headers.cookie).authorization as string);
                 if (operator){
                     console.log('Operator '+operator.id+' from store '+operator.store.id+' connected to the socket with address :' + req.socket.remoteAddress);
                     const partnerID = Number.parseInt(routes[2], 10);
