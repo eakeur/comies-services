@@ -18,14 +18,12 @@ var product_1 = __importDefault(require("./product"));
 var ProductItem = /** @class */ (function () {
     function ProductItem() {
     }
-    ProductItem_1 = ProductItem;
-    var ProductItem_1;
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
     ], ProductItem.prototype, "id", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function () { return order_1.default; }, function (order) { return order.products; }),
+        typeorm_1.ManyToOne(function () { return order_1.default; }, function (order) { return order.items; }),
         __metadata("design:type", order_1.default)
     ], ProductItem.prototype, "order", void 0);
     __decorate([
@@ -33,7 +31,7 @@ var ProductItem = /** @class */ (function () {
         __metadata("design:type", Number)
     ], ProductItem.prototype, "group", void 0);
     __decorate([
-        typeorm_1.ManyToMany(function () { return ProductItem_1; }, function (productItem) { return productItem.order; }),
+        typeorm_1.ManyToOne(function () { return product_1.default; }, function (product) { return product.orders; }, { eager: true }),
         __metadata("design:type", product_1.default)
     ], ProductItem.prototype, "product", void 0);
     __decorate([
@@ -44,7 +42,7 @@ var ProductItem = /** @class */ (function () {
         typeorm_1.Column({ nullable: false, type: "float" }),
         __metadata("design:type", Number)
     ], ProductItem.prototype, "discount", void 0);
-    ProductItem = ProductItem_1 = __decorate([
+    ProductItem = __decorate([
         typeorm_1.Entity()
     ], ProductItem);
     return ProductItem;

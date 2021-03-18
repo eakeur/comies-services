@@ -55,13 +55,13 @@ var Order = /** @class */ (function () {
         __metadata("design:type", costumer_1.default)
     ], Order.prototype, "costumer", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function () { return operator_1.default; }, function (operator) { return operator.orders; }, { eager: true }),
+        typeorm_1.ManyToOne(function () { return operator_1.default; }, function (operator) { return operator.orders; }),
         __metadata("design:type", operator_1.default)
     ], Order.prototype, "operator", void 0);
     __decorate([
         typeorm_1.OneToMany(function () { return order_items_1.default; }, function (productItem) { return productItem.order; }, { cascade: true, eager: true }),
         __metadata("design:type", Array)
-    ], Order.prototype, "products", void 0);
+    ], Order.prototype, "items", void 0);
     __decorate([
         typeorm_1.Column({ nullable: false, type: "float" }),
         __metadata("design:type", Number)

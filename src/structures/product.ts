@@ -1,8 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, OneToMany} from "typeorm";
 import { Unity } from "./enums";
-import Order from "./order";
+import ProductItem from "./order-items";
 import Partner from "./partner";
-import Store from "./store";
 
 @Entity()
 export default class Product {
@@ -28,8 +27,8 @@ export default class Product {
     @ManyToOne(() => Partner, partner => partner.products)
     partner:Partner;
 
-    @ManyToMany(() => Order, order => order.products)
-    orders: Order[];
+    @OneToMany(() => ProductItem, order => order.product)
+    orders: ProductItem[];
 
     @Column({default: true})
     active:boolean;

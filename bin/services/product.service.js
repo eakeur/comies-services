@@ -104,7 +104,6 @@ var ProductService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        delete product.orders;
                         return [4 /*yield*/, this.collection.update(product.id, product)];
                     case 1:
                         _a.sent();

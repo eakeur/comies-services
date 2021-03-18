@@ -46,40 +46,58 @@ var KitchenController = /** @class */ (function () {
     KitchenController.openKitchen = function (socket) {
         KitchenController.socket = socket;
     };
-    KitchenController.addClient = function (client, partnerID, storeID, operator) {
+    KitchenController.addClient = function (client, partnerID, storeID, operator, isTV) {
         return __awaiter(this, void 0, void 0, function () {
-            var socketSet, orderMap, socketSet, _a, _b, _c, _d;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
+            var letterIN, letterFI, reqTime, code, map, orderMap, storemap, returns, _a, returns, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
+                        letterIN = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                        letterFI = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                        reqTime = new Date(Date.now());
+                        code = letterIN + partnerID + reqTime.getMinutes() + letterFI + storeID;
+                        if (!isTV) return [3 /*break*/, 2];
                         if (KitchenController.rooms.has(partnerID)) {
                             if (KitchenController.rooms.get(partnerID).has(storeID))
-                                KitchenController.rooms.get(partnerID).get(storeID).add(client);
+                                KitchenController.rooms.get(partnerID).get(storeID).set(code, client);
                             else {
-                                socketSet = new Set();
-                                socketSet.add(client);
-                                KitchenController.rooms.get(partnerID).set(storeID, socketSet);
+                                map = new Map();
+                                map.set(code, client);
+                                KitchenController.rooms.get(partnerID).set(storeID, map);
                             }
                         }
                         else {
                             orderMap = new Map();
-                            socketSet = new Set();
-                            socketSet.add(client);
-                            orderMap.set(storeID, socketSet);
-                            KitchenController.rooms.set(partnerID, orderMap);
+                            storemap = new Map();
+                            orderMap.set(code, client);
+                            storemap.set(storeID, orderMap);
+                            KitchenController.rooms.set(partnerID, storemap);
                         }
-                        _b = (_a = client).send;
-                        _d = (_c = JSON).stringify;
+                        _a = { sender: "server", code: code };
                         return [4 /*yield*/, new order_service_1.default(operator).getOrders(new order_1.default())];
                     case 1:
-                        _b.apply(_a, [_d.apply(_c, [(_e.sent()).data])]);
-                        return [2 /*return*/];
+                        returns = (_a.data = (_c.sent()).data, _a.type = "pan-initial", _a.value = "", _a);
+                        client.send(JSON.stringify(returns));
+                        return [3 /*break*/, 4];
+                    case 2:
+                        _b = { sender: "server", code: "" };
+                        return [4 /*yield*/, new order_service_1.default(operator).getOrders(new order_1.default())];
+                    case 3:
+                        returns = (_b.data = (_c.sent()).data, _b.type = "spoon-initial", _b.value = "", _b);
+                        client.send(JSON.stringify(returns));
+                        _c.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    KitchenController.removeClient = function (client, partnerID, storeID) {
-        KitchenController.rooms.get(partnerID).get(storeID).delete(client);
+    KitchenController.removeClient = function (client, partnerID, storeID, isTV) {
+        if (isTV) {
+            KitchenController.rooms.get(partnerID).get(storeID).forEach(function (v, k) {
+                if (v === client)
+                    KitchenController.rooms.get(partnerID).get(storeID).delete(k);
+            });
+        }
     };
     KitchenController.sendOrderToKitchen = function (order) {
         if (KitchenController.rooms.has(order.store.partner.id)) {
@@ -92,10 +110,13 @@ var KitchenController = /** @class */ (function () {
     };
     KitchenController.receiveSocket = function (message, route) {
         try {
-            KitchenController.rooms.get(Number.parseInt(route[0], 10)).get(Number.parseInt(route[1], 10))
-                .forEach(function (cli) { return cli.send("Someone put something on the oven: " + message); });
+            var reception = JSON.parse(message);
+            var code = reception.code;
+            delete reception.code;
+            KitchenController.rooms.get(Number.parseInt(route[0], 10)).get(Number.parseInt(route[1], 10)).get(code).send(JSON.stringify(reception));
         }
         catch (error) {
+            console.log("Error broadcasting message of client: " + error);
         }
     };
     KitchenController.rooms = new Map();

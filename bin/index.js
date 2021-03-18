@@ -57,7 +57,6 @@ var serve_static_1 = __importDefault(require("serve-static"));
 var WebSocket = __importStar(require("ws"));
 var authentication_controller_1 = __importDefault(require("./controllers/authentication.controller"));
 var kitchen_controller_1 = require("./controllers/kitchen.controller");
-var screen_controller_1 = require("./controllers/screen.controller");
 var querystring_1 = require("querystring");
 var ServerInitializer = /** @class */ (function () {
     function ServerInitializer() {
@@ -124,7 +123,7 @@ var ServerInitializer = /** @class */ (function () {
                             case 1:
                                 operator = _a.sent();
                                 if (operator) {
-                                    console.log('Operator ' + operator.id + ' from store ' + operator.store.id + ' connected to the socket with address :' + req.socket.remoteAddress);
+                                    console.log('Operator ' + operator.id + ' from store ' + operator.store.id + ' connected to the socket ' + routes_1[1] + ' with address ' + req.socket.remoteAddress);
                                     partnerID_1 = Number.parseInt(routes_1[2], 10);
                                     storeID_1 = Number.parseInt(routes_1[3], 10);
                                     if (partnerID_1 === operator.partner.id && storeID_1 === operator.store.id) {
@@ -133,10 +132,7 @@ var ServerInitializer = /** @class */ (function () {
                                                 srv.close();
                                                 break;
                                             case "kitchen":
-                                                kitchen_controller_1.KitchenController.addClient(srv, partnerID_1, storeID_1, operator);
-                                                break;
-                                            case "screen":
-                                                screen_controller_1.ScreenController.addClient(srv, partnerID_1, storeID_1, operator, routes_1[4] === "TV");
+                                                kitchen_controller_1.KitchenController.addClient(srv, partnerID_1, storeID_1, operator, routes_1[4] === "TV");
                                                 break;
                                             default:
                                                 srv.close();
@@ -150,9 +146,6 @@ var ServerInitializer = /** @class */ (function () {
                                                 case "kitchen":
                                                     kitchen_controller_1.KitchenController.receiveSocket(message, routes_1.slice(2));
                                                     break;
-                                                case "screen":
-                                                    screen_controller_1.ScreenController.receiveSocket(message, routes_1.slice(2));
-                                                    break;
                                                 default:
                                                     srv.close();
                                                     break;
@@ -162,10 +155,11 @@ var ServerInitializer = /** @class */ (function () {
                                             switch (routes_1[1]) {
                                                 case "": break;
                                                 case "kitchen":
-                                                    kitchen_controller_1.KitchenController.removeClient(srv, partnerID_1, storeID_1);
+                                                    kitchen_controller_1.KitchenController.removeClient(srv, partnerID_1, storeID_1, routes_1[4] === "TV");
                                                     break;
                                                 default: break;
                                             }
+                                            console.log("Client on store " + storeID_1 + " disconnected from socket");
                                         });
                                     }
                                     else

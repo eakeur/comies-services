@@ -36,11 +36,11 @@ export default class Order {
     @ManyToOne(() => Costumer, costumer => costumer.orders, { eager: true })
     costumer: Costumer;
 
-    @ManyToOne(() => Operator, operator => operator.orders, { eager: true })
+    @ManyToOne(() => Operator, operator => operator.orders)
     operator: Operator;
 
     @OneToMany(() => ProductItem, productItem => productItem.order, {cascade: true, eager:true})
-    products: ProductItem[];
+    items: ProductItem[];
 
     @Column({nullable: false, type:"float"})
     price: number;

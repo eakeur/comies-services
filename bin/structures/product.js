@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var enums_1 = require("./enums");
-var order_1 = __importDefault(require("./order"));
+var order_items_1 = __importDefault(require("./order-items"));
 var partner_1 = __importDefault(require("./partner"));
 var Product = /** @class */ (function () {
     function Product() {
@@ -48,7 +48,7 @@ var Product = /** @class */ (function () {
         __metadata("design:type", partner_1.default)
     ], Product.prototype, "partner", void 0);
     __decorate([
-        typeorm_1.ManyToMany(function () { return order_1.default; }, function (order) { return order.products; }),
+        typeorm_1.OneToMany(function () { return order_items_1.default; }, function (order) { return order.product; }),
         __metadata("design:type", Array)
     ], Product.prototype, "orders", void 0);
     __decorate([

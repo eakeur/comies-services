@@ -46,7 +46,6 @@ export default class ProductService {
 
     public async updateProduct(product:Product):Promise<Response>{
         try {
-            delete product.orders;
             await this.collection.update(product.id, product);
             this.response.notification = new Notification("Produto atualizado com sucesso!");
         } catch (error) {

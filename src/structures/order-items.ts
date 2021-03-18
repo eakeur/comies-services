@@ -8,13 +8,13 @@ export default class ProductItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Order, order => order.products)
+    @ManyToOne(() => Order, order => order.items)
     order: Order;
 
     @Column({nullable: false})
     group: number;
 
-    @ManyToMany(() => ProductItem, productItem => productItem.order)
+    @ManyToOne(() => Product, product => product.orders, { eager: true })
     product: Product;
 
     @Column({nullable: false, type:"float"})

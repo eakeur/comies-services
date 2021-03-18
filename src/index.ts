@@ -54,30 +54,29 @@ class ServerInitializer {
                 const routes = req.url.split('/');
                 const operator = await new AuthenticationController().getOperatorBySocketToken(req.headers.authorization || decode(req.headers.cookie).authorization as string);
                 if (operator){
-                    console.log('Operator '+operator.id+' from store '+operator.store.id+' connected to the socket with address :' + req.socket.remoteAddress);
+                    console.log('Operator '+operator.id+' from store '+operator.store.id+' connected to the socket '+routes[1]+' with address ' + req.socket.remoteAddress);
                     const partnerID = Number.parseInt(routes[2], 10);
                     const storeID = Number.parseInt(routes[3], 10);
                     if ( partnerID === operator.partner.id && storeID === operator.store.id){
                         switch (routes[1]) {
                             case "": srv.close(); break;
-                            case "kitchen": KitchenController.addClient(srv, partnerID, storeID, operator); break;
-                            case "screen": ScreenController.addClient(srv, partnerID, storeID, operator, routes[4] === "TV"); break;
+                            case "kitchen": KitchenController.addClient(srv, partnerID, storeID, operator, routes[4] === "TV"); break;
                             default: srv.close(); break;
                         }
                         srv.on("message", (message: any) => {
                             switch (routes[1]) {
                                 case "": srv.close(); break;
                                 case "kitchen": KitchenController.receiveSocket(message, routes.slice(2)); break;
-                                case "screen": ScreenController.receiveSocket(message, routes.slice(2)); break;
                                 default: srv.close(); break;
                             }
                         });
                         srv.on("close", (message: any) => {
                             switch (routes[1]) {
                                 case "": break;
-                                case "kitchen": KitchenController.removeClient(srv, partnerID, storeID); break;
+                                case "kitchen": KitchenController.removeClient(srv, partnerID, storeID, routes[4] === "TV"); break;
                                 default: break;
                             }
+                            console.log("Client on store "+storeID+" disconnected from socket");
                         });
                     } else srv.close();
                 } else srv.close();
