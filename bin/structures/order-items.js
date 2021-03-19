@@ -39,6 +39,10 @@ var ProductItem = /** @class */ (function () {
         __metadata("design:type", Number)
     ], ProductItem.prototype, "quantity", void 0);
     __decorate([
+        typeorm_1.Column({ nullable: false, default: false }),
+        __metadata("design:type", Boolean)
+    ], ProductItem.prototype, "done", void 0);
+    __decorate([
         typeorm_1.Column({ nullable: false, type: "float" }),
         __metadata("design:type", Number)
     ], ProductItem.prototype, "discount", void 0);

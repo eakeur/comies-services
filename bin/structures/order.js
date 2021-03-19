@@ -43,7 +43,7 @@ var Order = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Order.prototype, "deliverType", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function () { return address_1.default; }, function (address) { return address.orders; }, { cascade: true, eager: true }),
+        typeorm_1.ManyToOne(function () { return address_1.default; }, function (address) { return address.orders; }, { eager: true }),
         __metadata("design:type", address_1.default)
     ], Order.prototype, "address", void 0);
     __decorate([
@@ -66,6 +66,10 @@ var Order = /** @class */ (function () {
         typeorm_1.Column({ nullable: false, type: "float" }),
         __metadata("design:type", Number)
     ], Order.prototype, "price", void 0);
+    __decorate([
+        typeorm_1.Column(),
+        __metadata("design:type", String)
+    ], Order.prototype, "observations", void 0);
     __decorate([
         typeorm_1.Column({ default: true }),
         __metadata("design:type", Boolean)

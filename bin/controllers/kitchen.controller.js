@@ -48,7 +48,7 @@ var KitchenController = /** @class */ (function () {
     };
     KitchenController.addClient = function (client, partnerID, storeID, operator, isTV) {
         return __awaiter(this, void 0, void 0, function () {
-            var letterIN, letterFI, reqTime, code, map, orderMap, storemap, returns, _a, returns, _b;
+            var letterIN, letterFI, reqTime, code, map, orderMap, storemap, returns, _a, storemap, returns, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -57,13 +57,13 @@ var KitchenController = /** @class */ (function () {
                         reqTime = new Date(Date.now());
                         code = letterIN + partnerID + reqTime.getMinutes() + letterFI + storeID;
                         if (!isTV) return [3 /*break*/, 2];
-                        if (KitchenController.rooms.has(partnerID)) {
-                            if (KitchenController.rooms.get(partnerID).has(storeID))
-                                KitchenController.rooms.get(partnerID).get(storeID).set(code, client);
+                        if (KitchenController.pans.has(partnerID)) {
+                            if (KitchenController.pans.get(partnerID).has(storeID))
+                                KitchenController.pans.get(partnerID).get(storeID).set(code, client);
                             else {
                                 map = new Map();
                                 map.set(code, client);
-                                KitchenController.rooms.get(partnerID).set(storeID, map);
+                                KitchenController.pans.get(partnerID).set(storeID, map);
                             }
                         }
                         else {
@@ -71,7 +71,7 @@ var KitchenController = /** @class */ (function () {
                             storemap = new Map();
                             orderMap.set(code, client);
                             storemap.set(storeID, orderMap);
-                            KitchenController.rooms.set(partnerID, storemap);
+                            KitchenController.pans.set(partnerID, storemap);
                         }
                         _a = { sender: "server", code: code };
                         return [4 /*yield*/, new order_service_1.default(operator).getOrders(new order_1.default())];
@@ -80,6 +80,17 @@ var KitchenController = /** @class */ (function () {
                         client.send(JSON.stringify(returns));
                         return [3 /*break*/, 4];
                     case 2:
+                        if (KitchenController.spoons.has(partnerID)) {
+                            if (KitchenController.spoons.get(partnerID).has(storeID))
+                                KitchenController.spoons.get(partnerID).get(storeID).push(client);
+                            else
+                                KitchenController.spoons.get(partnerID).set(storeID, [client]);
+                        }
+                        else {
+                            storemap = new Map();
+                            storemap.set(storeID, [client]);
+                            KitchenController.spoons.set(partnerID, storemap);
+                        }
                         _b = { sender: "server", code: "" };
                         return [4 /*yield*/, new order_service_1.default(operator).getOrders(new order_1.default())];
                     case 3:
@@ -93,33 +104,54 @@ var KitchenController = /** @class */ (function () {
     };
     KitchenController.removeClient = function (client, partnerID, storeID, isTV) {
         if (isTV) {
-            KitchenController.rooms.get(partnerID).get(storeID).forEach(function (v, k) {
+            KitchenController.pans.get(partnerID).get(storeID).forEach(function (v, k) {
                 if (v === client)
-                    KitchenController.rooms.get(partnerID).get(storeID).delete(k);
+                    KitchenController.pans.get(partnerID).get(storeID).delete(k);
+            });
+        }
+        else {
+            KitchenController.spoons.get(partnerID).get(storeID).forEach(function (v, index, arr) {
+                if (v === client)
+                    arr.splice(index, 1);
             });
         }
     };
-    KitchenController.sendOrderToKitchen = function (order) {
-        if (KitchenController.rooms.has(order.store.partner.id)) {
-            if (KitchenController.rooms.get(order.store.partner.id).has(order.store.id)) {
-                KitchenController.rooms.get(order.store.partner.id).get(order.store.id).forEach(function (client) {
-                    client.send(JSON.stringify([order]));
-                });
-            }
-        }
+    KitchenController.sendOrderToKitchen = function (order, partner, store) {
+        return __awaiter(this, void 0, void 0, function () {
+            var returns;
+            return __generator(this, function (_a) {
+                returns = { sender: "server", code: "", data: [order], type: "order-update", value: "" };
+                if (KitchenController.pans.has(partner)) {
+                    if (KitchenController.pans.get(partner).has(store)) {
+                        KitchenController.pans.get(partner).get(store).forEach(function (client) {
+                            client.send(JSON.stringify(returns));
+                        });
+                    }
+                }
+                if (KitchenController.spoons.has(partner)) {
+                    if (KitchenController.spoons.get(partner).has(store)) {
+                        KitchenController.spoons.get(partner).get(store).forEach(function (client) {
+                            client.send(JSON.stringify(returns));
+                        });
+                    }
+                }
+                return [2 /*return*/];
+            });
+        });
     };
     KitchenController.receiveSocket = function (message, route) {
         try {
             var reception = JSON.parse(message);
             var code = reception.code;
             delete reception.code;
-            KitchenController.rooms.get(Number.parseInt(route[0], 10)).get(Number.parseInt(route[1], 10)).get(code).send(JSON.stringify(reception));
+            KitchenController.pans.get(Number.parseInt(route[0], 10)).get(Number.parseInt(route[1], 10)).get(code).send(JSON.stringify(reception));
         }
         catch (error) {
             console.log("Error broadcasting message of client: " + error);
         }
     };
-    KitchenController.rooms = new Map();
+    KitchenController.pans = new Map();
+    KitchenController.spoons = new Map();
     return KitchenController;
 }());
 exports.KitchenController = KitchenController;

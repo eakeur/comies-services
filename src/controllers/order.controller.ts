@@ -28,7 +28,7 @@ export default class OrderController {
     public async addOrder(@CurrentUser({required:true}) operator: Operator, @Body() order:Order){
         const service:OrderService = new OrderService(operator);
         const response = await service.addOrder(order);
-        if (response.success) KitchenController.sendOrderToKitchen(order);
+        if (response.success) KitchenController.sendOrderToKitchen(order, operator.partner.id, operator.store.id);
         return response;
     }
 
@@ -37,7 +37,9 @@ export default class OrderController {
     @UseBefore(json())
     public async updateOrder(@CurrentUser({required:true}) operator: Operator, @Body() order:Order){
         const service:OrderService = new OrderService(operator);
-        return service.updateOrder(order);
+        const response = await service.updateOrder(order);
+        if (response.success) KitchenController.sendOrderToKitchen(order, operator.partner.id, operator.store.id);
+        return response;
     }
 
     @Authorized('removeOrders')
@@ -46,10 +48,6 @@ export default class OrderController {
     public async removeOrder(@CurrentUser({required:true}) operator: Operator, @Body() order:Order){
         const service:OrderService = new OrderService(operator);
         return service.removeOrder(order);
-    }
-
-    public static async sendToTheKitchen(order: Order){
-        KitchenController.sendOrderToKitchen(order);
     }
 
 }

@@ -88,7 +88,7 @@ var OrderController = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         if (response.success)
-                            kitchen_controller_1.KitchenController.sendOrderToKitchen(order);
+                            kitchen_controller_1.KitchenController.sendOrderToKitchen(order, operator.partner.id, operator.store.id);
                         return [2 /*return*/, response];
                 }
             });
@@ -96,10 +96,18 @@ var OrderController = /** @class */ (function () {
     };
     OrderController.prototype.updateOrder = function (operator, order) {
         return __awaiter(this, void 0, void 0, function () {
-            var service;
+            var service, response;
             return __generator(this, function (_a) {
-                service = new order_service_1.default(operator);
-                return [2 /*return*/, service.updateOrder(order)];
+                switch (_a.label) {
+                    case 0:
+                        service = new order_service_1.default(operator);
+                        return [4 /*yield*/, service.updateOrder(order)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.success)
+                            kitchen_controller_1.KitchenController.sendOrderToKitchen(order, operator.partner.id, operator.store.id);
+                        return [2 /*return*/, response];
+                }
             });
         });
     };
@@ -109,14 +117,6 @@ var OrderController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 service = new order_service_1.default(operator);
                 return [2 /*return*/, service.removeOrder(order)];
-            });
-        });
-    };
-    OrderController.sendToTheKitchen = function (order) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                kitchen_controller_1.KitchenController.sendOrderToKitchen(order);
-                return [2 /*return*/];
             });
         });
     };

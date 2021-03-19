@@ -20,6 +20,9 @@ export default class ProductItem {
     @Column({nullable: false, type:"float"})
     quantity: number;
 
+    @Column({nullable: false, default: false})
+    done: boolean;
+
     @Column({nullable: false, type:"float"})
     discount: number;
 

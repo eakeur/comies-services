@@ -27,13 +27,13 @@ export default class Order {
     @Column({nullable:false, default:DeliverType.takeout})
     deliverType: DeliverType;
 
-    @ManyToOne(() => Address, address => address.orders, {cascade: true, eager:true})
+    @ManyToOne(() => Address, address => address.orders, {eager:true})
     address: Address;
 
     @ManyToOne(() => Store, store => store.orders)
     store: Store;
 
-    @ManyToOne(() => Costumer, costumer => costumer.orders, { eager: true })
+    @ManyToOne(() => Costumer, costumer => costumer.orders, {eager: true})
     costumer: Costumer;
 
     @ManyToOne(() => Operator, operator => operator.orders)
@@ -44,6 +44,9 @@ export default class Order {
 
     @Column({nullable: false, type:"float"})
     price: number;
+
+    @Column()
+    observations: string;
 
     @Column({default: true})
     active: boolean;
