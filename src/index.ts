@@ -70,14 +70,14 @@ class ServerInitializer {
                                 default: srv.close(); break;
                             }
                         });
-                        srv.on("close", (message: any) => {
+                        srv.onclose = (event: WebSocket.CloseEvent) => {
                             switch (routes[1]) {
                                 case "": break;
                                 case "kitchen": KitchenController.removeClient(srv, partnerID, storeID, routes[4] === "TV"); break;
                                 default: break;
                             }
                             console.log("Client on store "+storeID+" disconnected from socket");
-                        });
+                        };
                     } else srv.close();
                 } else srv.close();
             } catch (error) {

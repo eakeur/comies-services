@@ -151,7 +151,7 @@ var ServerInitializer = /** @class */ (function () {
                                                     break;
                                             }
                                         });
-                                        srv.on("close", function (message) {
+                                        srv.onclose = function (event) {
                                             switch (routes_1[1]) {
                                                 case "": break;
                                                 case "kitchen":
@@ -160,7 +160,7 @@ var ServerInitializer = /** @class */ (function () {
                                                 default: break;
                                             }
                                             console.log("Client on store " + storeID_1 + " disconnected from socket");
-                                        });
+                                        };
                                     }
                                     else
                                         srv.close();
