@@ -72,7 +72,7 @@ class ServerInitializer {
                         });
                         srv.onclose = (event: WebSocket.CloseEvent) => {
                             switch (routes[1]) {
-                                case "": break;
+                                case "": "a friend"; break;
                                 case "kitchen": KitchenController.removeClient(srv, partnerID, storeID, routes[4] === "TV"); break;
                                 default: break;
                             }
