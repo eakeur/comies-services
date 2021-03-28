@@ -42,10 +42,13 @@ var connection_1 = __importDefault(require("../utils/connection"));
 var response_1 = __importDefault(require("../structures/response"));
 var order_1 = __importDefault(require("../structures/order"));
 var notification_1 = __importDefault(require("../structures/notification"));
+var enums_1 = require("../structures/enums");
 var OrderService = /** @class */ (function () {
     function OrderService(operator) {
         this.response = new response_1.default();
         this.collection = connection_1.default.db.getRepository(order_1.default);
+        if (operator === undefined || operator === null)
+            throw new Error('UNAUTHORIZED');
         this.operator = operator;
     }
     OrderService.prototype.addOrder = function (order) {
@@ -161,6 +164,30 @@ var OrderService = /** @class */ (function () {
                         this.response.notification = new notification_1.default("Ocorreu um erro ao procurar por pedidos. Por favor, tente mais tarde ou fale com um administrador.");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/, this.response];
+                }
+            });
+        });
+    };
+    OrderService.prototype.changeStatus = function (orderID, currentStatus, forward) {
+        return __awaiter(this, void 0, void 0, function () {
+            var nextStatus, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        nextStatus = void 0;
+                        forward
+                            ? currentStatus >= enums_1.Status.delivered ? nextStatus = enums_1.Status.finished : nextStatus = currentStatus + 1
+                            : currentStatus <= enums_1.Status.pending ? nextStatus = enums_1.Status.pending : nextStatus = currentStatus - 1;
+                        return [4 /*yield*/, this.collection.createQueryBuilder().update({ id: orderID }).set({ status: nextStatus }).execute()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, nextStatus];
+                    case 2:
+                        error_6 = _a.sent();
+                        console.log(error_6);
+                        throw error_6;
+                    case 3: return [2 /*return*/];
                 }
             });
         });

@@ -4,12 +4,12 @@ import Response from "../structures/response";
 import Order from "../structures/order";
 import Notification from "../structures/notification";
 import Operator from "../structures/operator";
-import { Status } from "src/structures/enums";
+import { Status } from "../structures/enums";
 
 export default class OrderService {
 
     constructor(operator: Operator){
-        if (operator == undefined || operator == null) throw new Error('UNAUTHORIZED');
+        if (operator === undefined || operator === null) throw new Error('UNAUTHORIZED');
         this.operator = operator;
 
     }
@@ -83,8 +83,8 @@ export default class OrderService {
 
     public async changeStatus(orderID: number, currentStatus: Status, forward: boolean): Promise<Status> {
         try {
-            var nextStatus: Status;
-            forward 
+            let nextStatus: Status;
+            forward
                 ? currentStatus >= Status.delivered ? nextStatus = Status.finished : nextStatus = currentStatus + 1
                 : currentStatus <= Status.pending ? nextStatus = Status.pending : nextStatus = currentStatus - 1
             await this.collection.createQueryBuilder().update({id: orderID}).set({status: nextStatus}).execute();
