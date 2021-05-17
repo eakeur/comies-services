@@ -6,7 +6,7 @@ import { Profile } from "./profile";
 import Store from "./store";
 
 @Entity()
-export default class Partner {
+export class Partner {
 
     @PrimaryGeneratedColumn()
     id: number;

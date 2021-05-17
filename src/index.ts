@@ -1,4 +1,4 @@
-import Connection from  './utils/connection'
+import {Connection} from  './core/connection'
 import "reflect-metadata";
 import express from 'express';
 import {Action, createExpressServer, useExpressServer} from 'routing-controllers';

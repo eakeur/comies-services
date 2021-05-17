@@ -4,7 +4,7 @@ import Partner from '../structures/partner';
 import Store from '../structures/store';
 import Operator from '../structures/operator';
 
-export default class Connection {
+export class Connection {
 
     public static db:c;
 

@@ -1,6 +1,6 @@
 import { Controller, Param, Body, Get, Post, Put, Delete, State, UseBefore, UploadedFile, HeaderParams, Params, Req, QueryParams, Authorized, CurrentUser } from "routing-controllers";
 import { json } from 'body-parser'
-import OrderService from "../services/order.service";
+import {OrderService} from "../services";
 import Order from "../structures/order";
 import Operator from "../structures/operator";
 import { KitchenController } from "./kitchen.controller";

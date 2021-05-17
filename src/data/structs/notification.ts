@@ -1,4 +1,4 @@
-export default class Notification {
+export class Notification {
     message: string;
     action: {name: string, href:string}
 

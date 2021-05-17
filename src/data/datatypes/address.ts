@@ -3,7 +3,7 @@ import Costumer from "./costumer";
 import Order from "./order";
 
 @Entity()
-export default class Address {
+export class Address {
 
     @PrimaryGeneratedColumn()
     id: number;

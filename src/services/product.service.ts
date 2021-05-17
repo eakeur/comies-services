@@ -1,4 +1,4 @@
-import Connection from "../utils/connection";
+import {Connection} from "../core/connection";
 import { FindConditions, Like, Repository } from "typeorm";
 import Product from "../structures/product";
 import Response from "../structures/response";

@@ -1,11 +1,11 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
-import Order from "./order";
-import Partner from "./partner";
+import {Order} from "./order";
+import {Partner} from "./partner";
 import { Profile } from "./profile";
-import Store from "./store";
+import {Store} from "./store";
 
 @Entity()
-export default class Operator {
+export class Operator {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -26,11 +26,20 @@ export default class Operator {
     @ManyToOne(() => Profile, profile => profile.operators, { eager: true })
     profile: Profile;
 
+    @Column({ nullable: false })
+    profileID: number;
+
     @ManyToOne(() => Store, store => store.operators, { eager: true })
     store: Store;
 
+    @Column({ nullable: false })
+    storeID: number;
+
     @ManyToOne(() => Partner, partner => partner.operators, { eager: true })
     partner: Partner;
+
+    @Column({ nullable: false })
+    partnerID: number;
 
     @OneToMany(() => Order, order => order.operator)
     orders: Order[];

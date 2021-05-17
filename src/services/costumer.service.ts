@@ -1,4 +1,4 @@
-import Connection from "../utils/connection";
+import {Connection} from "../core/connection";
 import Costumer from "../structures/costumer";
 import { FindConditions, FindOperator, Like, Repository } from "typeorm";
 import Operator from "../structures/operator";

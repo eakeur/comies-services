@@ -1,10 +1,10 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, OneToMany} from "typeorm";
-import { Unity } from "./enums";
-import ProductItem from "./order-items";
-import Partner from "./partner";
+import { Unity } from "../enums/enums";
+import {Item} from "./item";
+import {Partner} from "./partner";
 
 @Entity()
-export default class Product {
+export class Product {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -21,14 +21,26 @@ export default class Product {
     @Column({nullable:false})
     unity: Unity;
 
+    @Column({nullable: true})
+    tags: string;
+
+    @Column({nullable:false, type:"float"})
+    value: number;
+
     @Column({nullable:false, type:"float"})
     price: number;
 
     @ManyToOne(() => Partner, partner => partner.products)
     partner:Partner;
 
-    @OneToMany(() => ProductItem, order => order.product)
-    orders: ProductItem[];
+    @Column({nullable:false})
+    partnerId: number;
+
+    @ManyToOne(() => Partner, partner => partner.products)
+    partner:Partner;
+
+    @OneToMany(() => Item, item => item.product)
+    orders: Item[];
 
     @Column({default: true})
     active:boolean;

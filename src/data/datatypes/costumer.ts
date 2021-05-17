@@ -5,7 +5,7 @@ import Product from "./product";
 import Order from "./order";
 
 @Entity()
-export default class Costumer {
+export class Costumer {
 
     @PrimaryGeneratedColumn()
     id: number;

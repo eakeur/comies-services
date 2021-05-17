@@ -1,9 +1,10 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMany} from "typeorm";
-import Order from "./order";
-import Product from "./product";
+import {Order} from "./order";
+import {Item} from './item';
+import {Product} from "./product";
 
 @Entity()
-export default class ProductItem {
+export class ItemGroup {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -12,21 +13,24 @@ export default class ProductItem {
     order: Order;
 
     @Column({nullable: false})
-    group: number;
+    orderId: number;
 
-    @ManyToOne(() => Product, product => product.orders, { eager: true })
-    product: Product;
-
-    @Column({nullable: false, type:"float"})
+    @Column({nullable: false, default: 1})
     quantity: number;
 
+    @OneToMany(() => Item, item => item.group)
+    items: Item[];
+    
     @Column({nullable: false, default: false})
     done: boolean;
 
     @Column({nullable: false, type:"float"})
     discount: number;
 
+    @Column({nullable: false, type:"float"})
+    price: number;
 
-
+    @Column({nullable: false, type:"float"})
+    finalprice: number;
 
 }

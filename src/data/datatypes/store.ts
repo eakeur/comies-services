@@ -5,7 +5,7 @@ import Partner from "./partner";
 import Product from "./product";
 
 @Entity()
-export default class Store {
+export class Store {
 
     @PrimaryGeneratedColumn()
     id: number;

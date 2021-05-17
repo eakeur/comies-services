@@ -3,7 +3,7 @@ import { ConfigKey } from "./enums";
 import Partner from "./partner";
 
 @Entity()
-export default class PartnerConfiguration {
+export class PartnerConfiguration {
     @PrimaryGeneratedColumn()
     id: number;
 

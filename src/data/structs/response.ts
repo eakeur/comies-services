@@ -1,6 +1,6 @@
-import Notification from "./notification";
+import {Notification} from "./notification";
 
-export default class Response {
+export class Response {
     notification: Notification;
     success = true;
     data:any;

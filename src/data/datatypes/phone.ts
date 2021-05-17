@@ -2,7 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
 import Costumer from "./costumer";
 
 @Entity()
-export default class Phone {
+export class Phone {
 
     @PrimaryGeneratedColumn()
     id: number;
