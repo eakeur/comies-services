@@ -5,17 +5,12 @@ import {Express} from 'express';
 import {Action, useExpressServer} from 'routing-controllers';
 import session from 'express-session';
 import MemoryStore  from 'memorystore';
-import CostumerController from './controllers/costumer.controller';
-import ProductController from './controllers/product.controller';
-import OrderController from './controllers/order.controller';
-import OperatorController from './controllers/operator.controller';
 import servefiles from "serve-static";
 import * as WebSocket from 'ws';
-import AuthenticationController from './controllers/authentication.controller';
-import { KitchenController } from './controllers/kitchen.controller';
 import { IncomingMessage, Server } from 'http';
 import {decode} from "querystring";
 import createMemoryStore from 'memorystore';
+import {AuthenticationController, CostumerController, ProductController, OrderController, OperatorController, KitchenController} from './controllers';
 
 class ServerInitializer {
 

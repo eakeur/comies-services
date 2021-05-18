@@ -1,4 +1,4 @@
-import { Controller, Param, Body, Get, Post, Put, Delete, State, UseBefore, UploadedFile, HeaderParams, Params, Req, QueryParams, Authorized, CurrentUser } from "routing-controllers";
+import { Controller, Param, Body, Get, Post, Put, Delete, State, UseBefore, UploadedFile, HeaderParams, Params, Req, QueryParams, Authorized, CurrentUser, ControllerMetadata } from "routing-controllers";
 import { json } from 'body-parser'
 import ProductService from '../services/product.service';
 import Product from "../structures/product";
@@ -7,7 +7,7 @@ import { KitchenController } from "./kitchen.controller";
 
 @Controller("/products")
 @Authorized()
-export default class ProductController {
+export class ProductController {
 
 
 

@@ -10,7 +10,7 @@ import { json } from "body-parser";
 
 
 @Controller('/authentication')
-export default class AuthenticationController {
+export class AuthenticationController {
 
     response: Response = new Response();
 

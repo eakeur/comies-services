@@ -11,12 +11,12 @@ export { Product } from './data/datatypes/product';
 export { Profile } from './data/datatypes/profile';
 export { Store } from './data/datatypes/store';
 export * as Enums from './data/enums/enums';
-export { Response } from './data/structs/response';
-export { Notification } from './data/structs/notification';
-export { FriendlyError } from './data/structs/friendly-error';
+export { FriendlyError, UnauthorizedError, InvalidInformationError, MissingInformationError, ForbiddenError } from './data/structs/error';
 export { Service } from './data/structs/service';
 export { Filter } from './data/structs/filter';
-export { OrderFilter } from './data/filters/order-filter';
+export { 
+    OrderFilter 
+} from './data/filters';
 export {
     AddressesCollection, 
     ConfigurationsCollection, 

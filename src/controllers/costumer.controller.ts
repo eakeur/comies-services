@@ -8,7 +8,7 @@ import Address from "../structures/address";
 
 @Controller("/costumers")
 
-export default class CostumerController {
+export class CostumerController {
 
 
     @Authorized('getCostumers')

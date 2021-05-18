@@ -5,7 +5,7 @@ import OperatorService from "../services/operator.service";
 
 @Controller("/operators")
 
-export default class OperatorController {
+export class OperatorController {
 
 
     @Authorized('getOperators')
