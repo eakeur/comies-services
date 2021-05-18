@@ -1,5 +1,3 @@
-import {FriendlyError} from '../data';
-
 export function ForbiddenError(description?: string) : void {
     this.code = 'FORBIDDEN'; 
     this.message = 'Ops! Você não pode realizar essa ação :(';

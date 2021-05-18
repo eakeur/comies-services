@@ -1,7 +1,10 @@
 import {Connection} from  './core/connection'
 import "reflect-metadata";
 import express from 'express';
-import {Action, createExpressServer, useExpressServer} from 'routing-controllers';
+import {Express} from 'express';
+import {Action, useExpressServer} from 'routing-controllers';
+import session from 'express-session';
+import MemoryStore  from 'memorystore';
 import CostumerController from './controllers/costumer.controller';
 import ProductController from './controllers/product.controller';
 import OrderController from './controllers/order.controller';
@@ -10,10 +13,9 @@ import servefiles from "serve-static";
 import * as WebSocket from 'ws';
 import AuthenticationController from './controllers/authentication.controller';
 import { KitchenController } from './controllers/kitchen.controller';
-import { DeliveryController } from './controllers/delivery.controller';
 import { IncomingMessage, Server } from 'http';
-import { ScreenController } from './controllers/screen.controller';
 import {decode} from "querystring";
+import createMemoryStore from 'memorystore';
 
 class ServerInitializer {
 
@@ -32,9 +34,25 @@ class ServerInitializer {
         await Connection.initializeDatabase();
     }
 
+    public buildApplication(application: Express){
+        application = application.use("/", servefiles("public"));
+
+        const MemoryStore = createMemoryStore(session);
+        application = application.use(session({
+            cookie: { maxAge: 86400000},
+            secret: '2001Comies@))!',
+            store: new MemoryStore({
+                checkPeriod: 86400000
+            })
+        }));
+        return application;
+
+    }
+
     public async initializeServer(){
         const port = process.env.PORT || 8080;
-        const server = useExpressServer(express().use("/", servefiles("public")), {
+        
+        const server = useExpressServer(this.buildApplication(express()), {
             cors: true,
             currentUserChecker: (action: Action) => new AuthenticationController().getOperatorByToken(action),
             classTransformer:true,
