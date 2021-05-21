@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 namespace comies_services.Structures.Models
 {
-    public class Costumer : PartnerEntity
+    public class Costumer : StoreOwnedEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

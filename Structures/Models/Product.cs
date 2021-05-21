@@ -1,7 +1,7 @@
 using comies_services.Structures.Enumerators;
 namespace comies_services.Structures.Models
 {
-    public class Product : PartnerEntity
+    public class Product : StoreOwnedEntity
     {
         public int Id { get; set; }
         public string Code { get; set; }

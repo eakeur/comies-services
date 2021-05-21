@@ -2,7 +2,7 @@ using comies_services.Structures.Enumerators;
 using System;
 namespace comies_services.Structures.Models
 {
-    public class StockMovement : PartnerEntity
+    public class StockMovement : StoreOwnedEntity
     {
         public int Id { get; set; }
 		public int StockId { get; set; }

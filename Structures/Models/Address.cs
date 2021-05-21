@@ -1,6 +1,6 @@
 namespace comies_services.Structures.Models
 {
-    public class Address : PartnerEntity
+    public class Address : StoreOwnedEntity
     {
         public int Id { get; set; }
         public string CEP { get; set; }
