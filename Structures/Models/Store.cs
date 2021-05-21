@@ -11,8 +11,8 @@ namespace comies_services.Structures.Models
         public string CompanyName { get; set; }
         public string Document { get; set; }
         public string ContactName { get; set; }
-        public DateTime MemberSince { get; set; }
-        public virtual ICollection<Store> Stores {get; set;}
+        public DateTime MemberSince { get; set; }  
+        public virtual ICollection<Store> Stores { get; set; }
         public virtual ICollection<Product> Products { get; set; }
 
     }
