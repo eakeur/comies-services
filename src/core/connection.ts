@@ -1,8 +1,5 @@
 import { createConnection, Connection as c } from 'typeorm';
 import "reflect-metadata";
-import Partner from '../structures/partner';
-import Store from '../structures/store';
-import Operator from '../structures/operator';
 
 export class Connection {
 

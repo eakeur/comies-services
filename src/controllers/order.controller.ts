@@ -1,18 +1,24 @@
-import { Controller, Param, Body, Get, Post, Put, Delete, State, UseBefore, UploadedFile, HeaderParams, Params, Req, QueryParams, Authorized, CurrentUser } from "routing-controllers";
+import { Controller, Param, Body, Get, Post, Put, Delete, State, UseBefore, UploadedFile, HeaderParams, Params, Req, QueryParams, Authorized, CurrentUser, Res } from "routing-controllers";
 import { Order, Operator, OrderFilter } from '../data';
 import { json } from 'body-parser'
 import {OrderService} from "../services";
 import { KitchenController } from "./kitchen.controller";
 import { StandardController } from "../core";
+import { ServerResponse } from "http";
 
 @Controller("/orders")
-export class OrderController extends StandardController {
+export class OrderController {
 
     @Authorized('getOrders')
     @Get("/:id")
-    public async getOrderByID(@CurrentUser({required:true}) operator: Operator, @Param("id") id:number){
-        const service:OrderService = new OrderService(operator);
-        return service.get(id);
+    public async getOrderByID(@CurrentUser({required:true}) operator: Operator, @Param("id") id:number, @Res() res: ServerResponse){
+        try {
+            const service: OrderService = new OrderService(operator);
+            const order = await service.get(id);
+            return order;
+        } catch (error) {
+            throw error;
+        }
     }
 
     @Authorized('getOrders')
