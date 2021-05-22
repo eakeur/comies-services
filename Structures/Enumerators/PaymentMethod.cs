@@ -5,6 +5,7 @@ namespace comies_services.Structures.Enumerators
         DEBIT, 
         CREDIT,
         PIX,
-        TRANSFERENCE
+        TRANSFERENCE,
+        MULTIPLE
     }
 }
