@@ -7,7 +7,8 @@ namespace Comies.Structures.ModelsConfigurations
     public class StoreConfiguration : IEntityTypeConfiguration<Store>{
         
         public void Configure(EntityTypeBuilder<Store> builder){
-            builder.HasKey(p => new {p.Id, p.StoreId});
+            builder.HasKey(p => p.Id);
+            
         }
     }
 }

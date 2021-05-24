@@ -25,6 +25,32 @@ namespace comies_services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyNickname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stores_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
                 {
@@ -50,8 +76,7 @@ namespace comies_services.Migrations
                         name: "FK_Addresses_Costumers_CostumerId",
                         column: x => x.CostumerId,
                         principalTable: "Costumers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -73,50 +98,7 @@ namespace comies_services.Migrations
                         name: "FK_Phones_Costumers_CostumerId",
                         column: x => x.CostumerId,
                         principalTable: "Costumers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stores",
-                columns: table => new
-                {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyNickname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    PhoneId = table.Column<int>(type: "int", nullable: false),
-                    MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stores", x => new { x.Id, x.StoreId });
-                    table.ForeignKey(
-                        name: "FK_Stores_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Stores_Phones_PhoneId",
-                        column: x => x.PhoneId,
-                        principalTable: "Phones",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Stores_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
-                        principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -131,8 +113,6 @@ namespace comies_services.Migrations
                     ParentCategoryId = table.Column<int>(type: "int", nullable: false),
                     ParentCategoryCode = table.Column<string>(type: "nvarchar(6)", nullable: true),
                     ParentCategoryStoreId = table.Column<int>(type: "int", nullable: true),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -143,14 +123,12 @@ namespace comies_services.Migrations
                         name: "FK_ProductsCategories_ProductsCategories_ParentCategoryCode_ParentCategoryStoreId",
                         columns: x => new { x.ParentCategoryCode, x.ParentCategoryStoreId },
                         principalTable: "ProductsCategories",
-                        principalColumns: new[] { "Code", "StoreId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Code", "StoreId" });
                     table.ForeignKey(
-                        name: "FK_ProductsCategories_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_ProductsCategories_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -162,8 +140,6 @@ namespace comies_services.Migrations
                     ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StoreId = table.Column<int>(type: "int", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -171,11 +147,10 @@ namespace comies_services.Migrations
                 {
                     table.PrimaryKey("PK_Profiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Profiles_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_Profiles_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -194,8 +169,6 @@ namespace comies_services.Migrations
                     SupplierId = table.Column<int>(type: "int", nullable: false),
                     Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Observations = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -203,11 +176,10 @@ namespace comies_services.Migrations
                 {
                     table.PrimaryKey("PK_StocksMovements", x => new { x.Id, x.StoreId });
                     table.ForeignKey(
-                        name: "FK_StocksMovements_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_StocksMovements_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -223,8 +195,6 @@ namespace comies_services.Migrations
                     ParentId1 = table.Column<int>(type: "int", nullable: false),
                     ParentKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParentStoreId = table.Column<int>(type: "int", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -232,17 +202,15 @@ namespace comies_services.Migrations
                 {
                     table.PrimaryKey("PK_StoresProperties", x => new { x.ParentId, x.Key, x.StoreId });
                     table.ForeignKey(
-                        name: "FK_StoresProperties_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_StoresProperties_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_StoresProperties_StoresProperties_ParentId1_ParentKey_ParentStoreId",
                         columns: x => new { x.ParentId1, x.ParentKey, x.ParentStoreId },
                         principalTable: "StoresProperties",
-                        principalColumns: new[] { "ParentId", "Key", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "ParentId", "Key", "StoreId" });
                 });
 
             migrationBuilder.CreateTable(
@@ -258,8 +226,6 @@ namespace comies_services.Migrations
                     MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     PhoneId = table.Column<int>(type: "int", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -270,20 +236,17 @@ namespace comies_services.Migrations
                         name: "FK_Suppliers_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Suppliers_Phones_PhoneId",
                         column: x => x.PhoneId,
                         principalTable: "Phones",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Suppliers_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_Suppliers_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -308,8 +271,6 @@ namespace comies_services.Migrations
                     Type = table.Column<int>(type: "int", nullable: false),
                     ProductCategoryCode = table.Column<string>(type: "nvarchar(6)", nullable: true),
                     ProductCategoryStoreId = table.Column<int>(type: "int", nullable: true),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -320,20 +281,17 @@ namespace comies_services.Migrations
                         name: "FK_Products_Products_ComboCode_ComboStoreId",
                         columns: x => new { x.ComboCode, x.ComboStoreId },
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "Code", "StoreId" });
                     table.ForeignKey(
                         name: "FK_Products_ProductsCategories_ProductCategoryCode_ProductCategoryStoreId",
                         columns: x => new { x.ProductCategoryCode, x.ProductCategoryStoreId },
                         principalTable: "ProductsCategories",
-                        principalColumns: new[] { "Code", "StoreId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Code", "StoreId" });
                     table.ForeignKey(
-                        name: "FK_Products_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_Products_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -347,8 +305,6 @@ namespace comies_services.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MustChangePassword = table.Column<bool>(type: "bit", nullable: false),
                     ProfileId = table.Column<int>(type: "int", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -359,14 +315,12 @@ namespace comies_services.Migrations
                         name: "FK_Operators_Profiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "Profiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Operators_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_Operators_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -382,8 +336,6 @@ namespace comies_services.Migrations
                     AllowedToDelete = table.Column<bool>(type: "bit", nullable: false),
                     AllowedToGet = table.Column<bool>(type: "bit", nullable: false),
                     Allowed = table.Column<bool>(type: "bit", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -394,14 +346,12 @@ namespace comies_services.Migrations
                         name: "FK_ProfilesDetails_Profiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "Profiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ProfilesDetails_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_ProfilesDetails_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -420,8 +370,6 @@ namespace comies_services.Migrations
                     MainSupplierId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: true),
                     SupplierStoreId = table.Column<int>(type: "int", nullable: true),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -429,17 +377,15 @@ namespace comies_services.Migrations
                 {
                     table.PrimaryKey("PK_Stocks", x => new { x.ProductId, x.StoreId });
                     table.ForeignKey(
-                        name: "FK_Stocks_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_Stocks_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Stocks_Suppliers_SupplierId_SupplierStoreId",
                         columns: x => new { x.SupplierId, x.SupplierStoreId },
                         principalTable: "Suppliers",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Id", "StoreId" });
                 });
 
             migrationBuilder.CreateTable(
@@ -462,14 +408,12 @@ namespace comies_services.Migrations
                         name: "FK_Ingredients_Products_ComponentCode_ComponentStoreId",
                         columns: x => new { x.ComponentCode, x.ComponentStoreId },
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "Code", "StoreId" });
                     table.ForeignKey(
                         name: "FK_Ingredients_Products_ProductCode_ProductStoreId",
                         columns: x => new { x.ProductCode, x.ProductStoreId },
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "Code", "StoreId" });
                 });
 
             migrationBuilder.CreateTable(
@@ -489,8 +433,6 @@ namespace comies_services.Migrations
                     FinalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OperatorNickname = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     OperatorStoreId = table.Column<int>(type: "int", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -501,26 +443,22 @@ namespace comies_services.Migrations
                         name: "FK_Orders_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Costumers_CostumerId",
                         column: x => x.CostumerId,
                         principalTable: "Costumers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Operators_OperatorNickname_OperatorStoreId",
                         columns: x => new { x.OperatorNickname, x.OperatorStoreId },
                         principalTable: "Operators",
-                        principalColumns: new[] { "Nickname", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "Nickname", "StoreId" });
                     table.ForeignKey(
-                        name: "FK_Orders_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_Orders_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -542,8 +480,6 @@ namespace comies_services.Migrations
                     OrderPlaced = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderCostumerId = table.Column<int>(type: "int", nullable: false),
                     OrderStoreId = table.Column<int>(type: "int", nullable: false),
-                    StoreId1 = table.Column<int>(type: "int", nullable: false),
-                    StoreId2 = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -554,20 +490,17 @@ namespace comies_services.Migrations
                         name: "FK_OrdersItems_Orders_OrderPlaced_OrderCostumerId_OrderStoreId",
                         columns: x => new { x.OrderPlaced, x.OrderCostumerId, x.OrderStoreId },
                         principalTable: "Orders",
-                        principalColumns: new[] { "Placed", "CostumerId", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "Placed", "CostumerId", "StoreId" });
                     table.ForeignKey(
                         name: "FK_OrdersItems_Products_ProductCode_ProductStoreId",
                         columns: x => new { x.ProductCode, x.ProductStoreId },
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "Code", "StoreId" });
                     table.ForeignKey(
-                        name: "FK_OrdersItems_Stores_StoreId1_StoreId2",
-                        columns: x => new { x.StoreId1, x.StoreId2 },
+                        name: "FK_OrdersItems_Stores_StoreId",
+                        column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumns: new[] { "Id", "StoreId" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -591,9 +524,9 @@ namespace comies_services.Migrations
                 column: "ProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Operators_StoreId1_StoreId2",
+                name: "IX_Operators_StoreId",
                 table: "Operators",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_AddressId",
@@ -611,9 +544,9 @@ namespace comies_services.Migrations
                 columns: new[] { "OperatorNickname", "OperatorStoreId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_StoreId1_StoreId2",
+                name: "IX_Orders_StoreId",
                 table: "Orders",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrdersItems_OrderPlaced_OrderCostumerId_OrderStoreId",
@@ -626,9 +559,9 @@ namespace comies_services.Migrations
                 columns: new[] { "ProductCode", "ProductStoreId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdersItems_StoreId1_StoreId2",
+                name: "IX_OrdersItems_StoreId",
                 table: "OrdersItems",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phones_CostumerId",
@@ -646,9 +579,9 @@ namespace comies_services.Migrations
                 columns: new[] { "ProductCategoryCode", "ProductCategoryStoreId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_StoreId1_StoreId2",
+                name: "IX_Products_StoreId",
                 table: "Products",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsCategories_ParentCategoryCode_ParentCategoryStoreId",
@@ -656,24 +589,24 @@ namespace comies_services.Migrations
                 columns: new[] { "ParentCategoryCode", "ParentCategoryStoreId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductsCategories_StoreId1_StoreId2",
+                name: "IX_ProductsCategories_StoreId",
                 table: "ProductsCategories",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profiles_StoreId1_StoreId2",
+                name: "IX_Profiles_StoreId",
                 table: "Profiles",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfilesDetails_StoreId1_StoreId2",
+                name: "IX_ProfilesDetails_StoreId",
                 table: "ProfilesDetails",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stocks_StoreId1_StoreId2",
+                name: "IX_Stocks_StoreId",
                 table: "Stocks",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stocks_SupplierId_SupplierStoreId",
@@ -681,24 +614,14 @@ namespace comies_services.Migrations
                 columns: new[] { "SupplierId", "SupplierStoreId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_StocksMovements_StoreId1_StoreId2",
+                name: "IX_StocksMovements_StoreId",
                 table: "StocksMovements",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stores_AddressId",
+                name: "IX_Stores_StoreId",
                 table: "Stores",
-                column: "AddressId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stores_PhoneId",
-                table: "Stores",
-                column: "PhoneId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stores_StoreId1_StoreId2",
-                table: "Stores",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StoresProperties_ParentId1_ParentKey_ParentStoreId",
@@ -706,9 +629,9 @@ namespace comies_services.Migrations
                 columns: new[] { "ParentId1", "ParentKey", "ParentStoreId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_StoresProperties_StoreId1_StoreId2",
+                name: "IX_StoresProperties_StoreId",
                 table: "StoresProperties",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Suppliers_AddressId",
@@ -721,9 +644,9 @@ namespace comies_services.Migrations
                 column: "PhoneId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_StoreId1_StoreId2",
+                name: "IX_Suppliers_StoreId",
                 table: "Suppliers",
-                columns: new[] { "StoreId1", "StoreId2" });
+                column: "StoreId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -762,19 +685,19 @@ namespace comies_services.Migrations
                 name: "ProductsCategories");
 
             migrationBuilder.DropTable(
-                name: "Profiles");
-
-            migrationBuilder.DropTable(
-                name: "Stores");
-
-            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Phones");
 
             migrationBuilder.DropTable(
+                name: "Profiles");
+
+            migrationBuilder.DropTable(
                 name: "Costumers");
+
+            migrationBuilder.DropTable(
+                name: "Stores");
         }
     }
 }

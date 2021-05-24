@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace comies_services.Migrations
 {
     [DbContext(typeof(ComiesContext))]
-    [Migration("20210523230408_InitialCreate")]
+    [Migration("20210524035250_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,17 +170,11 @@ namespace comies_services.Migrations
                     b.Property<int>("ProfileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("Nickname", "StoreId");
 
                     b.HasIndex("ProfileId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Operators");
                 });
@@ -234,21 +228,15 @@ namespace comies_services.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("Placed", "CostumerId", "StoreId");
 
                     b.HasIndex("AddressId");
 
                     b.HasIndex("CostumerId");
 
-                    b.HasIndex("OperatorNickname", "OperatorStoreId");
+                    b.HasIndex("StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("OperatorNickname", "OperatorStoreId");
 
                     b.ToTable("Orders");
                 });
@@ -307,17 +295,11 @@ namespace comies_services.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("OrderId", "Group", "ProductId", "StoreId");
 
-                    b.HasIndex("ProductCode", "ProductStoreId");
+                    b.HasIndex("StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("ProductCode", "ProductStoreId");
 
                     b.HasIndex("OrderPlaced", "OrderCostumerId", "OrderStoreId");
 
@@ -412,12 +394,6 @@ namespace comies_services.Migrations
                     b.Property<int>("SellUnity")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.Property<string>("Tags")
                         .HasColumnType("nvarchar(max)");
 
@@ -429,11 +405,11 @@ namespace comies_services.Migrations
 
                     b.HasKey("Code", "StoreId");
 
+                    b.HasIndex("StoreId");
+
                     b.HasIndex("ComboCode", "ComboStoreId");
 
                     b.HasIndex("ProductCategoryCode", "ProductCategoryStoreId");
-
-                    b.HasIndex("StoreId1", "StoreId2");
 
                     b.ToTable("Products");
                 });
@@ -472,17 +448,11 @@ namespace comies_services.Migrations
                     b.Property<int?>("ParentCategoryStoreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("Code", "StoreId");
 
-                    b.HasIndex("ParentCategoryCode", "ParentCategoryStoreId");
+                    b.HasIndex("StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("ParentCategoryCode", "ParentCategoryStoreId");
 
                     b.ToTable("ProductsCategories");
                 });
@@ -510,15 +480,9 @@ namespace comies_services.Migrations
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Profiles");
                 });
@@ -558,15 +522,9 @@ namespace comies_services.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("ProfileId", "PermissionCode", "StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("ProfilesDetails");
                 });
@@ -609,12 +567,6 @@ namespace comies_services.Migrations
                     b.Property<int>("StockUnity")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SupplierId")
                         .HasColumnType("int");
 
@@ -623,7 +575,7 @@ namespace comies_services.Migrations
 
                     b.HasKey("ProductId", "StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.HasIndex("SupplierId", "SupplierStoreId");
 
@@ -665,12 +617,6 @@ namespace comies_services.Migrations
                     b.Property<int>("StockId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
@@ -682,7 +628,7 @@ namespace comies_services.Migrations
 
                     b.HasKey("Id", "StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("StocksMovements");
                 });
@@ -690,16 +636,12 @@ namespace comies_services.Migrations
             modelBuilder.Entity("Comies.Structures.Models.Store", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
 
                     b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(max)");
@@ -722,22 +664,12 @@ namespace comies_services.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneId")
+                    b.Property<int>("StoreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id", "StoreId");
-
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("PhoneId");
-
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Stores");
                 });
@@ -775,18 +707,12 @@ namespace comies_services.Migrations
                     b.Property<int>("ParentStoreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ParentId", "Key", "StoreId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.HasIndex("ParentId1", "ParentKey", "ParentStoreId");
 
@@ -828,19 +754,13 @@ namespace comies_services.Migrations
                     b.Property<int>("PhoneId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId2")
-                        .HasColumnType("int");
-
                     b.HasKey("Id", "StoreId");
 
                     b.HasIndex("AddressId");
 
                     b.HasIndex("PhoneId");
 
-                    b.HasIndex("StoreId1", "StoreId2");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Suppliers");
                 });
@@ -850,7 +770,7 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Addresses")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Costumer");
@@ -861,12 +781,13 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Product", "Component")
                         .WithMany()
                         .HasForeignKey("ComponentCode", "ComponentStoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductCode", "ProductStoreId");
+                        .HasForeignKey("ProductCode", "ProductStoreId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Component");
 
@@ -878,13 +799,13 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Profile", "Profile")
                         .WithMany()
                         .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Operators")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Profile");
@@ -897,25 +818,25 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Orders")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                        .WithMany("Orders")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Operator", "Operator")
                         .WithMany()
                         .HasForeignKey("OperatorNickname", "OperatorStoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
-                        .WithMany("Orders")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Address");
@@ -929,22 +850,22 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.OrderItem", b =>
                 {
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Comies.Structures.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductCode", "ProductStoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderPlaced", "OrderCostumerId", "OrderStoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -959,7 +880,7 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Phones")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Costumer");
@@ -967,21 +888,22 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Product", b =>
                 {
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                        .WithMany("Products")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Comies.Structures.Models.Product", "Combo")
                         .WithMany()
                         .HasForeignKey("ComboCode", "ComboStoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.ProductCategory", null)
                         .WithMany("Products")
-                        .HasForeignKey("ProductCategoryCode", "ProductCategoryStoreId");
-
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
-                        .WithMany("Products")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductCategoryCode", "ProductCategoryStoreId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Combo");
 
@@ -990,15 +912,16 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.ProductCategory", b =>
                 {
-                    b.HasOne("Comies.Structures.Models.ProductCategory", "ParentCategory")
-                        .WithMany("ChildrenCategories")
-                        .HasForeignKey("ParentCategoryCode", "ParentCategoryStoreId");
-
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("ProductCategories")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Comies.Structures.Models.ProductCategory", "ParentCategory")
+                        .WithMany("ChildrenCategories")
+                        .HasForeignKey("ParentCategoryCode", "ParentCategoryStoreId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("ParentCategory");
 
@@ -1009,8 +932,8 @@ namespace comies_services.Migrations
                 {
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Profiles")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Store");
@@ -1021,13 +944,13 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Profile", "Profile")
                         .WithMany("ProfileDetails")
                         .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany()
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Profile");
@@ -1039,13 +962,14 @@ namespace comies_services.Migrations
                 {
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Stocks")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Supplier", null)
                         .WithMany("Stocks")
-                        .HasForeignKey("SupplierId", "SupplierStoreId");
+                        .HasForeignKey("SupplierId", "SupplierStoreId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Store");
                 });
@@ -1054,8 +978,8 @@ namespace comies_services.Migrations
                 {
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("StockMovements")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Store");
@@ -1063,27 +987,11 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Store", b =>
                 {
-                    b.HasOne("Comies.Structures.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Comies.Structures.Models.Phone", "Phone")
-                        .WithMany()
-                        .HasForeignKey("PhoneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Stores")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Phone");
 
                     b.Navigation("Store");
                 });
@@ -1092,14 +1000,14 @@ namespace comies_services.Migrations
                 {
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("StoreProperties")
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.StoreProperty", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId1", "ParentKey", "ParentStoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Parent");
@@ -1112,19 +1020,19 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Phone", "Phone")
                         .WithMany()
                         .HasForeignKey("PhoneId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany()
-                        .HasForeignKey("StoreId1", "StoreId2")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Address");

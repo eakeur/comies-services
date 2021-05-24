@@ -11,11 +11,7 @@ namespace Comies.Structures.Models
         public string CompanyName { get; set; }
         public string Document { get; set; }
         public string ContactName { get; set; }
-        public int AddressId { get; set; }
-        public int PhoneId { get; set; }
-        public Address Address { get; set; }
-        public Phone Phone { get; set; }
-        public DateTime MemberSince { get; set; }  
+        public virtual DateTime MemberSince { get; set; }  
         public virtual IList<Store> Stores { get; set; }
         public virtual IList<Product> Products { get; set; }
         public virtual IList<ProductCategory> ProductCategories { get; set; }

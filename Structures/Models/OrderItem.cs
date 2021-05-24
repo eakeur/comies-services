@@ -18,7 +18,7 @@ namespace Comies.Structures.Models
         public decimal FinalPrice { get; set; }
         [Required]
         public int ProductId { get; set; }
-        public Product Product { get; set; }
-        public Order Order { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

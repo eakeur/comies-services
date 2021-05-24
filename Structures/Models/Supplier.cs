@@ -13,8 +13,8 @@ namespace Comies.Structures.Models
         public DateTime MemberSince { get; set; } 
         public int AddressId { get; set; }
         public int PhoneId { get; set; }
-        public Phone Phone { get; set; }
-        public Address Address { get; set; }
+        public virtual Phone Phone { get; set; }
+        public virtual Address Address { get; set; }
         public virtual IList<Stock> Stocks { get; set; }
 
     }

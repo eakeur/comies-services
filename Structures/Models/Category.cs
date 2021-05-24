@@ -17,7 +17,7 @@ namespace Comies.Structures.Models
         public string Name { get; set; }
         public int Description { get; set; }
         public int ParentCategoryId { get; set; }
-        public ProductCategory ParentCategory { get; set; }
+        public virtual ProductCategory ParentCategory { get; set; }
         public virtual IList<ProductCategory> ChildrenCategories { get; set; }
         public virtual IList<Product> Products { get; set; }
 

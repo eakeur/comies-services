@@ -20,7 +20,7 @@ namespace Comies.Structures.Models
         public bool MustChangePassword { get; set; }
 
         public int ProfileId { get; set; }
-        public Profile Profile { get; set; }
+        public virtual Profile Profile { get; set; }
 
 
     }

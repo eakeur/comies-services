@@ -16,9 +16,9 @@ namespace Comies.Structures.Models
         public int OperatorId { get; set; }
         public decimal Price { get; set; }
         public decimal FinalPrice { get; set; }
-        public Operator Operator { get; set; }
-        public Address Address { get; set; }
-        public Costumer Costumer { get; set; }
+        public virtual Operator Operator { get; set; }
+        public virtual Address Address { get; set; }
+        public virtual Costumer Costumer { get; set; }
         public virtual IList<OrderItem> OrderItems { get; set; }
 
     }
