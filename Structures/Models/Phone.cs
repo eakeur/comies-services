@@ -1,6 +1,6 @@
-namespace comies_services.Structures.Models
+namespace Comies.Structures.Models
 {
-    public class Phone : StoreOwnedEntity
+    public class Phone : Entity
     {
         public int Id { get; set; }
         public string DDD { get; set; }

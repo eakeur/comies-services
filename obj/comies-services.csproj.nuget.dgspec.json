@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/mnt/c/Users/igor.leandro/Workspace/comies-services/comies-services.csproj": {}
+    "/home/igor/comies-services/comies-services.csproj": {}
   },
   "projects": {
-    "/mnt/c/Users/igor.leandro/Workspace/comies-services/comies-services.csproj": {
+    "/home/igor/comies-services/comies-services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/mnt/c/Users/igor.leandro/Workspace/comies-services/comies-services.csproj",
+        "projectUniqueName": "/home/igor/comies-services/comies-services.csproj",
         "projectName": "comies-services",
-        "projectPath": "/mnt/c/Users/igor.leandro/Workspace/comies-services/comies-services.csproj",
+        "projectPath": "/home/igor/comies-services/comies-services.csproj",
         "packagesPath": "/home/igor/.nuget/packages/",
-        "outputPath": "/mnt/c/Users/igor.leandro/Workspace/comies-services/obj/",
+        "outputPath": "/home/igor/comies-services/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/igor/.nuget/NuGet/NuGet.Config"
@@ -38,9 +38,17 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "FluentValidator": {
+            "EntityFramework": {
               "target": "Package",
-              "version": "[2.0.4, )"
+              "version": "[6.4.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.6, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

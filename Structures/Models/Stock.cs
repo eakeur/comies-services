@@ -1,6 +1,7 @@
-using comies_services.Structures.Enumerators;
+using Comies.Structures.Enumerators;
+using System.ComponentModel.DataAnnotations;
 using System;
-namespace comies_services.Structures.Models
+namespace Comies.Structures.Models
 {
     public class Stock : StoreOwnedEntity
     {

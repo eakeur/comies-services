@@ -1,8 +1,7 @@
-using comies_services.Structures.Enumerators;
+using Comies.Structures.Enumerators;
 using System.Collections.Generic;
-using FluentValidator;
 using System;
-namespace comies_services.Structures.Models
+namespace Comies.Structures.Models
 {
     public class StoreProperty : StoreOwnedEntity
     {
@@ -12,7 +11,7 @@ namespace comies_services.Structures.Models
         public string Value { get; set; }
         public string AllowOverride { get; set; }
         public virtual StoreProperty Parent { get; set; }
-        public virtual ICollection<StoreProperty> Children { get; set; }
+        public virtual IList<StoreProperty> Children { get; set; }
 
 
     }

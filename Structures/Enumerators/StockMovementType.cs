@@ -1,4 +1,4 @@
-namespace comies_services.Structures.Enumerators
+namespace Comies.Structures.Enumerators
 {
    public enum StockMovementType {
         INPUT, OUTPUT, PROBLEM

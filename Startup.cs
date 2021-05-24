@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Sql;
+using Microsoft.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace comies_services
+namespace Comies
 {
     public class Startup
     {
@@ -28,6 +31,9 @@ namespace comies_services
         {
 
             services.AddControllers();
+            services.AddDbContext<Core.Contexts.ComiesContext>(o => {
+                o.UseSqlServer("name=LocalComiesDBConn");
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "comies_services", Version = "v1" });

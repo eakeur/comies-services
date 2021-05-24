@@ -1,8 +1,8 @@
-using comies_services.Structures.Enumerators;
+using Comies.Structures.Enumerators;
 using System.Collections.Generic;
-using FluentValidator;
+using System.ComponentModel.DataAnnotations;
 using System;
-namespace comies_services.Structures.Models
+namespace Comies.Structures.Models
 {
     public class Order : StoreOwnedEntity
     {
@@ -16,10 +16,10 @@ namespace comies_services.Structures.Models
         public int OperatorId { get; set; }
         public decimal Price { get; set; }
         public decimal FinalPrice { get; set; }
-        public virtual Operator Operator { get; set; }
-        public virtual Address Address { get; set; }
-        public virtual Costumer Costumer { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public Operator Operator { get; set; }
+        public Address Address { get; set; }
+        public Costumer Costumer { get; set; }
+        public virtual IList<OrderItem> OrderItems { get; set; }
 
     }
 }

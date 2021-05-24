@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace comies_services.Structures.Models {
+namespace Comies.Structures.Models {
     public class Profile : StoreOwnedEntity
     {
         public int Id { get; set; }
         public string ProfileName { get; set; }
         public string ProfileDescription { get; set; }
-        public virtual ICollection<ProfileDetails> ProfileDetails { get; set; }
+        public virtual IList<ProfileDetails> ProfileDetails { get; set; }
     }
 }

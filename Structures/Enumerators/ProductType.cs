@@ -1,6 +1,6 @@
-namespace comies_services.Structures.Enumerators
+namespace Comies.Structures.Enumerators
 {
    public enum ProductType {
-        IN, OUT, USE
+        IN, OUT, USE, OUTCOMBO, INCOMBO
     }
 }

@@ -1,4 +1,6 @@
-namespace comies_services.Structures.Models {
+using System.ComponentModel.DataAnnotations;
+
+namespace Comies.Structures.Models {
     public class ProfileDetails : StoreOwnedEntity
     {
         public int Id { get; set; }
