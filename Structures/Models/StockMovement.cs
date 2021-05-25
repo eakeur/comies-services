@@ -1,14 +1,15 @@
 using Comies.Structures.Enumerators;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using System;
 namespace Comies.Structures.Models
 {
     public class StockMovement : StoreOwnedEntity
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+		public Guid Id { get; set; }
 		[Required]
-		public int StockId { get; set; }
+		public Guid StockId { get; set; }
 		
 		[Required]
 		public StockMovementType Type { get; set; }
@@ -20,10 +21,15 @@ namespace Comies.Structures.Models
 		public double Quantity { get; set; }
 		public decimal UnityPrice { get; set; }
 		public decimal OtherCosts { get; set; }
-		public int OrderId { get; set; }
-		public int SupplierId { get; set; }
-		public string Document { get; set; }
-		public string Observations { get; set; }
+		public Guid OrderId { get; set; }
+		public Guid SupplierId { get; set; }
 
-	}
+		[MaxLength(100)]
+		public string Document { get; set; }
+
+		[MaxLength(200)]
+		public string Observations { get; set; }
+		public Stock Stock { get; set; }
+
+    }
 }

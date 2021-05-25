@@ -7,7 +7,7 @@ namespace Comies.Structures.ModelsConfigurations
     public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>{
         
         public void Configure(EntityTypeBuilder<Supplier> builder){
-            builder.HasKey(p => new {p.Id, p.StoreId});
+            builder.HasKey(p => p.Id);
         }
     }
 }

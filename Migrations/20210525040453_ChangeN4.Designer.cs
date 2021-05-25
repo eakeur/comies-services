@@ -4,14 +4,16 @@ using Comies.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace comies_services.Migrations
 {
     [DbContext(typeof(ComiesContext))]
-    partial class ComiesContextModelSnapshot : ModelSnapshot
+    [Migration("20210525040453_ChangeN4")]
+    partial class ChangeN4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

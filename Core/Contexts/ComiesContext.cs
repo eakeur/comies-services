@@ -26,6 +26,8 @@ namespace Comies.Core.Contexts {
             builder.ApplyConfiguration<StoreProperty>(new StorePropertiesConfiguration());
             builder.ApplyConfiguration<Supplier>(new SupplierConfiguration());
 
+            
+
             foreach (var entity in builder.Model.GetEntityTypes()){
                 foreach(var fk in entity.GetForeignKeys()){
                     fk.DeleteBehavior = DeleteBehavior.NoAction;

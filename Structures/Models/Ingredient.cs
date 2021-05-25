@@ -1,11 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+using System;
 namespace Comies.Structures.Models
 {
-    public class Ingredient
+    public class Ingredient : StoreOwnedEntity
     {
-        public int Id { get; set; }
-        public int ProductId { get; set; }
-        public int IngredientId { get; set; }
+        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid IngredientId { get; set; }
         public double Quantity { get; set; }
         public virtual Product Product { get; set; }
         public virtual Product Component { get; set; }

@@ -8,7 +8,6 @@ namespace Comies.Structures.ModelsConfigurations
         
         public void Configure(EntityTypeBuilder<Store> builder){
             builder.HasKey(p => p.Id);
-            
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Comies.Structures.Models {
         public StoreOwnedEntity() { CreationDate = DateTime.Now;}
         
         [Required(ErrorMessage="É preciso especificar uma loja à qual este item pertence")]
-        public int StoreId { get; set; }
+        public Guid StoreId { get; set; }
         public Store Store { get; set; }
         public bool Active { get; set; }
         public DateTime CreationDate { get; set; }

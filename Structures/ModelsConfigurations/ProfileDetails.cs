@@ -7,7 +7,8 @@ namespace Comies.Structures.ModelsConfigurations
     public class ProfileDetailsConfiguration : IEntityTypeConfiguration<ProfileDetails>{
         
         public void Configure(EntityTypeBuilder<ProfileDetails> builder){
-            builder.HasKey(p => new { p.ProfileId, p.PermissionCode, p.StoreId});
+            builder.HasKey(p => p.Id);
+            builder.HasIndex(i => new { i.PermissionCode, i.StoreId, i.ProfileId }).IsUnique();
         }
     }
 }

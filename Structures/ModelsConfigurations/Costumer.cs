@@ -12,6 +12,9 @@ namespace Comies.Structures.ModelsConfigurations
 
             builder.Property(cat => cat.Name)
                 .IsRequired(true);
+
+            builder.HasMany(x => x.Addresses).WithOne(x => x.Costumer).HasForeignKey(x => x.CostumerId);
+
         }
     }
 }

@@ -11,10 +11,9 @@ namespace comies_services.Migrations
                 name: "Costumers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Document = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -28,15 +27,14 @@ namespace comies_services.Migrations
                 name: "Stores",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyNickname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyNickname = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -54,18 +52,17 @@ namespace comies_services.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CEP = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Complement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Reference = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CostumerId = table.Column<int>(type: "int", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    District = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Complement = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Reference = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CostumerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -83,11 +80,10 @@ namespace comies_services.Migrations
                 name: "Phones",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DDD = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
                     Number = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
-                    CostumerId = table.Column<int>(type: "int", nullable: false),
+                    CostumerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -105,25 +101,23 @@ namespace comies_services.Migrations
                 name: "ProductsCategories",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<int>(type: "int", nullable: false),
-                    ParentCategoryId = table.Column<int>(type: "int", nullable: false),
-                    ParentCategoryCode = table.Column<string>(type: "nvarchar(6)", nullable: true),
-                    ParentCategoryStoreId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<Guid>(type: "uniqueidentifier", maxLength: 200, nullable: false),
+                    ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductsCategories", x => new { x.Code, x.StoreId });
+                    table.PrimaryKey("PK_ProductsCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductsCategories_ProductsCategories_ParentCategoryCode_ParentCategoryStoreId",
-                        columns: x => new { x.ParentCategoryCode, x.ParentCategoryStoreId },
+                        name: "FK_ProductsCategories_ProductsCategories_ParentId",
+                        column: x => x.ParentId,
                         principalTable: "ProductsCategories",
-                        principalColumns: new[] { "Code", "StoreId" });
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProductsCategories_Stores_StoreId",
                         column: x => x.StoreId,
@@ -135,11 +129,10 @@ namespace comies_services.Migrations
                 name: "Profiles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProfileDescription = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -154,84 +147,52 @@ namespace comies_services.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StocksMovements",
-                columns: table => new
-                {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    StockId = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    EffectiveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Quantity = table.Column<double>(type: "float", nullable: false),
-                    UnityPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OtherCosts = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Observations = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StocksMovements", x => new { x.Id, x.StoreId });
-                    table.ForeignKey(
-                        name: "FK_StocksMovements_Stores_StoreId",
-                        column: x => x.StoreId,
-                        principalTable: "Stores",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StoresProperties",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AllowOverride = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParentId1 = table.Column<int>(type: "int", nullable: false),
-                    ParentKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ParentStoreId = table.Column<int>(type: "int", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StoresProperties", x => new { x.ParentId, x.Key, x.StoreId });
+                    table.PrimaryKey("PK_StoresProperties", x => x.Id);
                     table.ForeignKey(
                         name: "FK_StoresProperties_Stores_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Stores",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_StoresProperties_StoresProperties_ParentId1_ParentKey_ParentStoreId",
-                        columns: x => new { x.ParentId1, x.ParentKey, x.ParentStoreId },
+                        name: "FK_StoresProperties_StoresProperties_ParentId",
+                        column: x => x.ParentId,
                         principalTable: "StoresProperties",
-                        principalColumns: new[] { "ParentId", "Key", "StoreId" });
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Document = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ContactName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    PhoneId = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suppliers", x => new { x.Id, x.StoreId });
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Suppliers_Addresses_AddressId",
                         column: x => x.AddressId,
@@ -253,40 +214,31 @@ namespace comies_services.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", maxLength: 9, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Display = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Display = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     SellUnity = table.Column<int>(type: "int", nullable: false),
-                    Minimum = table.Column<double>(type: "float", nullable: false),
+                    Minimum = table.Column<double>(type: "float", nullable: false, defaultValue: 1.0),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ComboId = table.Column<int>(type: "int", nullable: false),
-                    ComboCode = table.Column<string>(type: "nvarchar(6)", nullable: false),
-                    ComboStoreId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    ProductCategoryCode = table.Column<string>(type: "nvarchar(6)", nullable: true),
-                    ProductCategoryStoreId = table.Column<int>(type: "int", nullable: true),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => new { x.Code, x.StoreId });
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Products_ComboCode_ComboStoreId",
-                        columns: x => new { x.ComboCode, x.ComboStoreId },
-                        principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" });
-                    table.ForeignKey(
-                        name: "FK_Products_ProductsCategories_ProductCategoryCode_ProductCategoryStoreId",
-                        columns: x => new { x.ProductCategoryCode, x.ProductCategoryStoreId },
+                        name: "FK_Products_ProductsCategories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "ProductsCategories",
-                        principalColumns: new[] { "Code", "StoreId" });
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Stores_StoreId",
                         column: x => x.StoreId,
@@ -298,19 +250,19 @@ namespace comies_services.Migrations
                 name: "Operators",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Nickname = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MustChangePassword = table.Column<bool>(type: "bit", nullable: false),
-                    ProfileId = table.Column<int>(type: "int", nullable: false),
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Operators", x => new { x.Nickname, x.StoreId });
+                    table.PrimaryKey("PK_Operators", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Operators_Profiles_ProfileId",
                         column: x => x.ProfileId,
@@ -327,21 +279,21 @@ namespace comies_services.Migrations
                 name: "ProfilesDetails",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    ProfileId = table.Column<int>(type: "int", nullable: false),
-                    PermissionCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PermissionCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
                     AllowedToAdd = table.Column<bool>(type: "bit", nullable: false),
                     AllowedToUpdate = table.Column<bool>(type: "bit", nullable: false),
                     AllowedToDelete = table.Column<bool>(type: "bit", nullable: false),
                     AllowedToGet = table.Column<bool>(type: "bit", nullable: false),
                     Allowed = table.Column<bool>(type: "bit", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfilesDetails", x => new { x.ProfileId, x.PermissionCode, x.StoreId });
+                    table.PrimaryKey("PK_ProfilesDetails", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProfilesDetails_Profiles_ProfileId",
                         column: x => x.ProfileId,
@@ -358,87 +310,88 @@ namespace comies_services.Migrations
                 name: "Stocks",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Minimum = table.Column<double>(type: "float", nullable: false),
                     Maximum = table.Column<double>(type: "float", nullable: false),
                     Actual = table.Column<double>(type: "float", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StockUnity = table.Column<int>(type: "int", nullable: false),
-                    MainSupplierId = table.Column<int>(type: "int", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: true),
-                    SupplierStoreId = table.Column<int>(type: "int", nullable: true),
+                    MainSupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stocks", x => new { x.ProductId, x.StoreId });
+                    table.PrimaryKey("PK_Stocks", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Stocks_Stores_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Stores",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Stocks_Suppliers_SupplierId_SupplierStoreId",
-                        columns: x => new { x.SupplierId, x.SupplierStoreId },
+                        name: "FK_Stocks_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
                         principalTable: "Suppliers",
-                        principalColumns: new[] { "Id", "StoreId" });
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Ingredients",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    IngredientId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
-                    ProductCode = table.Column<string>(type: "nvarchar(6)", nullable: true),
-                    ProductStoreId = table.Column<int>(type: "int", nullable: true),
-                    ComponentCode = table.Column<string>(type: "nvarchar(6)", nullable: false),
-                    ComponentStoreId = table.Column<int>(type: "int", nullable: false)
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredients", x => new { x.ProductId, x.IngredientId });
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ingredients_Products_ComponentCode_ComponentStoreId",
-                        columns: x => new { x.ComponentCode, x.ComponentStoreId },
+                        name: "FK_Ingredients_Products_IngredientId",
+                        column: x => x.IngredientId,
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" });
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Ingredients_Products_ProductCode_ProductStoreId",
-                        columns: x => new { x.ProductCode, x.ProductStoreId },
+                        name: "FK_Ingredients_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" });
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Placed = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CostumerId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     DeliverType = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    OperatorId = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    CostumerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OperatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FinalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OperatorNickname = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    OperatorStoreId = table.Column<int>(type: "int", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => new { x.Placed, x.CostumerId, x.StoreId });
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Orders_Addresses_AddressId",
                         column: x => x.AddressId,
@@ -450,12 +403,46 @@ namespace comies_services.Migrations
                         principalTable: "Costumers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Orders_Operators_OperatorNickname_OperatorStoreId",
-                        columns: x => new { x.OperatorNickname, x.OperatorStoreId },
+                        name: "FK_Orders_Operators_OperatorId",
+                        column: x => x.OperatorId,
                         principalTable: "Operators",
-                        principalColumns: new[] { "Nickname", "StoreId" });
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StocksMovements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    EffectiveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Quantity = table.Column<double>(type: "float", nullable: false),
+                    UnityPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OtherCosts = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Document = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Observations = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StocksMovements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StocksMovements_Stocks_StockId",
+                        column: x => x.StockId,
+                        principalTable: "Stocks",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StocksMovements_Stores_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Stores",
                         principalColumn: "Id");
@@ -465,37 +452,32 @@ namespace comies_services.Migrations
                 name: "OrdersItems",
                 columns: table => new
                 {
-                    StoreId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Group = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
                     Done = table.Column<bool>(type: "bit", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FinalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductCode = table.Column<string>(type: "nvarchar(6)", nullable: false),
-                    ProductStoreId = table.Column<int>(type: "int", nullable: false),
-                    OrderPlaced = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderCostumerId = table.Column<int>(type: "int", nullable: false),
-                    OrderStoreId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrdersItems", x => new { x.OrderId, x.Group, x.ProductId, x.StoreId });
+                    table.PrimaryKey("PK_OrdersItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrdersItems_Orders_OrderPlaced_OrderCostumerId_OrderStoreId",
-                        columns: x => new { x.OrderPlaced, x.OrderCostumerId, x.OrderStoreId },
+                        name: "FK_OrdersItems_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumns: new[] { "Placed", "CostumerId", "StoreId" });
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OrdersItems_Products_ProductCode_ProductStoreId",
-                        columns: x => new { x.ProductCode, x.ProductStoreId },
+                        name: "FK_OrdersItems_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumns: new[] { "Code", "StoreId" });
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_OrdersItems_Stores_StoreId",
                         column: x => x.StoreId,
@@ -509,14 +491,26 @@ namespace comies_services.Migrations
                 column: "CostumerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_ComponentCode_ComponentStoreId",
+                name: "IX_Ingredients_IngredientId",
                 table: "Ingredients",
-                columns: new[] { "ComponentCode", "ComponentStoreId" });
+                column: "IngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_ProductCode_ProductStoreId",
+                name: "IX_Ingredients_ProductId_IngredientId_StoreId",
                 table: "Ingredients",
-                columns: new[] { "ProductCode", "ProductStoreId" });
+                columns: new[] { "ProductId", "IngredientId", "StoreId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_StoreId",
+                table: "Ingredients",
+                column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Operators_Nickname_StoreId",
+                table: "Operators",
+                columns: new[] { "Nickname", "StoreId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Operators_ProfileId",
@@ -534,14 +528,15 @@ namespace comies_services.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CostumerId",
+                name: "IX_Orders_CostumerId_StoreId_Placed",
                 table: "Orders",
-                column: "CostumerId");
+                columns: new[] { "CostumerId", "StoreId", "Placed" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_OperatorNickname_OperatorStoreId",
+                name: "IX_Orders_OperatorId",
                 table: "Orders",
-                columns: new[] { "OperatorNickname", "OperatorStoreId" });
+                column: "OperatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_StoreId",
@@ -549,14 +544,15 @@ namespace comies_services.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdersItems_OrderPlaced_OrderCostumerId_OrderStoreId",
+                name: "IX_OrdersItems_OrderId_StoreId_ProductId_Group",
                 table: "OrdersItems",
-                columns: new[] { "OrderPlaced", "OrderCostumerId", "OrderStoreId" });
+                columns: new[] { "OrderId", "StoreId", "ProductId", "Group" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdersItems_ProductCode_ProductStoreId",
+                name: "IX_OrdersItems_ProductId",
                 table: "OrdersItems",
-                columns: new[] { "ProductCode", "ProductStoreId" });
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrdersItems_StoreId",
@@ -569,14 +565,15 @@ namespace comies_services.Migrations
                 column: "CostumerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ComboCode_ComboStoreId",
+                name: "IX_Products_CategoryId",
                 table: "Products",
-                columns: new[] { "ComboCode", "ComboStoreId" });
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductCategoryCode_ProductCategoryStoreId",
+                name: "IX_Products_Code_StoreId",
                 table: "Products",
-                columns: new[] { "ProductCategoryCode", "ProductCategoryStoreId" });
+                columns: new[] { "Code", "StoreId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_StoreId",
@@ -584,9 +581,15 @@ namespace comies_services.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductsCategories_ParentCategoryCode_ParentCategoryStoreId",
+                name: "IX_ProductsCategories_Code_StoreId",
                 table: "ProductsCategories",
-                columns: new[] { "ParentCategoryCode", "ParentCategoryStoreId" });
+                columns: new[] { "Code", "StoreId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsCategories_ParentId",
+                table: "ProductsCategories",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsCategories_StoreId",
@@ -594,9 +597,27 @@ namespace comies_services.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Profiles_ProfileName_StoreId",
+                table: "Profiles",
+                columns: new[] { "ProfileName", "StoreId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Profiles_StoreId",
                 table: "Profiles",
                 column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProfilesDetails_PermissionCode_StoreId_ProfileId",
+                table: "ProfilesDetails",
+                columns: new[] { "PermissionCode", "StoreId", "ProfileId" },
+                unique: true,
+                filter: "[PermissionCode] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProfilesDetails_ProfileId",
+                table: "ProfilesDetails",
+                column: "ProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfilesDetails_StoreId",
@@ -604,14 +625,25 @@ namespace comies_services.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Stocks_ProductId_StoreId",
+                table: "Stocks",
+                columns: new[] { "ProductId", "StoreId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stocks_StoreId",
                 table: "Stocks",
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stocks_SupplierId_SupplierStoreId",
+                name: "IX_Stocks_SupplierId",
                 table: "Stocks",
-                columns: new[] { "SupplierId", "SupplierStoreId" });
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StocksMovements_StockId",
+                table: "StocksMovements",
+                column: "StockId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StocksMovements_StoreId",
@@ -624,9 +656,16 @@ namespace comies_services.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StoresProperties_ParentId1_ParentKey_ParentStoreId",
+                name: "IX_StoresProperties_Key_ParentId_StoreId",
                 table: "StoresProperties",
-                columns: new[] { "ParentId1", "ParentKey", "ParentStoreId" });
+                columns: new[] { "Key", "ParentId", "StoreId" },
+                unique: true,
+                filter: "[Key] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoresProperties_ParentId",
+                table: "StoresProperties",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StoresProperties_StoreId",
@@ -661,9 +700,6 @@ namespace comies_services.Migrations
                 name: "ProfilesDetails");
 
             migrationBuilder.DropTable(
-                name: "Stocks");
-
-            migrationBuilder.DropTable(
                 name: "StocksMovements");
 
             migrationBuilder.DropTable(
@@ -676,7 +712,7 @@ namespace comies_services.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "Operators");
@@ -685,19 +721,22 @@ namespace comies_services.Migrations
                 name: "ProductsCategories");
 
             migrationBuilder.DropTable(
+                name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "Profiles");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Phones");
 
             migrationBuilder.DropTable(
-                name: "Profiles");
+                name: "Stores");
 
             migrationBuilder.DropTable(
                 name: "Costumers");
-
-            migrationBuilder.DropTable(
-                name: "Stores");
         }
     }
 }

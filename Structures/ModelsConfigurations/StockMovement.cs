@@ -7,7 +7,7 @@ namespace Comies.Structures.ModelsConfigurations
     public class StockMovementConfiguration : IEntityTypeConfiguration<StockMovement>{
         
         public void Configure(EntityTypeBuilder<StockMovement> builder){
-            builder.HasKey(p => new {p.Id, p.StoreId});
+            builder.HasKey(p => p.Id);
             builder.Property(p => p.StockId).IsRequired(true);
             builder.Property(p => p.Type).IsRequired(true);
             builder.Property(p => p.EffectiveDate).IsRequired(true);

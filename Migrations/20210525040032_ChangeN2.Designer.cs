@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace comies_services.Migrations
 {
     [DbContext(typeof(ComiesContext))]
-    [Migration("20210524035250_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210525040032_ChangeN2")]
+    partial class ChangeN2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,9 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Address", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -37,35 +36,43 @@ namespace comies_services.Migrations
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Complement")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("CostumerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CostumerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("Reference")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(90)
+                        .HasColumnType("nvarchar(90)");
 
                     b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -76,10 +83,9 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Costumer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -88,14 +94,16 @@ namespace comies_services.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Document")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("MemberSince")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -104,48 +112,9 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Ingredient", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ComponentCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<int>("ComponentStoreId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductCode")
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<int?>("ProductStoreId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.HasKey("ProductId", "IngredientId");
-
-                    b.HasIndex("ComponentCode", "ComponentStoreId");
-
-                    b.HasIndex("ProductCode", "ProductStoreId");
-
-                    b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("Comies.Structures.Models.Operator", b =>
-                {
-                    b.Property<string>("Nickname")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -153,49 +122,92 @@ namespace comies_services.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("ProductId", "IngredientId", "StoreId")
+                        .IsUnique();
+
+                    b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("Comies.Structures.Models.Operator", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("MustChangePassword")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Nickname")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfileId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Nickname", "StoreId");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProfileId");
 
                     b.HasIndex("StoreId");
+
+                    b.HasIndex("Nickname", "StoreId")
+                        .IsUnique();
 
                     b.ToTable("Operators");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Order", b =>
                 {
-                    b.Property<DateTime>("Placed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CostumerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("AddressId")
+                    b.Property<Guid>("AddressId")
                         .HasMaxLength(10)
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CostumerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -206,21 +218,14 @@ namespace comies_services.Migrations
                     b.Property<decimal>("FinalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OperatorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OperatorNickname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("OperatorStoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OperatorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Placed")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -228,32 +233,28 @@ namespace comies_services.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("Placed", "CostumerId", "StoreId");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("CostumerId");
+                    b.HasIndex("OperatorId");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("OperatorNickname", "OperatorStoreId");
+                    b.HasIndex("CostumerId", "StoreId", "Placed")
+                        .IsUnique();
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.OrderItem", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Group")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -270,54 +271,47 @@ namespace comies_services.Migrations
                     b.Property<decimal>("FinalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("Group")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderCostumerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OrderPlaced")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderStoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<int>("ProductStoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.HasKey("OrderId", "Group", "ProductId", "StoreId");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("ProductCode", "ProductStoreId");
-
-                    b.HasIndex("OrderPlaced", "OrderCostumerId", "OrderStoreId");
+                    b.HasIndex("OrderId", "StoreId", "ProductId", "Group")
+                        .IsUnique();
 
                     b.ToTable("OrdersItems");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Phone", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CostumerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CostumerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -340,59 +334,54 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Product", b =>
                 {
-                    b.Property<string>("Code")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<int>("StoreId")
-                        .HasMaxLength(9)
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ComboCode")
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
                         .IsRequired()
+                        .HasMaxLength(6)
                         .HasColumnType("nvarchar(6)");
-
-                    b.Property<int>("ComboId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ComboStoreId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Display")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<double>("Minimum")
-                        .HasColumnType("float");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(1.0);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductCategoryCode")
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<int?>("ProductCategoryStoreId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SellUnity")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Tags")
                         .HasColumnType("nvarchar(max)");
@@ -403,66 +392,67 @@ namespace comies_services.Migrations
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Code", "StoreId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("ComboCode", "ComboStoreId");
-
-                    b.HasIndex("ProductCategoryCode", "ProductCategoryStoreId");
+                    b.HasIndex("Code", "StoreId")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.ProductCategory", b =>
                 {
-                    b.Property<string>("Code")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Description")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("ParentCategoryCode")
-                        .HasColumnType("nvarchar(6)");
+                    b.Property<Guid>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ParentCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ParentCategoryStoreId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("Code", "StoreId");
+                    b.HasIndex("ParentId");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("ParentCategoryCode", "ParentCategoryStoreId");
+                    b.HasIndex("Code", "StoreId")
+                        .IsUnique();
 
                     b.ToTable("ProductsCategories");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Profile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -471,32 +461,32 @@ namespace comies_services.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProfileDescription")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProfileName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StoreId");
+
+                    b.HasIndex("ProfileName", "StoreId")
+                        .IsUnique();
 
                     b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.ProfileDetails", b =>
                 {
-                    b.Property<int>("ProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PermissionCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -519,23 +509,34 @@ namespace comies_services.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("PermissionCode")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
-                    b.HasKey("ProfileId", "PermissionCode", "StoreId");
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.HasIndex("StoreId");
+
+                    b.HasIndex("PermissionCode", "StoreId", "ProfileId")
+                        .IsUnique()
+                        .HasFilter("[PermissionCode] IS NOT NULL");
 
                     b.ToTable("ProfilesDetails");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Stock", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -549,14 +550,11 @@ namespace comies_services.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MainSupplierId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MainSupplierId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Maximum")
                         .HasColumnType("float");
@@ -564,31 +562,35 @@ namespace comies_services.Migrations
                     b.Property<double>("Minimum")
                         .HasColumnType("float");
 
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("StockUnity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SupplierId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("SupplierStoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ProductId", "StoreId");
+                    b.HasKey("Id");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("SupplierId", "SupplierStoreId");
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("ProductId", "StoreId")
+                        .IsUnique();
 
                     b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.StockMovement", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -597,16 +599,18 @@ namespace comies_services.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Document")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("EffectiveDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Observations")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("OtherCosts")
                         .HasColumnType("decimal(18,2)");
@@ -614,11 +618,14 @@ namespace comies_services.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.Property<int>("StockId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("StockId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -626,7 +633,9 @@ namespace comies_services.Migrations
                     b.Property<decimal>("UnityPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id", "StoreId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("StockId");
 
                     b.HasIndex("StoreId");
 
@@ -635,22 +644,24 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Store", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("CompanyNickname")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("ContactName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -664,8 +675,8 @@ namespace comies_services.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -676,14 +687,9 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.StoreProperty", b =>
                 {
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Key")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -694,67 +700,72 @@ namespace comies_services.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParentId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ParentKey")
-                        .IsRequired()
+                    b.Property<string>("Key")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ParentStoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ParentId", "Key", "StoreId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("ParentId1", "ParentKey", "ParentStoreId");
+                    b.HasIndex("Key", "ParentId", "StoreId")
+                        .IsUnique()
+                        .HasFilter("[Key] IS NOT NULL");
 
                     b.ToTable("StoresProperties");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Supplier", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ContactName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Document")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("MemberSince")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("PhoneId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PhoneId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id", "StoreId");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
@@ -779,19 +790,28 @@ namespace comies_services.Migrations
             modelBuilder.Entity("Comies.Structures.Models.Ingredient", b =>
                 {
                     b.HasOne("Comies.Structures.Models.Product", "Component")
-                        .WithMany()
-                        .HasForeignKey("ComponentCode", "ComponentStoreId")
+                        .WithMany("Featuring")
+                        .HasForeignKey("IngredientId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Product", "Product")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany()
-                        .HasForeignKey("ProductCode", "ProductStoreId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Component");
 
                     b.Navigation("Product");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Operator", b =>
@@ -827,15 +847,15 @@ namespace comies_services.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
-                        .WithMany("Orders")
-                        .HasForeignKey("StoreId")
+                    b.HasOne("Comies.Structures.Models.Operator", "Operator")
+                        .WithMany()
+                        .HasForeignKey("OperatorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Comies.Structures.Models.Operator", "Operator")
-                        .WithMany()
-                        .HasForeignKey("OperatorNickname", "OperatorStoreId")
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                        .WithMany("Orders")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -850,21 +870,21 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.OrderItem", b =>
                 {
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId")
+                    b.HasOne("Comies.Structures.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductCode", "ProductStoreId")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Comies.Structures.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderPlaced", "OrderCostumerId", "OrderStoreId")
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -888,42 +908,38 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Product", b =>
                 {
+                    b.HasOne("Comies.Structures.Models.ProductCategory", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Products")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Comies.Structures.Models.Product", "Combo")
-                        .WithMany()
-                        .HasForeignKey("ComboCode", "ComboStoreId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Comies.Structures.Models.ProductCategory", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ProductCategoryCode", "ProductCategoryStoreId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Combo");
+                    b.Navigation("Category");
 
                     b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.ProductCategory", b =>
                 {
+                    b.HasOne("Comies.Structures.Models.ProductCategory", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("ProductCategories")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Comies.Structures.Models.ProductCategory", "ParentCategory")
-                        .WithMany("ChildrenCategories")
-                        .HasForeignKey("ParentCategoryCode", "ParentCategoryStoreId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("ParentCategory");
+                    b.Navigation("Parent");
 
                     b.Navigation("Store");
                 });
@@ -968,7 +984,7 @@ namespace comies_services.Migrations
 
                     b.HasOne("Comies.Structures.Models.Supplier", null)
                         .WithMany("Stocks")
-                        .HasForeignKey("SupplierId", "SupplierStoreId")
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Store");
@@ -976,37 +992,44 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.StockMovement", b =>
                 {
+                    b.HasOne("Comies.Structures.Models.Stock", "Stock")
+                        .WithMany("Movements")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("StockMovements")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.Navigation("Stock");
+
                     b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Store", b =>
                 {
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                    b.HasOne("Comies.Structures.Models.Store", "Parent")
                         .WithMany("Stores")
                         .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("Store");
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.StoreProperty", b =>
                 {
-                    b.HasOne("Comies.Structures.Models.Store", "Store")
-                        .WithMany("StoreProperties")
-                        .HasForeignKey("StoreId")
+                    b.HasOne("Comies.Structures.Models.StoreProperty", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Comies.Structures.Models.StoreProperty", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId1", "ParentKey", "ParentStoreId")
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
+                        .WithMany("StoreProperties")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -1056,9 +1079,18 @@ namespace comies_services.Migrations
                     b.Navigation("OrderItems");
                 });
 
+            modelBuilder.Entity("Comies.Structures.Models.Product", b =>
+                {
+                    b.Navigation("Featuring");
+
+                    b.Navigation("Ingredients");
+
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("Comies.Structures.Models.ProductCategory", b =>
                 {
-                    b.Navigation("ChildrenCategories");
+                    b.Navigation("Children");
 
                     b.Navigation("Products");
                 });
@@ -1066,6 +1098,11 @@ namespace comies_services.Migrations
             modelBuilder.Entity("Comies.Structures.Models.Profile", b =>
                 {
                     b.Navigation("ProfileDetails");
+                });
+
+            modelBuilder.Entity("Comies.Structures.Models.Stock", b =>
+                {
+                    b.Navigation("Movements");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.Store", b =>

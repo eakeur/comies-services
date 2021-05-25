@@ -32,7 +32,10 @@ namespace Comies
 
             services.AddControllers();
             services.AddDbContext<Core.Contexts.ComiesContext>(o => {
-                o.UseSqlServer("name=LocalComiesDBConn");
+                o.UseSqlServer("name=LocalComiesDBConn"); o.ConfigureWarnings(p =>
+                {
+                    p.Ignore(30000);
+                });
             });
             services.AddSwaggerGen(c =>
             {

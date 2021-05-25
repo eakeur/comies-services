@@ -4,14 +4,16 @@ using Comies.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace comies_services.Migrations
 {
     [DbContext(typeof(ComiesContext))]
-    partial class ComiesContextModelSnapshot : ModelSnapshot
+    [Migration("20210525034822_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace comies_services.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<Guid?>("CostumerId")
+                    b.Property<Guid>("CostumerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Country")
@@ -308,7 +310,7 @@ namespace comies_services.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("CostumerId")
+                    b.Property<Guid>("CostumerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
@@ -339,7 +341,7 @@ namespace comies_services.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
@@ -382,8 +384,7 @@ namespace comies_services.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Tags")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -674,7 +675,7 @@ namespace comies_services.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("StoreId")
+                    b.Property<Guid>("StoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -780,7 +781,8 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Addresses")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Costumer");
                 });
@@ -898,7 +900,8 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Phones")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Costumer");
                 });
@@ -908,7 +911,8 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.ProductCategory", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Products")
@@ -1007,12 +1011,13 @@ namespace comies_services.Migrations
 
             modelBuilder.Entity("Comies.Structures.Models.Store", b =>
                 {
-                    b.HasOne("Comies.Structures.Models.Store", "Parent")
+                    b.HasOne("Comies.Structures.Models.Store", "Store")
                         .WithMany("Stores")
                         .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("Parent");
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Comies.Structures.Models.StoreProperty", b =>

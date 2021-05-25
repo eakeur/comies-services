@@ -7,8 +7,9 @@ namespace Comies.Structures.ModelsConfigurations
     public class StockConfiguration : IEntityTypeConfiguration<Stock>{
         
         public void Configure(EntityTypeBuilder<Stock> builder){
-            builder.HasKey(p => new {p.ProductId, p.StoreId});
+            builder.HasKey(p => p.Id);
             builder.Property(p => p.Actual).IsRequired(true);
+            builder.HasIndex(i => new { i.ProductId, i.StoreId }).IsUnique();
         }
     }
 }

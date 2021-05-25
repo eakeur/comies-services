@@ -8,14 +8,9 @@ namespace Comies.Structures.ModelsConfigurations
         
         public void Configure(EntityTypeBuilder<Address> builder){
             builder.HasKey(addr => addr.Id);
-
-            builder.Property(addr => addr.CEP)
-                .IsRequired(true)
-                .HasMaxLength(8)
-            ;
-
-            builder.Property(addr => addr.Number)
-                .IsRequired(true);
+            builder.Property(addr => addr.CEP).IsRequired(true).HasMaxLength(8);
+            builder.Property(addr => addr.Number).IsRequired(true);
+            
         }
     }
 }

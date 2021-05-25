@@ -4,14 +4,16 @@ using Comies.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace comies_services.Migrations
 {
     [DbContext(typeof(ComiesContext))]
-    partial class ComiesContextModelSnapshot : ModelSnapshot
+    [Migration("20210525040232_ChangeN3")]
+    partial class ChangeN3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace comies_services.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<Guid?>("CostumerId")
+                    b.Property<Guid>("CostumerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Country")
@@ -308,7 +310,7 @@ namespace comies_services.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("CostumerId")
+                    b.Property<Guid>("CostumerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
@@ -780,7 +782,8 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Addresses")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Costumer");
                 });
@@ -898,7 +901,8 @@ namespace comies_services.Migrations
                     b.HasOne("Comies.Structures.Models.Costumer", "Costumer")
                         .WithMany("Phones")
                         .HasForeignKey("CostumerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Costumer");
                 });
