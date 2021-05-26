@@ -32,7 +32,7 @@ namespace Comies
             services.AddControllers();
             services.AddDbContext<Core.Contexts.ComiesContext>(o => {o.UseSqlServer("name=LocalComiesDBConn"); o.ConfigureWarnings(p => p. Ignore(30000));});
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "comies_services", Version = "v1" }));
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<Core.Contexts.ComiesContext>()
                 .AddDefaultTokenProviders();
 
@@ -76,8 +76,8 @@ namespace Comies
 
             services.AddScoped<AuthenticatedOperator>();
             services.AddScoped<AuthenticationService>();
-            services.AddTransient<UserManager<AuthenticatedOperator>>();
-            services.AddTransient<SignInManager<AuthenticatedOperator>>();
+            services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddTransient<SignInManager<ApplicationUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

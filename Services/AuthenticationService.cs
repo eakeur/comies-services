@@ -76,7 +76,7 @@ namespace Comies.Services
                 new[]
                 {
                     new Claim("OperatorId", op.Id.ToString()), new Claim("StoreId", op.StoreId.ToString()),
-                    new Claim("Nickname", op.Nickname), new Claim("ProfileId", profile.Id.ToString())                  
+                    new Claim("Nickname", op.Nickname), new Claim("ProfileId", profile == null ? profile.Id.ToString() : "")                  
                 }
             );
         }

@@ -22,7 +22,7 @@ namespace Comies.Structures.Models
         public string Password { get; set; }
         public bool MustChangePassword { get; set; }
 
-        public Guid ProfileId { get; set; }
+        public Guid? ProfileId { get; set; }
         public virtual Profile Profile { get; set; }
 
 
