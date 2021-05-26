@@ -21,19 +21,6 @@ namespace Comies
             _context = context;
         }
 
-        // GET: api/Phones
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Phone>>> GetPhones()
-        {
-            _context.Phones.Add(new Phone
-            {
-                DDD = "11",
-                Number = "991409128",
-                Active = true
-            });
-            await _context.SaveChangesAsync();
-            return await _context.Phones.ToListAsync();
-        }
 
         // GET: api/Phones/5
         [HttpGet("{id}")]
