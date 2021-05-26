@@ -9,3 +9,4 @@ bin/
 public/
 Debug/
 .vs/
+obj/
