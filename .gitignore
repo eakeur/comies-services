@@ -8,3 +8,5 @@ bin/
 .firebase/
 public/
 Debug/
+.vs/
+obj/
