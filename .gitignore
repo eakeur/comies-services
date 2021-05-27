@@ -10,6 +10,5 @@ public/
 Debug/
 .vs/
 obj/
-*.sln
 *.user
 
