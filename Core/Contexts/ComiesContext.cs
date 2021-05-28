@@ -4,6 +4,9 @@ using Comies.ModelsSettings;
 namespace Comies {
     public class ComiesContext : DbContext {
 
+        public ComiesContext(DbContextOptions<ComiesContext> options) : base(options){
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new AddressConfiguration());

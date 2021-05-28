@@ -28,7 +28,7 @@ namespace Comies
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            var d = System.Environment.CurrentDirectory;
             services.AddControllers();
             services.AddDbContext<ComiesContext>(o => {o.UseSqlServer("name=LocalComiesDBConn"); o.ConfigureWarnings(p => p. Ignore(30000));});
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "comies_services", Version = "v1" }));
