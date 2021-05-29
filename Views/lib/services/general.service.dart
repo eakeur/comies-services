@@ -22,7 +22,7 @@ class Service<T> {
     try {
       _setHeaders();
       String body = jsonEncode(serializer(object));
-      var response = await post(_url, headers: _headers, body: body);
+      var response = await post(Uri.parse(_url), headers: _headers, body: body);
       return _dealWithResponse<void>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -34,7 +34,7 @@ class Service<T> {
     try {
       _setHeaders();
       String body = jsonEncode(object.map((obj) => serializer(obj)).toList());
-      var response = await post(_url, headers: _headers, body: body);
+      var response = await post(Uri.parse(_url), headers: _headers, body: body);
       return _dealWithResponse<void>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -45,7 +45,7 @@ class Service<T> {
   Future<Response<void>> remove(int id) async {
     try {
       _setHeaders();
-      var response = await delete('$_url/$id', headers: _headers);
+      var response = await delete(Uri.parse('$_url/$id'), headers: _headers);
       return _dealWithResponse<void>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -56,7 +56,7 @@ class Service<T> {
   Future<Response<void>> removeMany(List<int> ids) async {
     try {
       _setHeaders();
-      var response = await post('$_url', headers: _headers, body: jsonEncode(ids));
+      var response = await post(Uri.parse('$_url'), headers: _headers, body: jsonEncode(ids));
       return _dealWithResponse<void>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -67,7 +67,7 @@ class Service<T> {
   Future<Response<T>> getOne(int id) async {
     try {
       _setHeaders();
-      var response = await get(_url + '/$id', headers: _headers);
+      var response = await get(Uri.parse(_url + '/$id'), headers: _headers);
       return _dealWithResponse<T>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -79,7 +79,7 @@ class Service<T> {
     try {
       _setHeaders();
       String params = filter != null ? _getQueryString(serializer(filter)) : _getQueryString(query) ?? '';
-      var response = await get(_url + "$params", headers: _headers);
+      var response = await get(Uri.parse(_url + "$params"), headers: _headers);
       return _dealWithResponse<List<T>>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -91,7 +91,7 @@ class Service<T> {
     try {
       _setHeaders();
       String body = jsonEncode(serializer(object));
-      var response = await put(_url, headers: _headers, body: body);
+      var response = await put(Uri.parse(_url), headers: _headers, body: body);
       return _dealWithResponse<void>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -103,7 +103,7 @@ class Service<T> {
     try {
       _setHeaders();
       String body = jsonEncode(object.map((obj) => serializer(obj)).toList());
-      var response = await put(_url, headers: _headers, body: body);
+      var response = await put(Uri.parse(_url), headers: _headers, body: body);
       return _dealWithResponse<void>(response);
     } catch (e) {
       if (e is Response) throw e;
@@ -181,7 +181,7 @@ class Service<T> {
 
   static Future<Response<dynamic>> getExternalResource(String url) async {
     try {
-      var resp = await get(url);
+      var resp = await get(Uri.parse(url));
       print(url);
       return new Response(success: true, data: jsonDecode(resp.body));
     } catch (e) {

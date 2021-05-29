@@ -1,3 +1,4 @@
+import 'package:comies/core.dart';
 import 'package:comies/utils/declarations/storage.dart';
 import 'package:comies/views/authentication/authentication.screen.dart';
 import 'package:comies/views/costumers/costumers.screen.dart';
@@ -17,13 +18,8 @@ SessionController session;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); await initDB();
-  session = SessionController();
-  session.getSession();
-  runApp(ChangeNotifierProvider(create: (context) => session, child: MyApp()));
+  runApp(ChangeNotifierProvider(create: (context) => new ComiesProvider(), child: MyApp()));
 }
-
-
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -68,7 +64,7 @@ class Application extends State<ApplicationLauncher> {
 
       case '/welcome': return MaterialPageRoute(
         builder: (context){
-          return WelcomeScreen();
+          return StartupScreen();
         }
       );
 
@@ -98,7 +94,7 @@ class Application extends State<ApplicationLauncher> {
         
       default: return MaterialPageRoute(
         builder: (context){
-          return WelcomeScreen();
+          return StartupScreen();
         }
       );
     }
@@ -110,7 +106,7 @@ class Application extends State<ApplicationLauncher> {
     return MaterialApp(
       title: 'Comies',
       theme: mainTheme(Brightness.light),
-      darkTheme: mainTheme(Brightness.dark),
+      darkTheme: mainTheme(Brightness.light),
       themeMode: themeMode,
       initialRoute: Provider.of<SessionController>(context, listen: false).actualRoute,
       onGenerateRoute: onGeneratedRoute,

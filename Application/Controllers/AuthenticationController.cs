@@ -51,10 +51,10 @@ namespace Comies.Controllers
         }
 
         // GET api/<AuthenticationController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("test")]
+        public string Gety()
         {
-            return "value";
+            return "Ok";
         }
 
         // POST api/<AuthenticationController>
