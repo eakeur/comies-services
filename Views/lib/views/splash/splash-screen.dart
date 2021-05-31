@@ -6,7 +6,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Future.delayed(Duration(milliseconds: 600)).then((result) {
+    Future.delayed(Duration(milliseconds: 1200)).then((result) {
       Provider.of<ComiesProvider>(context, listen: false).loadNewSession(context);
     });
 
@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Center(
-              child: Text('COMIES'),
+              child: Text('Comies', style: getPageTitle(size: 42)),
             ),
             Center(child: CircularProgressIndicator())
           ],

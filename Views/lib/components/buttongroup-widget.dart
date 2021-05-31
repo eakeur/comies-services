@@ -14,24 +14,27 @@ class GroupSelection<T> extends StatelessWidget {
   BorderRadius getSelectionBorderRadius(Selection<T> selection) {
     var isFirst = children.indexOf(selection) == 0;
     var isLast = children.indexOf(selection) == children.length - 1;
-    if (isFirst) return BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10));
-    if (isLast) return BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10));
+    if (isFirst) return BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8));
+    if (isLast) return BorderRadius.only(topRight: Radius.circular(8), bottomRight: Radius.circular(8));
     return BorderRadius.all(Radius.circular(10));
   }
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(8),
       child: Material(
-        color: neutralColor,
+        elevation: 4,
+        color: Theme.of(context).brightness == Brightness.light ? neutralColor : null,
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: children
-              .map((child) => InkWell(
-                  customBorder: RoundedRectangleBorder(borderRadius: getSelectionBorderRadius(child)),
-                  onTap: () => onSelectChange(child.value),
-                  child: child))
+              .map((child) => Expanded(
+                  child: InkWell(
+                    customBorder: RoundedRectangleBorder(borderRadius: getSelectionBorderRadius(child)),
+                    onTap: () => onSelectChange(child.value),
+                    child: child),
+              ))
               .toList(),
         ),
       ),
@@ -49,7 +52,7 @@ class Selection<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      padding: EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 15),
+      padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       color: selected ? accentColor : Colors.transparent,
       curve: Curves.ease,
       duration: Duration(milliseconds: getValue<int>(context, 'ANIM_DURATION')),

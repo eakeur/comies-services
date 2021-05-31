@@ -23,8 +23,7 @@ class Products extends State<ProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return session.isAuthenticated 
-      ?  ChangeNotifierProvider(
+    return ChangeNotifierProvider(
         create: (context) => ProductsController(),
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -46,11 +45,10 @@ class Products extends State<ProductsScreen> {
                 child: ProductsListComponent(onListClick: (product) => navigateTo(product))
               ),
 
-          floatingActionButton: session.permissions.canAddProducts ? AddButton() : null 
+          floatingActionButton: AddButton() 
           
         ),
-      )
-      : session.goToAuthenticationScreen();
+      );
   }
 }
 class AddButton extends StatelessWidget {

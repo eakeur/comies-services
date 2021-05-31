@@ -1,8 +1,11 @@
+import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData mainTheme(Brightness brightness) {
   return ThemeData(
+    scaffoldBackgroundColor: screenBG,
+    backgroundColor: brightness == Brightness.dark ? Color(0xFF1F1D2B) : Color(0xFFF1EBD9),
     brightness: brightness,
     primarySwatch: Colors.deepOrange,
     primaryColor: Colors.deepOrange,

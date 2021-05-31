@@ -3,8 +3,37 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-TextStyle getStyle({TextStyle textStyle, Color color, Color backgroundColor, double fontSize, FontWeight fontWeight, FontStyle fontStyle, double letterSpacing, double wordSpacing, TextBaseline textBaseline, double height, Locale locale, Paint foreground, Paint background, List<Shadow> shadows, List<FontFeature> fontFeatures, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness}) {
-  return GoogleFonts.varelaRound();
+TextStyle getBigTitle({double size = 36, FontWeight weight = FontWeight.w300, Color color = const Color(0xFF514766)}) {
+  return GoogleFonts.brawler(
+    fontSize: size,
+    fontWeight: weight,
+    color: color,
+  );
+}
+
+TextStyle getPageTitle({double size = 28, FontWeight weight = FontWeight.w600, Color color = const Color(0xFFFAFAFA)}) {
+  return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
+}
+
+TextStyle getMediumTitle({double size = 24, FontWeight weight = FontWeight.w300, Color color = const Color(0xFF514766)}) {
+  return GoogleFonts.varelaRound(fontSize: size, fontWeight: weight, color: color);
+}
+
+TextStyle getBodyTiny({double size = 13, FontWeight weight = FontWeight.w300, Color color}) {
+  return GoogleFonts.notoSans(fontSize: size, fontWeight: weight, color: color);
+}
+
+TextStyle getButtonText({double size = 16, FontWeight weight = FontWeight.w600, Color color = const Color(0xFFFAFAFA)}) {
+  return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
+}
+
+List<BoxShadow> getNeumorphicShadow(double elevation) {
+  return [
+    BoxShadow(color: Colors.grey.shade300, spreadRadius: 0.0, blurRadius: elevation, offset: Offset(3.0, 3.0)),
+    BoxShadow(color: Colors.grey.shade400, spreadRadius: 0.0, blurRadius: elevation / 2.0, offset: Offset(3.0, 3.0)),
+    BoxShadow(color: Colors.white, spreadRadius: 2.0, blurRadius: elevation, offset: Offset(-3.0, -3.0)),
+    BoxShadow(color: Colors.white, spreadRadius: 2.0, blurRadius: elevation / 2, offset: Offset(-3.0, -3.0)),
+  ];
 }
 
 final TextStyle title = GoogleFonts.varelaRound(
@@ -86,14 +115,18 @@ final TextStyle legend = GoogleFonts.varelaRound(
   fontWeight: FontWeight.normal,
 );
 
-final Color white = Color(0xFFFFFFFF);
-final Color black = Color(0xFF514766);
+final Color screenBG = Color(0xFF252836);
+final Color composBG = Color(0xFF1F1D2B);
+
+final Color white = Color(0xFFFAFAFA);
+final Color black = Color(0xFF1F1D2B);
 final Color grey = Color(0xFF6E6680);
 final Color lightGrey = Color(0xFFA6A1B2);
 
-final Color primaryColor = Color(0xFF3A906C);
+final Color primaryColor = Color(0xFFEA7C69);
+final Color primaryColorDark = Color(0xFFE05A43);
 final Color neutralColor = Color(0xFFF1EBD9);
-final Color accentColor = Color(0xFFFA7B52);
+final Color accentColor = Color(0xFFFEDE00);
 
 final Color successLightColor = Color(0xFFE1F5EC);
 final Color successColor = Color(0xFFB8DBCB);

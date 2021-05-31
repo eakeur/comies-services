@@ -52,15 +52,7 @@ class DrawerState extends State<ComiesDrawer> {
             onTap: () => Navigator.pushNamed(context, "/panel"),
           ),
           Divider(thickness: 1.2),
-          SwitchListTile(
-            title: Text('Modo noturno'),
-            activeColor: Theme.of(context).accentColor,
-            value:
-                Theme.of(context).brightness == Brightness.light ? false : true,
-            onChanged: (switcher) => switcher
-                ? themeSwitcher(ThemeMode.dark)
-                : themeSwitcher(ThemeMode.light),
-          )
+          
         ],
       );
   }

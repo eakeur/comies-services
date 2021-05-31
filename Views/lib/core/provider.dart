@@ -1,6 +1,7 @@
 import 'package:comies/core.dart';
 import 'package:comies/views/authentication/authentication.screen.dart';
-import 'package:comies/views/startup/welcome.screen.dart';
+import 'package:comies/views/home/home.screen.dart';
+import 'package:comies/views/main/main-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:comies/core/constants.dart' as Constants;
 
@@ -11,7 +12,7 @@ class ComiesProvider extends ChangeNotifier {
 
   Future<void> loadNewSession(BuildContext context) async {
     try {
-      Widget initialPage = StartupScreen();
+      String initialPage = '';
 
       session['ANIM_DURATION'] = (await getSetting('ANIM_DURATION')) ?? Constants.defaultAnimationDuration;
       session['URL'] = (await getSetting('URL')) ?? Constants.defaultAPIUrl;
@@ -24,11 +25,11 @@ class ComiesProvider extends ChangeNotifier {
       if (session['SETUP'] as bool) {
         if (session['TOKEN'] != null && session['token'] is String) {
         } else {
-          initialPage = AuthenticationScreen();
+          initialPage = '/auth';
         }
       }
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => initialPage));
+      Navigator.pushReplacementNamed(context, initialPage);
     } catch (e) {
       print(e);
     }
