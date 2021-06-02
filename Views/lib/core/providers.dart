@@ -9,15 +9,14 @@ class ComiesController extends ChangeNotifier {
   late Service service;
   late String token;
 
-
-  
+  Map<String, dynamic> get operatorProperties => JwtDecoder.decode(token);
 
   Future<void> loadNewSession(BuildContext context) async {
     var route = '/auth';
     try {
       session = await SharedPreferences.getInstance();
       if (session.getKeys().isEmpty)
-        createSession();
+        createSession(context);
       else {
         if (session.getBool('SETUP') ?? false) {
           var token = session.getString('TOKEN');
@@ -35,11 +34,12 @@ class ComiesController extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
+      service = Service(context: context);
       Navigator.pushReplacementNamed(context, route);
     }
   }
 
-  Future<void> createSession() async {
+  Future<void> createSession(BuildContext context) async {
     try {
       session.setInt('ANIM_DURATION', Constants.defaultAnimationDuration);
       session.setString('URL', Constants.defaultAPIUrl);
@@ -48,6 +48,9 @@ class ComiesController extends ChangeNotifier {
       session.setInt('ANIM_DURATION', Constants.defaultAnimationDuration);
       session.setBool('SETUP', false);
       session.setString('APIKEY', Constants.apiKey);
+      service = Service(context: context);
     } catch (e) {}
   }
+
+  String? get operatorName => operatorProperties['unique_name'];
 }

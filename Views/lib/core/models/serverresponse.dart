@@ -52,6 +52,8 @@ class ServerResponse {
     };
   }
 
+  ServerResponse.custom({this.success = true, this.message = '', this.serviceIdentifier = '', required this.data, this.id, this.exception, this.records});
+
   factory ServerResponse.fromMap(Map<String, dynamic> map) {
     return ServerResponse(
       success: map['success'],
