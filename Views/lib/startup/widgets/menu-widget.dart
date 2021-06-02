@@ -1,6 +1,7 @@
 import 'package:comies/core.dart' as Core;
 import 'package:comies/routes.dart' as declared;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'item-widget.dart';
 
 class MenuWidget extends StatefulWidget {
@@ -20,7 +21,7 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin, 
   }
 
   void navigate(String? route, String? actual) {
-    if(route != actual){
+    if (route != actual) {
       controller.reverse();
       Future.delayed(Duration(milliseconds: 100), () => Navigator.pushNamed(context, route!));
     }
@@ -30,8 +31,10 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin, 
   Widget build(BuildContext context) {
     var route = ModalRoute.of(context)?.settings.name;
     List<Core.Route> routes = <Core.Route>[];
-    if (route == '/auth') routes = declared.routes.where((r) => r.isAuth).toList();
-    else routes = declared.routes.where((r) => !r.isAuth && !r.isSplash && r.encapsulate).toList();
+    if (route == '/auth')
+      routes = declared.routes.where((r) => r.isAuth).toList();
+    else
+      routes = declared.routes.where((r) => !r.isAuth && !r.isSplash && r.encapsulate).toList();
 
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))),
@@ -40,49 +43,67 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin, 
         painter: ShapesPainter(),
         child: Padding(
           padding: EdgeInsets.only(left: 10),
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 40,
-                  width: 92,
-                  decoration: BoxDecoration(
-                    color: Core.composBG,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(route?.startsWith(routes.first.path) ?? false ? 10 : 0),
+          child: Material(
+            borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10)),
+            color: Colors.transparent,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 40,
+                    width: 92,
+                    decoration: BoxDecoration(
+                      color: Core.composBG,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(route?.startsWith(routes.first.path) ?? false ? 10 : 0),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              for (var i = 0; i < routes.length; i++)
-                MenuItemWidget(
-                  controller: controller,
-                  onTap: () => navigate(routes[i].path, route),
-                  isBeforeSelected: i + 1 != routes.length ? route == routes[i + 1].path : false,
-                  isAfterSelected: i > 0 ? route == routes[i - 1].path : false,
-                  isSelected: route == routes[i].path,
-                  title: routes[i].name,
-                  icon: routes[i].icon,
-                ),
-              Expanded(
-                child: Container(
-                  height: 40,
-                  width: 92,
-                  decoration: BoxDecoration(
-                    color: Core.composBG,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(route?.startsWith(routes.last.path) ?? false ? 10 : 0),
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
+                for (var i = 0; i < routes.length; i++)
+                  MenuItemWidget(
+                    controller: controller,
+                    onTap: () => navigate(routes[i].path, route),
+                    isBeforeSelected: i + 1 != routes.length ? route == routes[i + 1].path : false,
+                    isAfterSelected: i > 0 ? route == routes[i - 1].path : false,
+                    isSelected: route == routes[i].path,
+                    title: routes[i].name,
+                    icon: routes[i].icon,
+                  ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    height: 40,
+                    width: 92,
+                    decoration: BoxDecoration(
+                      color: Core.composBG,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(route?.startsWith(routes.last.path) ?? false ? 10 : 0),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
                     ),
+                    child: route != '/auth' ? Consumer<Core.ComiesController>(
+                      builder: (context, prov, child) {
+                        return MenuItemWidget(
+                            controller: controller,
+                            onTap: (){},
+                            isBeforeSelected: true,
+                            isAfterSelected: route?.startsWith(routes.last.path) ?? false,
+                            isSelected: false,
+                            title: prov.operatorName ?? '',
+                            icon: Icons.face,
+                          );
+                      }
+                    ) : null,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -14,50 +14,50 @@ class Service {
     token = getProvider(context).session.getString('TOKEN') ?? '';
   }
 
-  Future<ServerResponse> addOne<T extends DataModel>(T data, {String? route}) async {
+  Future<ServerResponse> addOne<T extends DataModel>(T data, {String? route, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson());
-      return mountClientResponse(result);
+      var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson(), headers: getHeaders());
+      return mountClientResponse(result, returnType, bodyParser);
     } catch (e) {
       print(e);
       throw ServerResponse.errorResponse;
     }
   }
 
-  Future<ServerResponse> getOne<T>({String? route, required T uniqueID}) async {
+  Future<ServerResponse> getOne<T>({String? route, required T uniqueID, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
     try {
       var result = await server.get(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()));
-      return mountClientResponse(result);
+      return mountClientResponse(result, returnType, bodyParser);
     } catch (e) {
       print(e);
       throw ServerResponse.errorResponse;
     }
   }
 
-  Future<ServerResponse> getMany<T extends DataModel>({String? route, required Filter filter}) async {
+  Future<ServerResponse> getMany<T extends DataModel>({String? route, required Filter filter, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
     try {
       var result = await server.post(Uri.parse(path + (route ?? '') + generateQueryParameters(map: filter.toMap())));
-      return mountClientResponse(result);
+      return mountClientResponse(result, returnType, bodyParser);
     } catch (e) {
       print(e);
       throw ServerResponse.errorResponse;
     }
   }
 
-  Future<ServerResponse> put<T extends DataModel>(T data, {String? route, required T uniqueID}) async {
+  Future<ServerResponse> put<T extends DataModel>(T data, {String? route, required T uniqueID, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
     try {
       var result = await server.post(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), body: data.toJson());
-      return mountClientResponse(result);
+      return mountClientResponse(result, returnType, bodyParser);
     } catch (e) {
       print(e);
       throw ServerResponse.errorResponse;
     }
   }
 
-  Future<ServerResponse> del<T extends DataModel>(T data, {String? route}) async {
+  Future<ServerResponse> del<T extends DataModel>(T data, {String? route, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
     try {
       var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson());
-      return mountClientResponse(result);
+      return mountClientResponse(result, returnType, bodyParser);
     } catch (e) {
       print(e);
       throw ServerResponse.errorResponse;
@@ -66,10 +66,21 @@ class Service {
 
   String generateQueryParameters({Map<String, dynamic> map = const <String, dynamic>{}}) => map.keys.reduce((value, key) => value == '' ? value += '?$key=${map[key]}' : '&$key=${map[key]}');
 
-  Future<ServerResponse> mountClientResponse<T>(Response result) async {
+  Map<String, String> getHeaders() {
+    return {"Accept-Language": "pt-BR", "Content-Type": "application/json", 'Authorization': token };
+  }
+
+  Future<ServerResponse> mountClientResponse<T>(Response result, ReturnType returnType, dynamic Function(dynamic)? bodyParser) async {
     try {
-      Map<String, dynamic> map = jsonDecode(result.body);
-      return ServerResponse.fromMap(map);
+      if (returnType == ReturnType.JSON) return ServerResponse.custom(data: result.body);
+      if (returnType == ReturnType.MAP) return ServerResponse.custom(data: jsonDecode(result.body));
+
+      if (bodyParser != null) {
+        var res = ServerResponse.fromJson(result.body);
+        return res.copyWith(data: bodyParser(res.data));
+      }
+
+      return ServerResponse.fromJson(result.body);
     } catch (e) {
       return ServerResponse.errorResponse;
     }
