@@ -1,1 +1,1 @@
-export 'components/buttongroup-widget.dart';
+export 'components/buttons/buttongroup-widget.dart';

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -26,11 +26,10 @@ dependencies:
   path_provider: any
   dart_ipify: ^1.0.2
   carousel_slider: ^2.3.1
-  sembast: ^2.4.8+1
-  sembast_web: '>=1.0.0'
+  shared_preferences: ^2.0.6
   http: ^0.13.0
-  jwt_decoder: ^1.0.4
-  provider: ^4.3.3
+  jwt_decoder: 2.0.1
+  provider: 5.0.0
   select_form_field: "^1.1.0"
   flutter_staggered_grid_view: "0.3.4"
   google_fonts: ^2.1.0

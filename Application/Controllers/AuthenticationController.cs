@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
 using Comies;
@@ -59,9 +60,21 @@ namespace Comies.Controllers
 
         // POST api/<AuthenticationController>
         [HttpPost]
-        public void Post([FromBody] Structures.SecurityModels.AuthenticationParameters value)
+        public ActionResult Authenticate(
+            [FromBody] Structures.SecurityModels.AuthenticationParameters value, 
+            [FromServices] UserManager<Structures.SecurityModels.ApplicationUser> userManager,
+            [FromServices] SignInManager<Structures.SecurityModels.ApplicationUser> signInManager)
         {
-            var product = _authenticationService.GetOperator(value);
+            try
+            {
+                var oper = _authenticationService.GetOperator(value);
+                var token = _authenticationService.GetToken(oper);
+                return Ok(token);
+            }
+            catch (System.Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
         }
 
         // PUT api/<AuthenticationController>/5

@@ -1,5 +1,6 @@
 export 'core/styles.dart';
 export 'core/utils.dart';
-export 'core/models/conntype.dart';
+export 'core/providers.dart';
 export 'core/constants.dart';
-export 'core/provider.dart';
+export 'core/models.dart';
+export 'core/services.dart';

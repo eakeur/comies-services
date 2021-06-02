@@ -2,25 +2,25 @@ import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
 
 class MainButton extends StatefulWidget {
-  final String label;
-  final String loadingLabel;
-  final VoidCallback onTap;
+  final String? label;
+  final String? loadingLabel;
+  final VoidCallback? onTap;
   final bool isLoading;
   final bool danger;
-  final IconData icon;
+  final IconData? icon;
   final bool disabled;
 
-  const MainButton({Key key, this.label, this.onTap, this.isLoading = false, this.loadingLabel, this.danger = false, this.icon, this.disabled = false}) : super(key: key);
+  const MainButton({Key? key, this.label, this.onTap, this.isLoading = false, this.loadingLabel, this.danger = false, this.icon, this.disabled = false}) : super(key: key);
 
   @override
   _MainButtonState createState() => _MainButtonState();
 }
 
 class _MainButtonState extends State<MainButton> with TickerProviderStateMixin {
-  AnimationController _buttonColorController;
-  Animation<Color> _buttonAnimation;
-  AnimationController _textColorController;
-  Animation<Color> _textAnimation;
+  late AnimationController _buttonColorController;
+  late Animation<Color?> _buttonAnimation;
+  late AnimationController _textColorController;
+  late Animation<Color?> _textAnimation;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _MainButtonState extends State<MainButton> with TickerProviderStateMixin {
               padding: const EdgeInsets.only(right: 10),
               child: Icon(widget.icon, size: 20, color: widget.disabled ? Color(0xFFFAFAFA).withOpacity(0.5) : _textAnimation.value),
             ));
-          labels.add(Text(widget.isLoading ? widget.loadingLabel ?? widget.label : widget.label, style: getButtonText(color: widget.disabled ? Color(0xFFFAFAFA).withOpacity(0.5) : _textAnimation.value)));
+          labels.add(Text(widget.isLoading ? widget.loadingLabel ?? widget.label! : widget.label!, style: getButtonText(color: widget.disabled ? Color(0xFFFAFAFA).withOpacity(0.5) : _textAnimation.value)));
           return TextButton(
             onPressed: widget.disabled ? null : widget.onTap,
             child: Row(

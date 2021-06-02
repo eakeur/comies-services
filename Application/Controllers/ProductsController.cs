@@ -26,9 +26,9 @@ namespace Comies.Controllers
         // GET: api/Products/5
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<Operator>> GetProduct([FromQuery] string user, [FromQuery] string password)
+        public ActionResult<Operator> GetProduct([FromQuery] string user, [FromQuery] string password)
         {
-            var product = await _authenticationService.GetOperator(new Structures.SecurityModels.AuthenticationParameters { Nickname = user, Password = password });
+            var product = _authenticationService.GetOperator(new Structures.SecurityModels.AuthenticationParameters { Nickname = user, Password = password });
 
             if (product == null)
             {

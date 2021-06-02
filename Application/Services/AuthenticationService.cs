@@ -25,12 +25,12 @@ namespace Comies.Services
             Context = context;
         }
 
-        public async Task<Operator> GetOperator(AuthenticationParameters applicant) 
+        public Operator GetOperator(AuthenticationParameters applicant) 
         {
             var applicantData = ValidateAndExtractNicknameAndStore(applicant);
             var storeId = (from s in Context.Stores where s.Active == true && s.CompanyNickname == applicantData[1] select s.Id).FirstOrDefault();
             if (storeId == Guid.Empty) throw new UnauthorizedAccessException("Ops, não foi possível encontrar seu domínio. Contate o administrador de sua empresa ;)");
-            var foundOperator = await (from o in Context.Operators where o.Active == true && o.Nickname == applicantData[0] && o.StoreId == storeId select o).FirstOrDefaultAsync();
+            var foundOperator = (from o in Context.Operators where o.Active == true && o.Nickname == applicantData[0] && o.StoreId == storeId select o).FirstOrDefault();
             if (foundOperator == null) throw new UnauthorizedAccessException("Ops, acho que não nos conhecemos, pois não foi possível encontrar você com esse apelido.");
             if (foundOperator.Password.Equals(applicant.Password)) return foundOperator;
             else throw new UnauthorizedAccessException("Ops! Senha incorreta. Você digitou tudo certinho?");
@@ -55,11 +55,11 @@ namespace Comies.Services
         /// </summary>
         /// <param name="oper">The operator to receive the token</param>
         /// <returns>The token fetched</returns>
-        public async Task<AuthenticationResponse> GetToken(Operator oper)
+        public AuthenticationResponse GetToken(Operator oper)
         {
             var created = DateTime.Now;
             var expires = DateTime.Now.AddSeconds(TokenConfigurations.Seconds);
-            var jwt = GetToken(await GetClaimsIdentity(oper), created, expires);
+            var jwt = GetToken(GetClaimsIdentity(oper), created, expires);
             return new AuthenticationResponse
             {
                 Authenticated = true, AccessToken = jwt,
@@ -69,15 +69,15 @@ namespace Comies.Services
             };
         }
 
-        private async Task<ClaimsIdentity> GetClaimsIdentity(Operator op)
+        private ClaimsIdentity GetClaimsIdentity(Operator op)
         {
-            var profile = await (from p in Context.Profiles where p.Id == op.ProfileId select p).FirstOrDefaultAsync();
+            var profile = (from p in Context.Profiles where p.Id == op.ProfileId select p).FirstOrDefault();
             return new ClaimsIdentity(
                 new GenericIdentity(op.Name, "Name"),
                 new[]
                 {
                     new Claim("OperatorId", op.Id.ToString()), new Claim("StoreId", op.StoreId.ToString()),
-                    new Claim("Nickname", op.Nickname), new Claim("ProfileId", profile == null ? profile.Id.ToString() : "")                  
+                    new Claim("Nickname", op.Nickname), new Claim("ProfileId", profile == null ? "" :  profile.Id.ToString() )                  
                 }
             );
         }

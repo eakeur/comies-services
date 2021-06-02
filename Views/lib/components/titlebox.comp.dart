@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class TitleBox extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final double borderRadius;
-  final Widget suffix;
+  final Widget? suffix;
   final bool paint;
 
   TitleBox(this.title, {this.subtitle, this.borderRadius = 10, this.suffix, this.paint = false });
@@ -20,7 +20,7 @@ class TitleBox extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(title.toUpperCase(), style: TextStyle(color: paint ? Colors.white : Theme.of(context).primaryColor , fontSize: 17, fontWeight: FontWeight.w600)),
-        subtitle: subtitle != null ? Text(subtitle, style: TextStyle(color: Theme.of(context).accentColor)) : null,
+        subtitle: subtitle != null ? Text(subtitle!, style: TextStyle(color: Theme.of(context).accentColor)) : null,
         trailing: suffix
       )
     );

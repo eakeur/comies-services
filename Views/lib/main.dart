@@ -1,13 +1,20 @@
-import 'package:comies/core.dart';
-import 'package:comies/utils/declarations/storage.dart';
-import 'package:comies/views/main/main-screen.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'controllers/main.controller.dart';
+import 'dart:io';
 
-SessionController session;
+import 'package:flutter/material.dart' show runApp;
+import 'package:provider/provider.dart' show ChangeNotifierProvider;
+import 'package:comies/core.dart' show ComiesController;
+import 'package:comies/startup/screens.dart' show MainScreen;
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); await initDB();
-  runApp(ChangeNotifierProvider(create: (context) => new ComiesProvider(), child: MainScreen()));
+  HttpOverrides.global = ComiesHttpOverrides();
+  runApp(ChangeNotifierProvider(create: (context) => ComiesController(), child: MainScreen()));
+}
+
+class ComiesHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    HttpClient client = super.createHttpClient(context);
+    client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return client;
+  }
 }
