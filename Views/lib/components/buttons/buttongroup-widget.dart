@@ -25,7 +25,7 @@ class GroupSelection<T> extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Material(
         elevation: 4,
-        color: Theme.of(context).brightness == Brightness.light ? composBG : null,
+        color: Theme.of(context).brightness == Brightness.light ? ComponentBG : null,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: children
@@ -53,7 +53,7 @@ class Selection<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-      color: selected ? primaryColor : Colors.transparent,
+      color: selected ? PrimaryColor : Colors.transparent,
       curve: Curves.ease,
       duration: Duration(milliseconds: getSession(context).getInt('ANIM_DURATION') ?? 500),
       child: Center(child: child),

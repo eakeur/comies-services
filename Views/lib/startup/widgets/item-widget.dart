@@ -26,9 +26,9 @@ class _MenuItemWidgetState extends State<MenuItemWidget> with TickerProviderStat
 
   @override
   void initState() {
-    boxFocus = ColorTween(begin: composBG, end: primaryColor).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
-    backgroundFocus = ColorTween(begin: composBG, end: screenBG).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
-    fontColorFocus = ColorTween(begin: primaryColor, end: white).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
+    boxFocus = ColorTween(begin: ComponentBG, end: PrimaryColor).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
+    backgroundFocus = ColorTween(begin: ComponentBG, end: ScreenBG).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
+    fontColorFocus = ColorTween(begin: PrimaryColor, end: White).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
     borderRadiusFocus = Tween<double>(begin: 0, end: 10).animate(CurvedAnimation(parent: widget.controller, curve: Curves.fastOutSlowIn))..addListener(() => setState(() {}));
     if (widget.isSelected) widget.controller.forward();
     super.initState();
@@ -41,7 +41,7 @@ class _MenuItemWidgetState extends State<MenuItemWidget> with TickerProviderStat
   }
 
   BoxDecoration get containerDecoration => BoxDecoration(
-        color: widget.isSelected ? backgroundFocus.value : composBG,
+        color: widget.isSelected ? backgroundFocus.value : ComponentBG,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(widget.isSelected ? borderRadiusFocus.value : 0),
           topRight: Radius.circular(widget.isAfterSelected
@@ -59,7 +59,7 @@ class _MenuItemWidgetState extends State<MenuItemWidget> with TickerProviderStat
       );
 
   BoxDecoration get glowingContainerStyle => BoxDecoration(
-      color: widget.isSelected ? boxFocus.value : composBG,
+      color: widget.isSelected ? boxFocus.value : ComponentBG,
       borderRadius: BorderRadius.circular(10),
       boxShadow: widget.isSelected ? [BoxShadow(color: boxFocus.value!.withOpacity(0.3), spreadRadius: 4, blurRadius: 7, offset: Offset(0, 3))] : null);
 
@@ -81,7 +81,7 @@ class _MenuItemWidgetState extends State<MenuItemWidget> with TickerProviderStat
                 decoration: glowingContainerStyle,
                 padding: EdgeInsets.all(14),
                 child: Center(
-                  child: TextButton(onPressed: widget.onTap, child: Icon(widget.icon, size: 30, color: widget.isSelected ? fontColorFocus.value : primaryColor), style: iconButtonStyle),
+                  child: TextButton(onPressed: widget.onTap, child: Icon(widget.icon, size: 30, color: widget.isSelected ? fontColorFocus.value : PrimaryColor), style: iconButtonStyle),
                 ),
               ),
             ),

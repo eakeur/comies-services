@@ -53,7 +53,7 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin, 
                     height: 40,
                     width: 92,
                     decoration: BoxDecoration(
-                      color: Core.composBG,
+                      color: Core.ComponentBG,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
@@ -79,7 +79,7 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin, 
                     height: 40,
                     width: 92,
                     decoration: BoxDecoration(
-                      color: Core.composBG,
+                      color: Core.ComponentBG,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(route?.startsWith(routes.last.path) ?? false ? 10 : 0),
@@ -121,7 +121,7 @@ class ShapesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
-    paint.color = Core.composBG;
+    paint.color = Core.ComponentBG;
 
     canvas.drawRect(Offset(0, 0) & Size(size.width * 0.90, size.height), paint);
   }

@@ -16,9 +16,9 @@ class DefaultButton extends StatelessWidget {
     if (icon != null)
       labels.add(Padding(
         padding: const EdgeInsets.only(right: 10),
-        child: Icon(icon, size: 24, color: disabled ? primaryColor.withOpacity(0.3) : primaryColor),
+        child: Icon(icon, size: 24, color: disabled ? PrimaryColor.withOpacity(0.3) : PrimaryColor),
       ));
-    labels.add(Text(label!, style: getButtonText(color: disabled ? primaryColor.withOpacity(0.3) : primaryColor)));
+    labels.add(Text(label!, style: getButtonText(color: disabled ? PrimaryColor.withOpacity(0.3) : PrimaryColor)));
     return TextButton(
       onPressed: disabled ? null : onTap,
       child: Row(
@@ -30,8 +30,8 @@ class DefaultButton extends StatelessWidget {
         animationDuration: Duration(milliseconds: 600),
         padding: MaterialStateProperty.all(EdgeInsets.all(14.0)),
         backgroundColor: MaterialStateProperty.all(Colors.transparent),
-        overlayColor: disabled ? null : MaterialStateProperty.all(primaryColor.withOpacity(0.2)),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: disabled ? primaryColor.withOpacity(0.3) : primaryColor))),
+        overlayColor: disabled ? null : MaterialStateProperty.all(PrimaryColor.withOpacity(0.2)),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: disabled ? PrimaryColor.withOpacity(0.3) : PrimaryColor))),
         minimumSize: MaterialStateProperty.all(Size(48, 48)),
       ),
     );

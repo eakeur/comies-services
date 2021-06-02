@@ -25,12 +25,12 @@ class _MainButtonState extends State<MainButton> with TickerProviderStateMixin {
   @override
   void initState() {
     _buttonColorController = new AnimationController(vsync: this, duration: Duration(milliseconds: 700));
-    _buttonAnimation = ColorTween(begin: primaryColor, end: Colors.transparent).animate(_buttonColorController)
+    _buttonAnimation = ColorTween(begin: PrimaryColor, end: Colors.transparent).animate(_buttonColorController)
       ..addListener(() {
         setState(() {});
       });
     _textColorController = new AnimationController(vsync: this, duration: Duration(milliseconds: 700));
-    _textAnimation = ColorTween(begin: Color(0xFFFAFAFA), end: primaryColor).animate(_textColorController)
+    _textAnimation = ColorTween(begin: Color(0xFFFAFAFA), end: PrimaryColor).animate(_textColorController)
       ..addListener(() {
         setState(() {});
       });
@@ -80,10 +80,10 @@ class _MainButtonState extends State<MainButton> with TickerProviderStateMixin {
             style: ButtonStyle(
               animationDuration: Duration(milliseconds: 600),
               padding: MaterialStateProperty.all(EdgeInsets.all(14.0)),
-              shadowColor: MaterialStateProperty.all(widget.disabled ? black : _buttonAnimation.value),
+              shadowColor: MaterialStateProperty.all(widget.disabled ? Black : _buttonAnimation.value),
               elevation: _HoverHandler(),
-              backgroundColor: MaterialStateProperty.all(widget.disabled ? primaryColor.withOpacity(0.3) : _buttonAnimation.value),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: primaryColor))),
+              backgroundColor: MaterialStateProperty.all(widget.disabled ? PrimaryColor.withOpacity(0.3) : _buttonAnimation.value),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: PrimaryColor))),
               minimumSize: MaterialStateProperty.all(Size(48, 48)),
             ),
           );

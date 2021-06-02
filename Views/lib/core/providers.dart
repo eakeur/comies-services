@@ -18,7 +18,7 @@ class ComiesController extends ChangeNotifier {
       if (session.getKeys().isEmpty)
         createSession(context);
       else {
-        if (session.getBool('SETUP') ?? false) {
+        if (true /**session.getBool('SETUP') ?? false */ ) {
           var token = session.getString('TOKEN');
           if (token == null)
             route = '/auth';

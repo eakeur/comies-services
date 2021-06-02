@@ -10,57 +10,55 @@ class ComiesTheme {
 
   ComiesTheme(BuildContext context){
     _theme = ThemeData(
-    scaffoldBackgroundColor: screenBG,
-    backgroundColor: composBG,
-    brightness: Brightness.dark,
-    primarySwatch: Colors.deepOrange,
-    primaryColor: Colors.deepOrange,
-    fontFamily: "Poppins",
-    appBarTheme: AppBarTheme(color: Colors.deepOrange, centerTitle: true, elevation: 20, systemOverlayStyle: SystemUiOverlayStyle.dark),
-    bottomAppBarTheme: BottomAppBarTheme(elevation: 8, shape: CircularNotchedRectangle()),
-    accentColor: Colors.yellow[800],
 
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all(1.5),
-        minimumSize: MaterialStateProperty.all(Size(90, 45)),
-        visualDensity: VisualDensity.comfortable,
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)))
-      )
-    ),
+      scaffoldBackgroundColor: ScreenBG,
 
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(Size(90, 45)),
-        visualDensity: VisualDensity.comfortable,
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0), side: BorderSide(color: Colors.deepOrange)))
-      )
-    ),
+      backgroundColor: ComponentBG,
 
-    snackBarTheme: SnackBarThemeData(
-      elevation: 7,
-      shape: RoundedRectangleBorder()
-    ),
+      brightness: Brightness.dark,
 
-    accentColorBrightness: Brightness.light,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-        hoverColor: Colors.deepOrange, focusColor: Colors.deepOrange),
-    primaryColorDark: Colors.deepOrange[800],
+      primarySwatch: Colors.orange,
 
+      primaryColorDark: PrimaryColorDark,
 
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      contentPadding: EdgeInsets.only(
-        left: 15,
-        bottom: 5,
+      primaryColor: PrimaryColor,
+
+      primaryColorBrightness: Brightness.dark,
+
+      primaryColorLight: PrimaryColor,
+      
+      fontFamily: "Barlow",
+
+      accentColor: PrimaryColor,
+
+      accentColorBrightness: Brightness.dark,
+
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: ScreenBG,
+        filled: true,
+        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 14),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        errorStyle: getHintText(color: ErrorColor),
+        labelStyle: getInputLabelText(color: Grey),
+        hintStyle: getInputLabelText(color: Grey),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(width: 1, color: PrimaryColor)
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(width: 1, color: Grey)
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(width: 1, color: Grey)
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(width: 1, color: ErrorDarkColor)
+          )
       ),
-      focusColor: Colors.yellow[800],
-    ),
 
-
-
-    toggleButtonsTheme:
-        ToggleButtonsThemeData(selectedColor: Colors.yellow[800]),
-  );
+    );
   }
 }

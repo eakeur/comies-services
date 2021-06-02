@@ -6,3 +6,4 @@ export 'models/serverresponse.dart';
 export 'models/filtermodel.dart';
 export 'models/authentication-parameters.dart';
 export 'models/returntype.dart';
+export 'models/loadstatus.dart';
