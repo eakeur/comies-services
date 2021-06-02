@@ -30,10 +30,12 @@ namespace Comies
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(cors => {
-                cors.AddPolicy("ComiesAccessPolicy", (cfg) =>
+                cors.AddPolicy("AllowOrigin", (cfg) =>
                 {
-                    cfg.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    cfg.AllowAnyOrigin();
                 });
+
+                cors.AddPolicy("AllowHeadder", (cfg) => cfg.AllowAnyHeader());
             });
             
             services.AddControllers();
@@ -97,12 +99,13 @@ namespace Comies
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "comies_services v1"));
             }
-            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseStaticFiles();
-
+            app.UseCors(options => {
+                options.AllowAnyOrigin(); options.AllowAnyHeader();
+            });  
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
