@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "Views"
+		},
+		{
+			"path": "Products"
 		}
 	],
 	"settings": {}
