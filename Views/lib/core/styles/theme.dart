@@ -59,6 +59,16 @@ class ComiesTheme {
           )
       ),
 
+      scrollbarTheme: ScrollbarThemeData(isAlwaysShown: true),
+
+      appBarTheme: AppBarTheme(color: Colors.transparent, elevation: 0),
+
+      cardTheme: CardTheme(
+        color: ComponentBG, elevation: 0, 
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)),
+      )
+
     );
   }
 }

@@ -28,7 +28,7 @@ class Authentication extends State<AuthenticationScreen> {
     return Scaffold(
       body: Center(
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.9,
           width: MediaQuery.of(context).size.height * 0.7,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10)
@@ -39,7 +39,7 @@ class Authentication extends State<AuthenticationScreen> {
               key: formKey,
               child: Column(
                 children: [
-                  Text("Bem-vindo(a)!", textAlign: TextAlign.center, style: getPageTitle()),
+                  Text("Bom te ver!", textAlign: TextAlign.center, style: getPageTitle()),
                   SizedBox(height: 10),
                   Text("Insira seu nome de usuário e senha para acessar sua conta", textAlign: TextAlign.center),
                   SizedBox(height: 30),

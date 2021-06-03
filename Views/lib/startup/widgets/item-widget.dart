@@ -57,11 +57,15 @@ class _MenuItemWidgetState extends State<MenuItemWidget> with TickerProviderStat
                   : 0),
         ),
       );
+  double get containerSize => isWidthSmall(context) ? 50 : 60;
+  double get iconSize => isWidthSmall(context) ? 20 : 25;
+
+  
 
   BoxDecoration get glowingContainerStyle => BoxDecoration(
       color: widget.isSelected ? boxFocus.value : ComponentBG,
       borderRadius: BorderRadius.circular(10),
-      boxShadow: widget.isSelected ? [BoxShadow(color: boxFocus.value!.withOpacity(0.3), spreadRadius: 4, blurRadius: 7, offset: Offset(0, 3))] : null);
+      boxShadow: widget.isSelected ? [BoxShadow(color: boxFocus.value!.withOpacity(0.3), spreadRadius: 2, blurRadius: 7, offset: Offset(0, 3))] : null);
 
   ButtonStyle get iconButtonStyle => ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.transparent), overlayColor: MaterialStateProperty.all(Colors.transparent));
 
@@ -71,17 +75,17 @@ class _MenuItemWidgetState extends State<MenuItemWidget> with TickerProviderStat
         animation: boxFocus,
         builder: (context, child) {
           return Container(
-            width: 92,
-            height: 92,
-            padding: EdgeInsets.all(12),
+            width: containerSize,
+            height: containerSize,
+            padding: EdgeInsets.all(6),
             decoration: containerDecoration,
             child: Tooltip(
               message: widget.title,
               child: Container(
                 decoration: glowingContainerStyle,
-                padding: EdgeInsets.all(14),
+                padding: EdgeInsets.all(8),
                 child: Center(
-                  child: TextButton(onPressed: widget.onTap, child: Icon(widget.icon, size: 30, color: widget.isSelected ? fontColorFocus.value : PrimaryColor), style: iconButtonStyle),
+                  child: TextButton(onPressed: widget.onTap, child: Icon(widget.icon, size: iconSize, color: widget.isSelected ? fontColorFocus.value : PrimaryColor), style: iconButtonStyle),
                 ),
               ),
             ),

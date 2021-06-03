@@ -12,10 +12,38 @@ class _MainScreenState extends State<MainScreen> {
   Route onGeneratedRoute(RouteSettings settings) {
     var route = routes.firstWhere((route) => route.path == settings.name, orElse: () => new Core.Route(path: '/notfound', name: 'Não encontrado', screen: Container(child: Text('404')), icon: Icons.home));
     return MaterialPageRoute(
-        settings: RouteSettings(name: route.path),
-        builder: (context) {
-          return route.encapsulate ? Scaffold(body: Row(children: [Hero(child: MenuWidget(), tag: 'Menu'), Expanded(child: route.screen)])) : route.screen;
-        });
+      settings: RouteSettings(name: route.path),
+      builder: (context) {
+        return route.encapsulate ? 
+          SafeArea(
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: Core.isWidthSmall(context) ? 7 : 80, right: 7), 
+                    child: route.screen,
+                  ),
+                  Core.isWidthSmall(context) 
+                  ? Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Hero(
+                        child: MenuWidget(), 
+                        tag: 'Menu',
+                      ),
+                    ),
+                  )
+                  : Hero(
+                    child: MenuWidget(), 
+                    tag: 'Menu',
+                  ), 
+                ],
+              ),
+            ),
+          ) 
+        : route.screen;
+      },
+    );
   }
 
   @override
@@ -23,6 +51,7 @@ class _MainScreenState extends State<MainScreen> {
     return MaterialApp(
       title: 'Comies',
       theme: Core.ComiesTheme(context).theme,
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: onGeneratedRoute,
       themeMode: ThemeMode.dark,
     );
