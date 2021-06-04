@@ -40,7 +40,7 @@ namespace Comies
             
             services.AddControllers();
             
-            services.AddDbContext<ComiesContext>(o => {o.UseSqlServer("name=LocalComiesDBConn", b => b.MigrationsAssembly("ComiesServices")); o.ConfigureWarnings(p => p. Ignore(30000));});
+            services.AddDbContext<ComiesContext>(o => {o.UseSqlServer("name=DevConnection", b => b.MigrationsAssembly("ComiesServices")); o.ConfigureWarnings(p => p. Ignore(30000));});
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "comies_services", Version = "v1" }));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ComiesContext>()

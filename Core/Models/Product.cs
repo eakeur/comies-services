@@ -33,6 +33,7 @@ namespace Comies
 
         public double Minimum { get; set; }
         public Guid? CategoryId { get; set; }
+        public Guid? StockId { get; set; }
 
         [MaxLength(200)]
         public string Tags { get; set; }
@@ -40,6 +41,7 @@ namespace Comies
         public decimal Price { get; set; }
         public decimal Value { get; set; }
         public virtual ProductCategory Category { get; set; }
+        public virtual Stock Stock { get; set; }
         public virtual IList<OrderItem> Orders { get; set; }
         public virtual IList<Ingredient> Ingredients { get; set; }
         public virtual IList<Ingredient> Featuring { get; set; }
