@@ -5,100 +5,118 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Comies.Services;
+using Comies.Products;
+
 
 namespace Comies.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/products")]
     [ApiController]
     [Authorize]
     public class ProductsController : ControllerBase
     {
-        private readonly ComiesContext _context;
-        private readonly AuthenticationService _authenticationService;
+        private readonly IProductsService Service;
 
-        public ProductsController(ComiesContext context, AuthenticationService authenticationService)
+
+        public ProductsController(IProductsService service)
         {
-            _context = context; _authenticationService = authenticationService;
+            Service = service; 
         }
 
 
-        // GET: api/Products/5
         [HttpGet]
-        [AllowAnonymous]
-        public ActionResult<Operator> GetProduct([FromQuery] string user, [FromQuery] string password)
+        public ActionResult<IEnumerable<CategoryView>> GetProducts([FromQuery] IProductFilter filters)
         {
-            var product = _authenticationService.GetOperator(new Structures.SecurityModels.AuthenticationParameters { Nickname = user, Password = password });
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return product;
-        }
-
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(Guid id, Product product)
-        {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(product).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var products = Service.GetSome(filters); if (products == null) return NotFound();
+                Utils.SetTotalCountHeaders(Response, products.Count());
+                return Ok(products);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ComiesArgumentException ex)
             {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
-
-            return NoContent();
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
         }
 
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        [HttpGet("{id}")]
+        public ActionResult<CategoryView> GetProduct(Guid id)
+        {
+            try
+            {
+                var product = Service.GetOne(id);
+                if (product == null) return NotFound();
+                return Ok(product);
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+
+        [HttpPut("{id}")]
+        public IActionResult PutProduct(Guid id, Product product)
+        {
+            try
+            {
+                if (id != product.Id) return BadRequest();
+                Service.Update(id, product);
+                return NoContent();
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public IActionResult PostProduct(Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
-        }
-
-        // DELETE: api/Products/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            try
             {
-                return NotFound();
+                product = Service.Save(product);
+                return CreatedAtAction("GetProduct", new { id = product.Id }, product);
             }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        private bool ProductExists(Guid id)
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProduct(Guid id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            try
+            {
+                var product = Service.GetOne(id);
+                if (product == null) return NotFound();
+                Service.Remove(id); return NoContent();
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
+            
         }
     }
 }
