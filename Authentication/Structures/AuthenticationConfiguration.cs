@@ -1,4 +1,4 @@
-namespace Comies.Structures.SecurityModels
+namespace Comies.Auth
 {
     public class AuthenticationConfiguration
     {

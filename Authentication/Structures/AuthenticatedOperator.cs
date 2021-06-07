@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Comies.Contracts;
 using Comies;
 
-namespace Comies.Structures.SecurityModels
+namespace Comies.Auth
 {
     public class AuthenticatedOperator : IAuthenticatedOperator
     {

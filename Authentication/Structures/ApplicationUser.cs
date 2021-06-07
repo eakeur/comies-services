@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Comies.Structures.SecurityModels
+namespace Comies.Auth
 {
     public class ApplicationUser : IdentityUser
     {        

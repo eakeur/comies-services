@@ -3,7 +3,7 @@ using System;
 
 namespace Comies.Products
 {
-    public interface IProductsService : IService<Product, CategoryView, IProductFilter> {
+    public interface IProductsService : IService<Product, ProductView, ProductFilter> {
 
 
     }

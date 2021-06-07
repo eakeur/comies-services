@@ -2,12 +2,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
 using System.Threading.Tasks;
-using Comies;
-using Comies.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Comies.Auth;
 
 namespace Comies.Controllers
 {
@@ -17,15 +13,13 @@ namespace Comies.Controllers
     {
         private readonly ComiesContext _context;
 
-        private readonly AuthenticationService _authenticationService;
+        private readonly AuthenticationService Service;
 
         public AuthenticationController(ComiesContext context, AuthenticationService authenticationService)
         {
-            _context = context; _authenticationService = authenticationService;
+            _context = context; Service = authenticationService;
         }
 
-
-        // GET: api/<AuthenticationController>
         [HttpGet("register/template")]
         public async Task<ActionResult<Store>> Get()
         {
@@ -34,7 +28,6 @@ namespace Comies.Controllers
                 MemberSince = DateTime.Now, Active = true
             
             });
-
             var oper = await _context.Operators.AddAsync(new Operator
             {
                 Name = "Igor de Souza Reis",
@@ -44,49 +37,37 @@ namespace Comies.Controllers
                 Active = true,
                 MustChangePassword = false
             });
-
             await _context.SaveChangesAsync();
             store.Entity.Operators = new List<Operator>();
             store.Entity.Operators.Add(oper.Entity);
             return store.Entity;
         }
 
-        // GET api/<AuthenticationController>/5
-        [HttpGet("test")]
-        public string Gety()
-        {
-            return "Ok";
-        }
 
-        // POST api/<AuthenticationController>
         [HttpPost]
-        public ActionResult Authenticate(
-            [FromBody] Structures.SecurityModels.AuthenticationParameters value, 
-            [FromServices] UserManager<Structures.SecurityModels.ApplicationUser> userManager,
-            [FromServices] SignInManager<Structures.SecurityModels.ApplicationUser> signInManager)
+        public IActionResult Authenticate(
+            [FromBody] AuthenticationParameters value, [FromServices] UserManager<ApplicationUser> userManager, [FromServices] SignInManager<ApplicationUser> signInManager)
         {
             try
             {
-                var oper = _authenticationService.GetOperator(value);
-                var token = _authenticationService.GetToken(oper);
-                return Ok(token);
+                var oper = Service.GetOperator(value);
+                if (oper == null) return NotFound();
+                var token = Service.GetToken(oper, value.KeepConnected);
+                Utils.SetAuthorizationHeader(Request, Response, token, Service.ExpirationDate.AddDays(value.KeepConnected ? 1 : 0));
+                return NoContent();
             }
-            catch (System.Exception ex)
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ComiesUnauthorizedException ex)
             {
                 return Unauthorized(ex.Message);
             }
-        }
-
-        // PUT api/<AuthenticationController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AuthenticationController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
         }
     }
 }
