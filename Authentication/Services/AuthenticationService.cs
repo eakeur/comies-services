@@ -6,17 +6,16 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using Comies;
 using System.Security.Principal;
-using System.Threading.Tasks;
-using Comies.ModelsSettings;
-using Comies.Structures.SecurityModels;
 
-namespace Comies.Services
+namespace Comies.Auth
 {
     public class AuthenticationService
     {
         private SigningConfigurations SigningConfigurations { get; set; }
         private AuthenticationConfiguration TokenConfigurations { get; set; }
         private ComiesContext Context { get; set; }
+
+        public DateTime ExpirationDate => DateTime.Now.AddSeconds(TokenConfigurations.Seconds);
 
         public AuthenticationService(SigningConfigurations signingConfigurations, AuthenticationConfiguration tokenConfigurations, ComiesContext context)
         {
@@ -29,11 +28,11 @@ namespace Comies.Services
         {
             var applicantData = ValidateAndExtractNicknameAndStore(applicant);
             var storeId = (from s in Context.Stores where s.Active == true && s.CompanyNickname == applicantData[1] select s.Id).FirstOrDefault();
-            if (storeId == Guid.Empty) throw new UnauthorizedAccessException("Ops, não foi possível encontrar seu domínio. Contate o administrador de sua empresa ;)");
+            if (storeId == Guid.Empty) throw new ComiesUnauthorizedException("Ops, não foi possível encontrar seu domínio. Contate o administrador de sua empresa ;)");
             var foundOperator = (from o in Context.Operators where o.Active == true && o.Nickname == applicantData[0] && o.StoreId == storeId select o).FirstOrDefault();
-            if (foundOperator == null) throw new UnauthorizedAccessException("Ops, acho que não nos conhecemos, pois não foi possível encontrar você com esse apelido.");
+            if (foundOperator == null) throw new ComiesUnauthorizedException("Ops, acho que não nos conhecemos, pois não foi possível encontrar você com esse apelido.");
             if (foundOperator.Password.Equals(applicant.Password)) return foundOperator;
-            else throw new UnauthorizedAccessException("Ops! Senha incorreta. Você digitou tudo certinho?");
+            else throw new ComiesUnauthorizedException("Ops! Senha incorreta. Você digitou tudo certinho?");
         }
 
         /// <summary>
@@ -43,10 +42,10 @@ namespace Comies.Services
         /// <returns>A string array containg [0] the nickname and [1] the store </returns>
         private static string[] ValidateAndExtractNicknameAndStore(AuthenticationParameters applicant)
         {
-            if (applicant == null) throw new ArgumentNullException(message: "Ops! Você precisa nos passar alguma informação que a gente te reconheça.", paramName: nameof(applicant));
-            if (string.IsNullOrEmpty(applicant.Nickname)) throw new ArgumentException(message: "Ops! Precisamos do seu apelido para te identificar", paramName: nameof(applicant));
-            if (!applicant.Nickname.Contains('@') && applicant.Nickname.Length < 7) throw new ArgumentException(message: "Ops! Seu apelido deve ser composto de apelido@nome_da_empresa", paramName: nameof(applicant));
-            if (string.IsNullOrEmpty(applicant.Password)) throw new ArgumentException(message: "Ops! Precisamos da sua senha para que você possa se autenticar", paramName: nameof(applicant));
+            if (applicant == null) throw new ComiesArgumentException(message: "Ops! Você precisa nos passar alguma informação que a gente te reconheça.", paramName: nameof(applicant));
+            if (string.IsNullOrEmpty(applicant.Nickname)) throw new ComiesArgumentException(message: "Ops! Precisamos do seu apelido para te identificar", paramName: nameof(applicant));
+            if (!applicant.Nickname.Contains('@') && applicant.Nickname.Length < 7) throw new ComiesArgumentException(message: "Ops! Seu apelido deve ser composto de apelido@nome_da_empresa", paramName: nameof(applicant));
+            if (string.IsNullOrEmpty(applicant.Password)) throw new ComiesArgumentException(message: "Ops! Precisamos da sua senha para que você possa se autenticar", paramName: nameof(applicant));
             return applicant.Nickname.Split('@');
         }
 
@@ -55,18 +54,9 @@ namespace Comies.Services
         /// </summary>
         /// <param name="oper">The operator to receive the token</param>
         /// <returns>The token fetched</returns>
-        public AuthenticationResponse GetToken(Operator oper)
+        public string GetToken(Operator oper, bool keepConnected = false)
         {
-            var created = DateTime.Now;
-            var expires = DateTime.Now.AddSeconds(TokenConfigurations.Seconds);
-            var jwt = GetToken(GetClaimsIdentity(oper), created, expires);
-            return new AuthenticationResponse
-            {
-                Authenticated = true, AccessToken = jwt,
-                Created = created, Expiration = expires,
-                Message = "Oba! Você foi autenticado com sucesso!",
-                PasswordHasBeenChanged = oper.MustChangePassword,
-            };
+            return GetToken(GetClaimsIdentity(oper), DateTime.Now, ExpirationDate.AddDays(keepConnected ? 1 : 0));
         }
 
         private ClaimsIdentity GetClaimsIdentity(Operator op)

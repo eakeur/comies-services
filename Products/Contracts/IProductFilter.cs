@@ -3,11 +3,12 @@ using System;
 
 namespace Comies.Products
 {
-    public interface IProductFilter : IFilter {
-        Guid CategoryId { get; set; }
-        string Code { get; set; }
-        string Tag { get; set; }
-        string Name { get; set; }
+    public class ProductFilter : IFilter {
+        public Guid CategoryId { get; set; }
+        public int Skip { get; set; }
+        public string Code { get; set; }
+        public string Tag { get; set; }
+        public string Name { get; set; }
 
     }
 }

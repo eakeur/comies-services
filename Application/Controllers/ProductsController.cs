@@ -25,7 +25,7 @@ namespace Comies.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<CategoryView>> GetProducts([FromQuery] IProductFilter filters)
+        public ActionResult<IEnumerable<CategoryView>> GetProducts([FromQuery] ProductFilter filters)
         {
             try
             {
@@ -37,9 +37,9 @@ namespace Comies.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                throw new Exception();
+                return BadRequest(e.Message);
             }
         }
 

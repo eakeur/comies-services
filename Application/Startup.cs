@@ -12,9 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Comies.Services;
-using Comies.Structures.SecurityModels;
-
+using Comies.Auth;
+using Comies.Products;
+using Comies.Contracts;
 namespace Comies
 {
     public class Startup
@@ -36,17 +36,19 @@ namespace Comies
                 });
 
                 cors.AddPolicy("AllowHeadder", (cfg) => cfg.AllowAnyHeader());
+
+                cors.AddPolicy("ExposeHeaders", (cfg) => cfg.WithExposedHeaders("*"));
             });
             
             services.AddControllers();
             
-            services.AddDbContext<ComiesContext>(o => {o.UseSqlServer("name=LocalComiesDBConn", b => b.MigrationsAssembly("ComiesServices")); o.ConfigureWarnings(p => p. Ignore(30000));});
+            services.AddDbContext<ComiesContext>(o => {o.UseSqlServer("name=DevConnection", b => b.MigrationsAssembly("ComiesServices")); o.ConfigureWarnings(p => p. Ignore(30000));});
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "comies_services", Version = "v1" }));
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ComiesContext>()
                 .AddDefaultTokenProviders();
 
-            var signingConfigurations = new ModelsSettings.SigningConfigurations(Configuration["TokenConfigurations:securityKey"]);
+            var signingConfigurations = new SigningConfigurations(Configuration["TokenConfigurations:securityKey"]);
             services.AddSingleton(signingConfigurations);
 
             var tokenConfigurations = new AuthenticationConfiguration();
@@ -87,10 +89,17 @@ namespace Comies
             });
 
 
-            services.AddScoped<AuthenticatedOperator>();
+            
+
+            services.AddTransient<IAuthenticatedOperator, AuthenticatedOperator>();
+
             services.AddScoped<AuthenticationService>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<SignInManager<ApplicationUser>>();
+
+            services.AddTransient<IProductsService, ProductsService>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,7 +117,8 @@ namespace Comies
             app.UseStaticFiles();
             app.UseCors(options => {
                 options.AllowAnyOrigin(); options.AllowAnyHeader();
-            });  
+            });
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Comies.ModelsSettings
+namespace Comies.Auth
 {
     public class SigningConfigurations
     {

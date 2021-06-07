@@ -6,16 +6,16 @@ using Comies;
 
 
 namespace Comies.Products {
-    class ProductsService : IProductsService
+    public class ProductsService : IProductsService
     {
         ComiesContext Context;
         IAuthenticatedOperator Applicant;
 
-        ProductsService(ComiesContext context, IAuthenticatedOperator applicant){
+        public ProductsService(ComiesContext context, IAuthenticatedOperator applicant){
             Context = context; Applicant = applicant;
         }
 
-        public IEnumerable<CategoryView> GetAll()
+        public IEnumerable<ProductView> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -25,30 +25,28 @@ namespace Comies.Products {
             return Context.Products.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<CategoryView> GetSome(IProductFilter filter)
+        public IEnumerable<ProductView> GetSome(ProductFilter filter)
         {
-            return (from p in Context.Products
-            join s in Context.Stocks on p.StockId equals s.Id
-            join c in Context.ProductsCategories on p.CategoryId equals c.Id
-            where 
-                p.Active && p.StoreId == Applicant.StoreId &&
-                (filter.Code != null ? p.Code.Contains(filter.Code) : true) &&
-                (filter.Name != null ? p.Name.Contains(filter.Code) : true) &&
-                (filter.Tag != null ? p.Tags.Contains(filter.Tag) : true) &&
-                (filter.CategoryId != Guid.Empty ? p.CategoryId == filter.CategoryId : true)
-            group new ProductView {
-                Id = p.Id, Name = p.Name, Code = p.Code, 
-                StockLevel = Math.Round(s.Actual * 100 / s.Maximum),
-                CategotyId = p.CategoryId.GetValueOrDefault()
-            } by new { c.Id, c.Code, c.Name, c.ParentId } into CategoryProducts
-            select new CategoryView {
-                Id = CategoryProducts.Key.Id,
-                Name = CategoryProducts.Key.Name,
-                Code = CategoryProducts.Key.Code,
-                Parent = CategoryProducts.Key.ParentId,
-                Products = CategoryProducts.Select(x => x).ToList()
-            }).Skip(filter.Skip).Take(50).AsEnumerable();
 
+            return (from p in Context.Products
+                    join s in Context.Stocks on p.StockId equals s.Id into stocks from stockref in stocks.DefaultIfEmpty()
+                    join c in Context.ProductsCategories on p.CategoryId equals c.Id into cats from cat in cats.DefaultIfEmpty()
+                    where
+                        p.Active && p.StoreId == Applicant.StoreId &&
+                        (filter.Code != null ? p.Code.Contains(filter.Code) : true) &&
+                        (filter.Name != null ? p.Name.Contains(filter.Code) : true) &&
+                        (filter.Tag != null ? p.Tags.Contains(filter.Tag) : true) &&
+                        (filter.CategoryId != Guid.Empty ? p.CategoryId == filter.CategoryId : true)
+                    select new ProductView
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Code = p.Code,
+                        Value = p.Value,
+                        StockLevel = stockref == null ? 0.00 : Math.Round(stockref.Actual * 100 / stockref.Maximum),
+                        CategotyId = p.CategoryId.GetValueOrDefault(),
+                        CategoryName = cat.Name
+                    }).ToList();
         }
 
         public Product Remove(Guid id)
