@@ -1,4 +1,6 @@
 abstract class DataModel {
+  DataModel();
+  
   Map<String, dynamic> toMap();
 
   String toJson();

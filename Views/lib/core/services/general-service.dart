@@ -14,75 +14,92 @@ class Service {
     token = getProvider(context).session.getString('TOKEN') ?? '';
   }
 
-  Future<ServerResponse> addOne<T extends DataModel>(T data, {String? route, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> addOne<T extends DataModel>(T data, {String? route, dynamic Function(dynamic)? bodyParser}) async {
     try {
       var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson(), headers: getHeaders());
-      return mountClientResponse(result, returnType, bodyParser);
+      return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      throw ServerResponse.errorResponse;
+      if (e is ServerResponse) throw e;
+      else throw ServerResponse.error();
     }
   }
 
-  Future<ServerResponse> getOne<T>({String? route, required T uniqueID, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> getOne<T>({String? route, required T uniqueID, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.get(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()));
-      return mountClientResponse(result, returnType, bodyParser);
+      var result = await server.get(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), headers: getHeaders());
+      return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      throw ServerResponse.errorResponse;
+      if (e is ServerResponse) throw e;
+      else throw ServerResponse.error();
     }
   }
 
-  Future<ServerResponse> getMany<T extends DataModel>({String? route, required Filter filter, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> getMany<T extends DataModel>({String? route, required Filter filter, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.post(Uri.parse(path + (route ?? '') + generateQueryParameters(map: filter.toMap())));
-      return mountClientResponse(result, returnType, bodyParser);
+      var result = await server.get(Uri.parse(path + (route ?? '') + generateQueryParameters(map: filter.toMap())), headers: getHeaders());
+      return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      throw ServerResponse.errorResponse;
+      if (e is ServerResponse) throw e;
+      else throw ServerResponse.error();
     }
   }
 
-  Future<ServerResponse> put<T extends DataModel>(T data, {String? route, required T uniqueID, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> put<T extends DataModel>(T data, {String? route, required T uniqueID, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.post(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), body: data.toJson());
-      return mountClientResponse(result, returnType, bodyParser);
+      var result = await server.post(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), body: data.toJson(), headers: getHeaders());
+      return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      throw ServerResponse.errorResponse;
+      if (e is ServerResponse) throw e;
+      else throw ServerResponse.error();
     }
   }
 
-  Future<ServerResponse> del<T extends DataModel>(T data, {String? route, ReturnType returnType = ReturnType.DATAMODEL, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> del<T extends DataModel>(T data, {String? route, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson());
-      return mountClientResponse(result, returnType, bodyParser);
+      var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson(), headers: getHeaders());
+      return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      throw ServerResponse.errorResponse;
+      if (e is ServerResponse) throw e;
+      else throw ServerResponse.error();
     }
   }
 
-  String generateQueryParameters({Map<String, dynamic> map = const <String, dynamic>{}}) => map.keys.reduce((value, key) => value == '' ? value += '?$key=${map[key]}' : '&$key=${map[key]}');
+  String generateQueryParameters({Map<String, dynamic> map = const <String, dynamic>{}}) => map.keys.reduce((value, key){
+    if (map[key] != null){
+      return value == '' ? value += '?$key=${map[key]}' : '&$key=${map[key]}';
+    } else return  '';
+  });
 
   Map<String, String> getHeaders() {
-    return {"Accept-Language": "pt-BR", "Content-Type": "application/json", 'Authorization': token };
+    return {"Accept-Language": "pt-BR", "Content-Type": "application/json", 'Authorization': 'Bearer $token'};
   }
 
-  Future<ServerResponse> mountClientResponse<T>(Response result, ReturnType returnType, dynamic Function(dynamic)? bodyParser) async {
+  Future<ServerResponse> mountClientResponse<T>(Response result, dynamic Function(dynamic)? bodyParser) async {
     try {
-      if (returnType == ReturnType.JSON) return ServerResponse.custom(data: result.body);
-      if (returnType == ReturnType.MAP) return ServerResponse.custom(data: jsonDecode(result.body));
-
-      if (bodyParser != null) {
-        var res = ServerResponse.fromJson(result.body);
-        return res.copyWith(data: bodyParser(res.data));
+      bool success = true;
+      if (okStatuses.contains(result.statusCode)) {
+        if (result.statusCode == 204) {
+          return ServerResponse(success: success, message: 'Oba! A operação foi realizada com sucesso!', token: result.headers['Authorization'] ?? result.headers['authorization']);
+        } else {
+          var body = bodyParser != null ? bodyParser(result.body) : jsonDecode(result.body);
+          return ServerResponse(
+              path: Uri.tryParse(result.headers['Location'] ?? ''),
+              success: success,
+              data: body,
+              message: result.statusCode == 201 ? 'Oba! Item adicionado com sucesso!' : null,
+              records: int.tryParse(result.headers['x-total-count'] ?? '0'));
+        }
       }
-
-      return ServerResponse.fromJson(result.body);
+      throw ServerResponse.error();
     } catch (e) {
-      return ServerResponse.errorResponse;
+      throw ServerResponse.error();
     }
   }
+
+  List<int> get okStatuses => [200, 204, 201];
 }

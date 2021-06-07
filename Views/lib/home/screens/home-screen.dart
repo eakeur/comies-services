@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:comies/components/buttons/main-button.dart';
 import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
 
@@ -16,11 +13,9 @@ class Home extends State<HomeScreen> {
       appBar: AppBar(title: Text('Início', style: getPageTitle())),
       body: ListView(
         children: [
-          Card(child: Container(width: 200, height: 200, child: Text(Random().nextDouble().toString()),)),
+          Card(child: Container(width: 200, height: 200, padding: EdgeInsets.all(15), child: Text('TEXTO DE TESTE'))),
         ]
       )
-      
-      
     );
   }
 }

@@ -29,6 +29,7 @@ class ComiesController extends ChangeNotifier {
             route = '/home';
           }
         } else
+          // ignore: dead_code
           route = '/auth'; //rotear para tela de confugurações iniciais
       }
     } catch (e) {

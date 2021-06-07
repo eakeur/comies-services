@@ -15,12 +15,14 @@ class AuthenticationController {
     loadStatus.value = LoadStatus.LOADING;
     authenticationParameters = AuthenticationParameters(nickname: nickname, password: password);
     try {
-      var r = await service.addOne<AuthenticationParameters>(authenticationParameters, route: '/auth', returnType: ReturnType.MAP);
+      var r = await service.addOne<AuthenticationParameters>(authenticationParameters, route: '/auth');
       if (r.success) {
-        service.token = r.data['accessToken'];
-        getProvider(context).token = r.data['accessToken'];
-        Navigator.pushReplacementNamed(context, '/home');
-        if (remember) getProvider(context).session.setString('TOKEN', r.data['accessToken']);
+        if (r.token != null){
+          service.token = r.token!;
+          getProvider(context).token = r.token!;
+          Navigator.pushReplacementNamed(context, '/home');
+          if (remember) getProvider(context).session.setString('TOKEN', r.token!);
+        }
       }
       loadStatus.value = r.success ? LoadStatus.LOADED : LoadStatus.FAILED;
     } catch (e) {
