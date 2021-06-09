@@ -19,8 +19,7 @@ class ProductController {
   }
 
   List<ProductView> products = <ProductView>[];
-
-
+  Product? product;
 
   ProductFilter productFilter = new ProductFilter();
 
@@ -31,29 +30,33 @@ class ProductController {
 
   Future<List<ProductView>> loadProducts() async {
     try {
-      productsListStatus.value = LoadStatus.LOADING; productFilter.skip = skipGettingFromAPI;
+      productsListStatus.value = LoadStatus.LOADING;
+      productFilter.skip = skipGettingFromAPI;
       var res = await service.getMany(filter: productFilter, route: '/products');
-      _records = res.records ?? 0; products.addAll((res.data as List).map((x) => ProductView.fromMap(x as Map<String, dynamic>)));
+      _records = res.records ?? 0;
+      products.addAll((res.data as List).map((x) => ProductView.fromMap(x as Map<String, dynamic>)));
       productsListStatus.value = LoadStatus.LOADED;
       return products;
-      
     } catch (e) {
       print(e);
-      productsListStatus.value = LoadStatus.FAILED; return products;
+      productsListStatus.value = LoadStatus.FAILED;
+      return products;
     }
   }
 
-  Future<void> loadProduct(String id) async {
+  Future<Product?> loadProduct(String? id) async {
     try {
       productStatus.value = LoadStatus.LOADING;
-      var res = await service.getOne(uniqueID: id,route: '/products');
-      _records = res.records ?? 0; products.addAll((res.data as List).map((x) => ProductView.fromMap(x as Map<String, dynamic>)));
+      if (id != null) {
+        var res = await service.getOne(uniqueID: id, route: '/products');
+        product = Product.fromMap(res.data as Map<String, dynamic>);
+      }
       productStatus.value = LoadStatus.LOADED;
-      return products;
-      
+      return product;
     } catch (e) {
       print(e);
-      productStatus.value = LoadStatus.FAILED; return products;
+      productStatus.value = LoadStatus.FAILED;
+      return product;
     }
   }
 }

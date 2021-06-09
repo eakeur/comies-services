@@ -7,3 +7,4 @@ export 'models/filtermodel.dart';
 export 'models/authentication-parameters.dart';
 export 'models/returntype.dart';
 export 'models/loadstatus.dart';
+export 'models/product-model.dart';

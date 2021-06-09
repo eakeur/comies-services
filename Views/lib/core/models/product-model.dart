@@ -12,13 +12,13 @@ class Product extends DataModel {
   final String display;
   final String description;
   final int sellUnity;
-  final int minimum;
-  final String categoryId;
-  final String stockId;
+  final double minimum;
+  final String? categoryId;
+  final String? stockId;
   final String tags;
-  final int discount;
-  final int price;
-  final int value;
+  final double discount;
+  final double price;
+  final double value;
   final int type;
   
   Product({
@@ -32,8 +32,8 @@ class Product extends DataModel {
     required this.description,
     required this.sellUnity,
     required this.minimum,
-    required this.categoryId,
-    required this.stockId,
+     this.categoryId,
+     this.stockId,
     required this.tags,
     required this.discount,
     required this.price,
@@ -51,13 +51,13 @@ class Product extends DataModel {
     String? display,
     String? description,
     int? sellUnity,
-    int? minimum,
+    double? minimum,
     String? categoryId,
     String? stockId,
     String? tags,
-    int? discount,
-    int? price,
-    int? value,
+    double? discount,
+    double? price,
+    double? value,
     int? type,
   }) {
     return Product(
@@ -113,15 +113,15 @@ class Product extends DataModel {
       name: map['name'],
       display: map['display'],
       description: map['description'],
-      sellUnity: map['sellUnity']?.toInt(),
-      minimum: map['minimum']?.toInt(),
+      sellUnity: map['sellUnity'],
+      minimum: map['minimum'],
       categoryId: map['categoryId'],
       stockId: map['stockId'],
       tags: map['tags'],
-      discount: map['discount']?.toInt(),
-      price: map['price']?.toInt(),
-      value: map['value']?.toInt(),
-      type: map['type']?.toInt(),
+      discount: map['discount'],
+      price: map['price'],
+      value: map['value'],
+      type: map['type'],
     );
   }
 

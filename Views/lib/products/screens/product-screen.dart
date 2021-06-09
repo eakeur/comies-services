@@ -19,7 +19,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     controller = ProductController(context);
-    
+    controller.loadProduct(widget.id);
     super.initState();
   }
 
@@ -29,16 +29,24 @@ class _ProductScreenState extends State<ProductScreen> {
       appBar: AppBar(
         title: Material(
           color: Colors.transparent,
-          child: Text(widget.name ?? '', style: getPageTitle()),
+          child: Text(controller.product == null ? widget.name ?? '' : controller.product!.name, style: getPageTitle()),
         ),
         bottom: PreferredSize(
           child: StockLevelWidget(value: 75, message: 'O nível de estoque desse produto relacionado ao seu total'),
           preferredSize: Size.fromHeight(15),
         ),
       ),
-      body: ListTile(
-        title: Text(widget.id ?? ''),
-      ),
+      body: ValueListenableBuilder<LoadStatus>(
+        valueListenable: controller.productStatus,
+        builder: (context, status, child){
+          switch (status) {
+            case LoadStatus.LOADING: return Center(child: CircularProgressIndicator());
+            case LoadStatus.FAILED: return Center(child: Text('Ops! Error'));
+            case LoadStatus.START: return Center(child: Text('Ops! start'));
+            case LoadStatus.LOADED: return ProductForm(product: controller.product, isNew: true, onSubmit: (e){}, submitStatus: status);
+          }
+        },
+      )
     );
   }
 }
