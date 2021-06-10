@@ -9,39 +9,28 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  Core.Route notFound = Core.Route(segments: 1, path: '/notfound', name: 'Não encontrado', screen: Container(child: Text('404')), icon: Icons.home);
+
+  Core.Route getRoute(Uri uri) {
+    String pathTo = '';
+    for (var path in uri.pathSegments) {
+      pathTo += '/$path';
+      var res = routes.where((r) => r.path == pathTo && r.segments == uri.pathSegments.length);
+      if (res.isNotEmpty) return res.first;
+    }
+    if (uri.path == '/') return routes.firstWhere((r) => r.segments == 0 && r.path == '/', orElse: () => notFound);
+    return notFound;
+  }
+
   Route onGeneratedRoute(RouteSettings settings) {
-    var route = routes.firstWhere((route) => route.path == settings.name, orElse: () => new Core.Route(path: '/notfound', name: 'Não encontrado', screen: Container(child: Text('404')), icon: Icons.home));
+    var path = settings.name ?? '';
+    var uri = Uri.parse(path == '' ? '/' : path);
+    var route = getRoute(uri);
+    var widget = route.builder != null ? route.builder!(settings, uri) : route.screen ?? notFound.screen;
     return MaterialPageRoute(
-      settings: RouteSettings(name: route.path),
+      settings: settings,
       builder: (context) {
-        return route.encapsulate ? 
-          SafeArea(
-            child: Scaffold(
-              body: Stack(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: Core.isWidthSmall(context) ? 7 : 80, right: 7), 
-                    child: route.screen,
-                  ),
-                  Core.isWidthSmall(context) 
-                  ? Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Hero(
-                        child: MenuWidget(), 
-                        tag: 'Menu',
-                      ),
-                    ),
-                  )
-                  : Hero(
-                    child: MenuWidget(), 
-                    tag: 'Menu',
-                  ), 
-                ],
-              ),
-            ),
-          ) 
-        : route.screen;
+        return route.encapsulate ? LayoutBuilder(child: widget ?? notFound.screen!) : widget ?? notFound.screen!;
       },
     );
   }
@@ -54,6 +43,27 @@ class _MainScreenState extends State<MainScreen> {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: onGeneratedRoute,
       themeMode: ThemeMode.dark,
+    );
+  }
+}
+
+class LayoutBuilder extends StatelessWidget {
+  final Widget child;
+  const LayoutBuilder({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var padding = EdgeInsets.only(left: Core.isWidthSmall(context) ? 7 : 80, right: 7);
+    var menu = Hero(child: MenuWidget(), tag: 'Menu');
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Container(padding: padding, child: child),
+            Core.isWidthSmall(context) ? Positioned.fill(child: Align(alignment: Alignment.bottomCenter, child: menu)) : menu,
+          ],
+        ),
+      ),
     );
   }
 }

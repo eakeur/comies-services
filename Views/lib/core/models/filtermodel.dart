@@ -1,6 +1,5 @@
 abstract class Filter {
   int? skip;
-  int? take;
 
   Map<String, dynamic> toMap();
 

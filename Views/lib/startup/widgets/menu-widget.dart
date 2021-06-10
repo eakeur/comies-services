@@ -91,7 +91,7 @@ class _MenuWidgetState extends State<MenuWidget> with TickerProviderStateMixin, 
     if (route == '/auth')
       routes = declared.routes.where((r) => r.isAuth).toList();
     else
-      routes = declared.routes.where((r) => !r.isAuth && !r.isSplash && r.encapsulate).toList();
+      routes = declared.routes.where((r) => !r.isAuth && !r.isSplash && r.encapsulate && r.showmenu).toList();
 
     return !Core.isWidthSmall(context) ? Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))),
