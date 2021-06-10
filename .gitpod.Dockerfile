@@ -12,16 +12,22 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 
 USER gitpod
 
+RUN set -ex; \
+    sudo apt-get update; \
+    sudo apt-get install -y libglu1-mesa; \
+    sudo rm -rf /var/lib/apt/lists/*
+
+RUN set -ex; \
+    mkdir ~/development; \
+    cd ~/development; \
+    git clone --depth 1 https://github.com/flutter/flutter.git -b stable --no-single-branch
+
+RUN set -ex; \
+    flutter channel beta; \
+    flutter upgrade; \
+    flutter config --enable-web; \
+    flutter precache
+
 RUN cd /home/gitpod \
-    && wget -qO flutter_sdk.tar.xz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_v1.0.0-stable.tar.xz \
-    && tar -xvf flutter_sdk.tar.xz && rm flutter_sdk.tar.xz \
-    && wget -qO android_studio.zip https://dl.google.com/dl/android/studio/ide-zips/3.3.0.20/android-studio-ide-182.5199772-linux.zip \
-    && unzip android_studio.zip && rm -f android_studio.zip \
     && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r26.1.1-linux.tgz \
     && tar -xvf android-sdk.tgz && rm android-sdk.tgz
-
-# Install custom tools, runtimes, etc.
-# For example "bastet", a command-line tetris clone:
-# RUN brew install bastet
-#
-# More information: https://www.gitpod.io/docs/config-docker/
