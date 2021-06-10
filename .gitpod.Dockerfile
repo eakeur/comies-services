@@ -18,12 +18,9 @@ RUN set -ex; \
     sudo rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
-    mkdir ~/development; \
-    cd ~/development; \
     git clone --depth 1 https://github.com/flutter/flutter.git -b stable --no-single-branch
 
 RUN set -ex; \
-    flutter channel beta; \
     flutter upgrade; \
     flutter config --enable-web; \
     flutter precache
