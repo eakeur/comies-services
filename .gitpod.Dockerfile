@@ -29,8 +29,8 @@ RUN set -ex; \
 
 RUN cd /home/gitpod \
     && wget -qO android_studio.zip https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip?hl=pt-br \
-    && unzip android_studio.zip && rm -f android_studio.zip
+    && unzip android_studio.zip && rm -f android_studio.zip && ls
     
 RUN set -ex; \
-    cd android_studio/cmdline-tools/bin \
+    cd cmdline-tools/bin \
     sdkmanager "platforms;android-29"
