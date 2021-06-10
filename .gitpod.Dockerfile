@@ -28,5 +28,9 @@ RUN set -ex; \
     flutter precache
 
 RUN cd /home/gitpod \
-    && wget --output-document=android-sdk.tgz --quiet http://dl.google.com/android/android-sdk_r26.1.1-linux.tgz \
-    && tar -xvf android-sdk.tgz && rm android-sdk.tgz
+    && wget -qO android_studio.zip https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip?hl=pt-br \
+    && unzip android_studio.zip && rm -f android_studio.zip
+    
+RUN set -ex; \
+    cd android_studio/cmdline-tools/bin \
+    sdkmanager "platforms;android-29"
