@@ -19,6 +19,8 @@ RUN set -ex; \
 
 RUN set -ex; \
     git clone --depth 1 https://github.com/flutter/flutter.git -b stable --no-single-branch
+    
+ENV PATH="$PATH:/home/gitpod/flutter/bin"
 
 RUN set -ex; \
     flutter upgrade; \
