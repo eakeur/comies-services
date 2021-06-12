@@ -34,3 +34,9 @@ RUN cd /home/gitpod \
 RUN set -ex; \
     cd cmdline-tools/bin \
     sdkmanager "platforms;android-29"
+    
+RUN mkdir -p /home/gitpod/dotnet && curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Current --install-dir /home/gitpod/dotnet
+ENV DOTNET_ROOT=/home/gitpod/dotnet
+ENV PATH=$PATH:/home/gitpod/dotnet
+
+
