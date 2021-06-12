@@ -4,3 +4,4 @@ vscode:
   extensions:
     - Dart-Code.flutter
     - Dart-Code.dart-code
+    - ms-dotnettools.csharp
