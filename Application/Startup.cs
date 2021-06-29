@@ -30,10 +30,9 @@ namespace Comies
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(cors => {
-                cors.AddPolicy("AllowOrigin", (cfg) =>
-                {
-                    cfg.AllowAnyOrigin();
-                });
+                cors.AddPolicy("AllowOrigin", (cfg) => cfg.AllowAnyOrigin());
+
+                cors.AddPolicy("AllowMethod", (cfg) => cfg.AllowAnyMethod());
 
                 cors.AddPolicy("AllowHeadder", (cfg) => cfg.AllowAnyHeader());
 
@@ -116,7 +115,7 @@ namespace Comies
             app.UseRouting();
             app.UseStaticFiles();
             app.UseCors(options => {
-                options.AllowAnyOrigin(); options.AllowAnyHeader();
+                options.AllowAnyOrigin(); options.AllowAnyHeader(); options.AllowAnyMethod();
             });
             app.UseAuthentication();
             app.UseAuthorization();
