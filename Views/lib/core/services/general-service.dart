@@ -20,8 +20,10 @@ class Service {
       return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      if (e is ServerResponse) throw e;
-      else throw ServerResponse.error();
+      if (e is ServerResponse)
+        throw e;
+      else
+        throw ServerResponse.error();
     }
   }
 
@@ -31,8 +33,10 @@ class Service {
       return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      if (e is ServerResponse) throw e;
-      else throw ServerResponse.error();
+      if (e is ServerResponse)
+        throw e;
+      else
+        throw ServerResponse.error();
     }
   }
 
@@ -42,19 +46,23 @@ class Service {
       return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      if (e is ServerResponse) throw e;
-      else throw ServerResponse.error();
+      if (e is ServerResponse)
+        throw e;
+      else
+        throw ServerResponse.error();
     }
   }
 
-  Future<ServerResponse> put<T extends DataModel>(T data, {String? route, required T uniqueID, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> put<T extends DataModel>(T data, {String? route, required Object uniqueID, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.post(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), body: data.toJson(), headers: getHeaders());
+      var result = await server.put(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), body: data.toJson(), headers: getHeaders());
       return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      if (e is ServerResponse) throw e;
-      else throw ServerResponse.error();
+      if (e is ServerResponse)
+        throw e;
+      else
+        throw ServerResponse.error();
     }
   }
 
@@ -64,16 +72,19 @@ class Service {
       return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);
-      if (e is ServerResponse) throw e;
-      else throw ServerResponse.error();
+      if (e is ServerResponse)
+        throw e;
+      else
+        throw ServerResponse.error();
     }
   }
 
-  String generateQueryParameters({Map<String, dynamic> map = const <String, dynamic>{}}) => map.keys.reduce((value, key){
-    if (map[key] != null){
-      return value == '' ? value += '?$key=${map[key]}' : '&$key=${map[key]}';
-    } else return  '';
-  });
+  String generateQueryParameters({Map<String, dynamic> map = const <String, dynamic>{}}) => map.keys.reduce((value, key) {
+        if (map[key] != null) {
+          return value == '' ? value += '?$key=${map[key]}' : '&$key=${map[key]}';
+        } else
+          return '';
+      });
 
   Map<String, String> getHeaders() {
     return {"Accept-Language": "pt-BR", "Content-Type": "application/json", 'Authorization': 'Bearer $token'};
@@ -82,6 +93,7 @@ class Service {
   Future<ServerResponse> mountClientResponse<T>(Response result, dynamic Function(dynamic)? bodyParser) async {
     try {
       bool success = true;
+      print(result.body);
       if (okStatuses.contains(result.statusCode)) {
         if (result.statusCode == 204) {
           return ServerResponse(success: success, message: 'Oba! A operação foi realizada com sucesso!', token: result.headers['Authorization'] ?? result.headers['authorization']);

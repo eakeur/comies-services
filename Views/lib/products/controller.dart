@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
 
@@ -46,10 +45,15 @@ class ProductController {
 
   Future<Product?> loadProduct(String? id) async {
     try {
-      productStatus.value = LoadStatus.LOADING;
       if (id != null) {
-        var res = await service.getOne(uniqueID: id, route: '/products');
-        product = Product.fromMap(res.data as Map<String, dynamic>);
+        if (id == 'new') {
+          product = Product.empty(creationDate: DateTime.now());
+        } else {
+          productStatus.value = LoadStatus.LOADING;
+          var res = await service.getOne(uniqueID: id, route: '/products');
+          if (!res.success) showFeedback(context, title: res.message ?? '', success: res.success);
+          product = Product.fromMap(res.data as Map<String, dynamic>);
+        }
       }
       productStatus.value = LoadStatus.LOADED;
       return product;
@@ -58,5 +62,27 @@ class ProductController {
       productStatus.value = LoadStatus.FAILED;
       return product;
     }
+  }
+
+  Future<Product?> saveProduct() async {
+    try {
+      if (product != null) {
+        productStatus.value = LoadStatus.LOADING;
+        ServerResponse res;
+        if (product!.id == null) {
+          res = await service.addOne<Product>(product!, route: '/products');
+          productStatus.value = res.success ? LoadStatus.LOADED : LoadStatus.FAILED;
+        } else {
+          res = await service.put<Product>(product!, route: '/products', uniqueID: product!.id!);
+          productStatus.value = res.success ? LoadStatus.LOADED : LoadStatus.FAILED;
+        }
+        showFeedback(context, title: res.message ?? '', success: res.success);
+      }
+    } catch (e) {}
+    productStatus.value = LoadStatus.LOADED;
+  }
+
+  void copyProduct() {
+    
   }
 }

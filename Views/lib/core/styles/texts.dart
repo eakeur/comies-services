@@ -17,7 +17,7 @@ TextStyle getMainText({double size = 18, FontWeight weight = FontWeight.w400, Co
   return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
 }
 
-TextStyle getInputLabelText({double size = 14, FontWeight weight = FontWeight.w400, Color? color = White}) {
+TextStyle getInputLabelText({double size = 18, FontWeight weight = FontWeight.w400, Color? color = White}) {
   return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
 }
 

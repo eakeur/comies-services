@@ -7,7 +7,7 @@ class ProductForm extends StatefulWidget {
 
   final LoadStatus submitStatus;
 
-  final Function(Product) onSubmit;
+  final Function() onSubmit;
 
   final bool isNew;
 
@@ -23,17 +23,33 @@ class _ProductFormState extends State<ProductForm> {
   late TextEditingController descriptionController;
   late TextEditingController displayController;
   late TextEditingController tagsController;
+  late TextEditingController priceController;
+  late TextEditingController valueController;
+  late TextEditingController discountController;
   late GlobalKey<FormState> formState;
+
+  void setFields() {
+    codeController = TextEditingController(text: widget.product?.code)..addListener(() { widget.product?.code = codeController.text;});
+    nameController = TextEditingController(text: widget.product?.name)..addListener(() { widget.product?.name = nameController.text;});
+    descriptionController = TextEditingController(text: widget.product?.description)..addListener(() { widget.product?.description = descriptionController.text;});
+    displayController = TextEditingController(text: widget.product?.display)..addListener(() { widget.product?.display = displayController.text;});
+    tagsController = TextEditingController(text: widget.product?.tags)..addListener(() { widget.product?.tags = tagsController.text;});
+    priceController = TextEditingController(text: widget.product?.price?.toStringAsFixed(2))..addListener(() { widget.product?.price = double.tryParse(priceController.text) ?? 0;});
+    valueController = TextEditingController(text: widget.product?.value?.toStringAsFixed(2))..addListener(() { widget.product?.value = double.tryParse(valueController.text) ?? 0;});
+    discountController = TextEditingController(text: widget.product?.discount?.toStringAsFixed(2))..addListener(() { widget.product?.discount = double.tryParse(discountController.text) ?? 0;});
+  }
 
   @override
   void initState() {
     super.initState();
     formState = GlobalKey<FormState>();
-    codeController = TextEditingController(text: widget.product?.code);
-    nameController = TextEditingController(text: widget.product?.name);
-    descriptionController = TextEditingController(text: widget.product?.description);
-    displayController = TextEditingController(text: widget.product?.display);
-    tagsController = TextEditingController(text: widget.product?.tags);
+    setFields();
+  }
+
+  @override
+  void didUpdateWidget(ProductForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setFields();
   }
 
   String? isCodeValid(String? code) => code != null
@@ -54,8 +70,14 @@ class _ProductFormState extends State<ProductForm> {
           : 'Ops! O nome de exibição precisa ter de 3 a 70 caracteres'
       : 'Ops! Precisamos de um nome para esse produto ser mostrado aos seus clientes.';
 
+  String? isPriceValid(String? name) => name != null
+      ? name.length >= 0
+          ? null
+          : 'Ops! O preço é inválido'
+      : 'Ops! O preço é inválido.';
+
   Widget get firstRow => Padding(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.only(bottom: 20),
         child: Flex(
           direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
           children: [
@@ -68,7 +90,7 @@ class _ProductFormState extends State<ProductForm> {
                 decoration: InputDecoration(labelText: 'Código', helperText: 'Código do produto'),
               ),
             ),
-            SizedBox(width: isWidthSmall(context) ? 0 : 10, height: isWidthSmall(context) ? 10 : 0),
+            SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
             Expanded(
               flex: isWidthSmall(context) ? 0 : 70,
               child: TextFormField(
@@ -83,7 +105,7 @@ class _ProductFormState extends State<ProductForm> {
       );
 
   Widget get secondRow => Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
+        padding: const EdgeInsets.only(bottom: 20.0),
         child: TextFormField(
           controller: descriptionController,
           maxLines: 3,
@@ -93,7 +115,7 @@ class _ProductFormState extends State<ProductForm> {
       );
 
   Widget get thirdRow => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 20),
         child: Flex(
           direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
           children: [
@@ -106,7 +128,7 @@ class _ProductFormState extends State<ProductForm> {
                 decoration: InputDecoration(labelText: 'Nome de exibição', helperText: 'O nome que irá aparecer para seus clientes'),
               ),
             ),
-            SizedBox(width: isWidthSmall(context) ? 0 : 10, height: isWidthSmall(context) ? 10 : 0),
+            SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
             Expanded(
               flex: isWidthSmall(context) ? 0 : 50,
               child: TextFormField(
@@ -119,31 +141,78 @@ class _ProductFormState extends State<ProductForm> {
         ),
       );
 
+  Widget get fourthRow => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Flex(
+          direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
+          children: [
+            Expanded(
+              flex: isWidthSmall(context) ? 0 : 33,
+              child: TextFormField(
+                controller: priceController,
+                validator: isPriceValid,
+                decoration: InputDecoration(
+                  labelText: 'Custo', helperText: 'O valor qur você investe para produzir esse produto',
+                  prefix: Text('R\$   ')
+                ),
+              ),
+            ),
+            SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
+            Expanded(
+              flex: isWidthSmall(context) ? 0 : 33,
+              child: TextFormField(
+                controller: valueController,
+                validator: isPriceValid,
+                decoration: InputDecoration(
+                  labelText: 'Preço de venda', helperText: 'O preço que você venderá esses produtos',
+                  prefix: Text('R\$   ')
+                ),
+              ),
+            ),
+            SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
+            Expanded(
+              flex: isWidthSmall(context) ? 0 : 33,
+              child: TextFormField(
+                controller: discountController,
+                validator: isPriceValid,
+                decoration: InputDecoration(
+                  labelText: 'Desconto máximo', helperText: 'O máximo de desconto que pode ser aplicado a esse produto',
+                  suffix: Text('%')
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
   Widget get formActions => Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          MainButton(
-            label: 'Salvar',
-            loadingLabel: 'Salvando...',
-            isLoading: widget.submitStatus == LoadStatus.LOADING,
-            onTap: () {
-              formState.currentState!.validate();
-            },
+          Expanded(
+            child: MainButton(
+              label: 'Salvar',
+              loadingLabel: 'Salvando...',
+              isLoading: widget.submitStatus == LoadStatus.LOADING,
+              onTap: () {
+                if (formState.currentState!.validate()){
+                  widget.onSubmit();
+                }
+              },
+            ),
           ),
         ],
       );
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      key: formState,
-      child: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [firstRow, secondRow, thirdRow, formActions],
-          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formState,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [firstRow, secondRow, thirdRow, fourthRow, formActions],
         ),
       ),
     );
