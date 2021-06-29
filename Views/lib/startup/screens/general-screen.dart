@@ -53,7 +53,7 @@ class LayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var padding = EdgeInsets.only(left: Core.isWidthSmall(context) ? 7 : 80, right: 7);
+    var padding = EdgeInsets.only(left: Core.isWidthSmall(context) ? 7 : 80, right: 7, bottom: Core.isWidthSmall(context) ? 80 : 7);
     var menu = Hero(child: MenuWidget(), tag: 'Menu');
     return SafeArea(
       child: Scaffold(

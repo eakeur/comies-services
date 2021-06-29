@@ -3,24 +3,24 @@ import 'dart:convert';
 import 'package:comies/core.dart';
 
 class Product extends DataModel {
-  final String storeId;
-  final bool active;
-  final String creationDate;
-  final String id;
-  final String code;
-  final String name;
-  final String display;
-  final String description;
-  final int sellUnity;
-  final double minimum;
-  final String? categoryId;
-  final String? stockId;
-  final String tags;
-  final double discount;
-  final double price;
-  final double value;
-  final int type;
-  
+  String? storeId;
+  bool? active;
+  DateTime? creationDate;
+  String? id;
+  String? code;
+  String? name;
+  String? display;
+  String? description;
+  int? sellUnity;
+  double? minimum;
+  String? categoryId;
+  String? stockId;
+  String tags;
+  double? discount;
+  double? price;
+  double? value;
+  int type;
+
   Product({
     required this.storeId,
     required this.active,
@@ -32,8 +32,8 @@ class Product extends DataModel {
     required this.description,
     required this.sellUnity,
     required this.minimum,
-     this.categoryId,
-     this.stockId,
+    this.categoryId,
+    this.stockId,
     required this.tags,
     required this.discount,
     required this.price,
@@ -44,7 +44,7 @@ class Product extends DataModel {
   Product copyWith({
     String? storeId,
     bool? active,
-    String? creationDate,
+    DateTime? creationDate,
     String? id,
     String? code,
     String? name,
@@ -81,11 +81,15 @@ class Product extends DataModel {
     );
   }
 
+  Product.empty({
+    this.storeId = '', this.active = false, 
+    required this.creationDate, this.id = '', this.code = '', this.name = '', this.display = '', this.description = '', this.sellUnity = 0, this.minimum = 0, this.categoryId = '', this.stockId = '', this.tags = '', this.discount = 0, this.price = 0, this.value = 0, this.type = 0});
+
   Map<String, dynamic> toMap() {
     return {
       'storeId': storeId,
       'active': active,
-      'creationDate': creationDate,
+      'creationDate': creationDate?.toIso8601String(),
       'id': id,
       'code': code,
       'name': name,
@@ -107,7 +111,7 @@ class Product extends DataModel {
     return Product(
       storeId: map['storeId'],
       active: map['active'],
-      creationDate: map['creationDate'],
+      creationDate: DateTime.parse(map['creationDate']),
       id: map['id'],
       code: map['code'],
       name: map['name'],
@@ -137,45 +141,45 @@ class Product extends DataModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Product &&
-      other.storeId == storeId &&
-      other.active == active &&
-      other.creationDate == creationDate &&
-      other.id == id &&
-      other.code == code &&
-      other.name == name &&
-      other.display == display &&
-      other.description == description &&
-      other.sellUnity == sellUnity &&
-      other.minimum == minimum &&
-      other.categoryId == categoryId &&
-      other.stockId == stockId &&
-      other.tags == tags &&
-      other.discount == discount &&
-      other.price == price &&
-      other.value == value &&
-      other.type == type;
+        other.storeId == storeId &&
+        other.active == active &&
+        other.creationDate == creationDate &&
+        other.id == id &&
+        other.code == code &&
+        other.name == name &&
+        other.display == display &&
+        other.description == description &&
+        other.sellUnity == sellUnity &&
+        other.minimum == minimum &&
+        other.categoryId == categoryId &&
+        other.stockId == stockId &&
+        other.tags == tags &&
+        other.discount == discount &&
+        other.price == price &&
+        other.value == value &&
+        other.type == type;
   }
 
   @override
   int get hashCode {
     return storeId.hashCode ^
-      active.hashCode ^
-      creationDate.hashCode ^
-      id.hashCode ^
-      code.hashCode ^
-      name.hashCode ^
-      display.hashCode ^
-      description.hashCode ^
-      sellUnity.hashCode ^
-      minimum.hashCode ^
-      categoryId.hashCode ^
-      stockId.hashCode ^
-      tags.hashCode ^
-      discount.hashCode ^
-      price.hashCode ^
-      value.hashCode ^
-      type.hashCode;
+        active.hashCode ^
+        creationDate.hashCode ^
+        id.hashCode ^
+        code.hashCode ^
+        name.hashCode ^
+        display.hashCode ^
+        description.hashCode ^
+        sellUnity.hashCode ^
+        minimum.hashCode ^
+        categoryId.hashCode ^
+        stockId.hashCode ^
+        tags.hashCode ^
+        discount.hashCode ^
+        price.hashCode ^
+        value.hashCode ^
+        type.hashCode;
   }
 }

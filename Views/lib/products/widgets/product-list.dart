@@ -46,7 +46,7 @@ class ProductViewWidget extends StatelessWidget {
               SizedBox(width: 20),
               Expanded(child: Material(color: Colors.transparent, child: Text(prod.name, style: getMainText()))),
               SizedBox(width: 20),
-              Text('R\$ ${prod.value.toString()}', style: getSubtitleText(), textAlign: TextAlign.right),
+              Text('R\$ ${prod.value.toStringAsFixed(2)}', style: getSubtitleText(), textAlign: TextAlign.right),
             ],
           ),
           Padding(

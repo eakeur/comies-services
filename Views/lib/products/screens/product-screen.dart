@@ -23,30 +23,40 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
   }
 
+  bool get isNew => widget.id == 'new';
+
+  Widget get firstRow => Flex(direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal, children: [
+        Expanded(
+          flex: isWidthSmall(context) ? 0 : 50,
+          child: ValueListenableBuilder<LoadStatus>(
+            valueListenable: controller.productStatus,
+            builder: (context, status, child) {
+              return ProductForm(isNew: isNew, product: controller.product, onSubmit: controller.saveProduct, submitStatus: status);
+            },
+          ),
+        ),
+        Expanded(flex: isWidthSmall(context) ? 0 : 50, child: Center(child: Container(child: Text('Aqui vão informações sobre o estoque')))),
+      ],
+    );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Material(
-          color: Colors.transparent,
-          child: Text(controller.product == null ? widget.name ?? '' : controller.product!.name, style: getPageTitle()),
-        ),
-        bottom: PreferredSize(
-          child: StockLevelWidget(value: 75, message: 'O nível de estoque desse produto relacionado ao seu total'),
-          preferredSize: Size.fromHeight(15),
+      appBar: ProductScreenAppBar(
+        onCopy: controller.copyProduct, onDelete: (){},
+        status: controller.productStatus, isNew: isNew, stockLevel: 75, 
+        name: isNew ? 'Novo produto' : (controller.product != null ? controller.product!.name! : widget.name ?? ''),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: isWidthSmall(context) ? 0 : 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              firstRow,
+            ],
+          ),
         ),
       ),
-      body: ValueListenableBuilder<LoadStatus>(
-        valueListenable: controller.productStatus,
-        builder: (context, status, child){
-          switch (status) {
-            case LoadStatus.LOADING: return Center(child: CircularProgressIndicator());
-            case LoadStatus.FAILED: return Center(child: Text('Ops! Error'));
-            case LoadStatus.START: return Center(child: Text('Ops! start'));
-            case LoadStatus.LOADED: return ProductForm(product: controller.product, isNew: true, onSubmit: (e){}, submitStatus: status);
-          }
-        },
-      )
     );
   }
 }

@@ -37,9 +37,10 @@ class ComiesTheme {
         fillColor: ScreenBG,
         filled: true,
         contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 14),
-        floatingLabelBehavior: FloatingLabelBehavior.never,
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         errorStyle: getHintText(color: ErrorColor),
-        labelStyle: getInputLabelText(color: Grey),
+        labelStyle: getInputLabelText(color: PrimaryColor),
+        helperMaxLines: 2,
         hintStyle: getInputLabelText(color: Grey),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
