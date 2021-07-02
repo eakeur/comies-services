@@ -6,6 +6,6 @@ namespace Comies.Products {
         public Guid Id { get; set; }
         public Guid Parent { get; set; }
         public string Name { get; set; }
-        public IEnumerable<ProductView> Products { get; set; }
+        public string Code { get; set; }
     }
 }

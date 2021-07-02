@@ -62,16 +62,7 @@ namespace Comies.Products {
 
         public Product Save(Product product)
         {
-            if (product.Price <= 0) 
-                throw new ComiesArgumentException(message: "Ops! O produto precisa que o preço seja maior que 0");
-            if (product.Value <= 0)
-                throw new ComiesArgumentException(message: "Ops! O valor do produto deve ser maior que zero");
-            if (product.Code.Length < 3 && product.Code.Length > 6)
-                throw new ComiesArgumentException(message: "Ops! O código do produto precisa ter de 3 a 6 caracteres");
-            if (product.Name.Length < 3 && product.Name.Length > 150) 
-                throw new ComiesArgumentException(message: "Ops! O nome do produto deve ter de 3 a 150 caracteres");
-            if (product.Display.Length < 3 && product.Display.Length > 70) 
-                throw new ComiesArgumentException(message: "Ops! O nome de exibição do produto deve ter de 3 a 70 caracteres");
+            Validate(product);
             product.StoreId = Applicant.StoreId;
             Context.Products.Add(product);
             Context.SaveChanges();
@@ -80,6 +71,14 @@ namespace Comies.Products {
 
         public Product Update(Guid id, Product product)
         {
+            Validate(product);
+            product.Id = id;
+            Context.Products.Update(product);
+            Context.SaveChanges();
+            return product;
+        }
+
+        public void Validate(Product product){
             if (product.Price <= 0) 
                 throw new ComiesArgumentException(message: "Ops! O produto precisa que o preço seja maior que 0");
             if (product.Value <= 0)
@@ -90,10 +89,6 @@ namespace Comies.Products {
                 throw new ComiesArgumentException(message: "Ops! O nome do produto deve ter de 3 a 150 caracteres");
             if (product.Display.Length < 3 && product.Display.Length > 70) 
                 throw new ComiesArgumentException(message: "Ops! O nome de exibição do produto deve ter de 3 a 70 caracteres");
-            product.Id = id;
-            Context.Products.Update(product);
-            Context.SaveChanges();
-            return product;
         }
     }
 }
