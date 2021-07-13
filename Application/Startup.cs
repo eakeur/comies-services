@@ -97,6 +97,8 @@ namespace Comies
             services.AddTransient<SignInManager<ApplicationUser>>();
 
             services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<IStocksService, StocksService>();
 
             
         }

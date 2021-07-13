@@ -27,6 +27,7 @@ dependencies:
   dart_ipify: ^1.0.2
   carousel_slider: ^2.3.1
   shared_preferences: ^2.0.6
+  uuid: 3.0.4
   http: ^0.13.0
   jwt_decoder: 2.0.1
   provider: 5.0.0

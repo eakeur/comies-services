@@ -34,9 +34,9 @@ class _ProductFormState extends State<ProductForm> {
     descriptionController = TextEditingController(text: widget.product?.description)..addListener(() { widget.product?.description = descriptionController.text;});
     displayController = TextEditingController(text: widget.product?.display)..addListener(() { widget.product?.display = displayController.text;});
     tagsController = TextEditingController(text: widget.product?.tags)..addListener(() { widget.product?.tags = tagsController.text;});
-    priceController = TextEditingController(text: widget.product?.price?.toStringAsFixed(2))..addListener(() { widget.product?.price = double.tryParse(priceController.text) ?? 0;});
-    valueController = TextEditingController(text: widget.product?.value?.toStringAsFixed(2))..addListener(() { widget.product?.value = double.tryParse(valueController.text) ?? 0;});
-    discountController = TextEditingController(text: widget.product?.discount?.toStringAsFixed(2))..addListener(() { widget.product?.discount = double.tryParse(discountController.text) ?? 0;});
+    priceController = TextEditingController(text: widget.product?.price?.toStringAsFixed(2))..addListener(() { widget.product?.price = double.tryParse(priceController.text.replaceAll(',', '.')) ?? 0;});
+    valueController = TextEditingController(text: widget.product?.value?.toStringAsFixed(2))..addListener(() { widget.product?.value = double.tryParse(valueController.text.replaceAll(',', '.')) ?? 0;});
+    discountController = TextEditingController(text: widget.product?.discount?.toStringAsFixed(2))..addListener(() { widget.product?.discount = double.tryParse(discountController.text.replaceAll(',', '.')) ?? 0;});
   }
 
   @override

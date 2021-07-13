@@ -12,3 +12,6 @@ final String donut = 'assets/illustrations/donut.png';
 final String popcorn = 'assets/illustrations/popcorn.png';
 final String foodtable = 'assets/illustrations/foodtable.png';
 final String hotdog = 'assets/illustrations/hotdog.png';
+
+
+const String guidEmpty = '00000000-0000-0000-0000-000000000000';

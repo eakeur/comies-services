@@ -11,5 +11,6 @@ namespace Comies.Contracts
         Structure Save(Structure entity);
         Structure Update(Guid id, Structure entity);
         Structure Remove(Guid id);
+        void Validate(Structure entity);
     }
 }

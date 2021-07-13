@@ -19,10 +19,12 @@ namespace Comies.Controllers
 
         private readonly ICategoriesService CategoriesService;
 
+        private readonly IStocksService StocksService;
 
-        public ProductsController(IProductsService productsService, ICategoriesService categoriesService)
+
+        public ProductsController(IProductsService productsService, ICategoriesService categoriesService, IStocksService stocksService)
         {
-            ProductsService = productsService; CategoriesService = categoriesService;
+            ProductsService = productsService; CategoriesService = categoriesService; StocksService = stocksService;
         }
 
 

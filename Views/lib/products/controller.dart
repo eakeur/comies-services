@@ -52,6 +52,8 @@ class ProductController {
           productStatus.value = LoadStatus.LOADING;
           var res = await service.getOne(uniqueID: id, route: '/products');
           if (!res.success) showFeedback(context, title: res.message ?? '', success: res.success);
+          print(res.data['creationDate']);
+          print(res.data['sellUnity']);
           product = Product.fromMap(res.data as Map<String, dynamic>);
         }
       }
@@ -69,7 +71,7 @@ class ProductController {
       if (product != null) {
         productStatus.value = LoadStatus.LOADING;
         ServerResponse res;
-        if (product!.id == null) {
+        if (product!.id == null || product!.id == guidEmpty) {
           res = await service.addOne<Product>(product!, route: '/products');
           productStatus.value = res.success ? LoadStatus.LOADED : LoadStatus.FAILED;
         } else {
@@ -82,7 +84,21 @@ class ProductController {
     productStatus.value = LoadStatus.LOADED;
   }
 
-  void copyProduct() {
-    
+  Future<void> deleteProduct() async {
+    try {
+      if (product != null) {
+        productStatus.value = LoadStatus.LOADING;
+        ServerResponse res;
+        if (product!.id != null) {
+          res = await service.del(route: '/products', uniqueID: product!.id!);
+          productStatus.value = res.success ? LoadStatus.LOADED : LoadStatus.FAILED;
+          showFeedback(context, title: res.message ?? '', success: res.success);
+          Navigator.of(context).pop();
+        }
+      }
+    } catch (e) {}
+    productStatus.value = LoadStatus.LOADED;
   }
+
+  void copyProduct() {}
 }

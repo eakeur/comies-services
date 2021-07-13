@@ -22,7 +22,7 @@ namespace Comies.Products {
 
         public Product GetOne(Guid id)
         {
-            return Context.Products.FirstOrDefault(x => x.Id == id);
+            return Context.Products.FirstOrDefault(x => x.Id == id && x.Active);
         }
 
         public IEnumerable<ProductView> GetSome(ProductFilter filter)
@@ -60,10 +60,12 @@ namespace Comies.Products {
             return prod;
         }
 
+
         public Product Save(Product product)
         {
             Validate(product);
             product.StoreId = Applicant.StoreId;
+            product.Active = true;
             Context.Products.Add(product);
             Context.SaveChanges();
             return product;
@@ -76,6 +78,35 @@ namespace Comies.Products {
             Context.Products.Update(product);
             Context.SaveChanges();
             return product;
+        }
+
+        public Ingredient SaveIngredient(Guid productId, Ingredient ingredient)
+        {
+            ingredient.ProductId = productId;
+            ingredient.Active = true;
+            ingredient.StoreId = Applicant.Id;
+            Context.Ingredients.Add(ingredient);
+            Context.SaveChanges();
+            return ingredient;
+        }
+        public Ingredient RemoveIngredient(Guid id)
+        {
+            var prod = Context.Ingredients.FirstOrDefault(x => x.Id == id);
+            if (prod != null){
+                prod.Active = false;
+                Context.Ingredients.Remove(prod);
+                Context.SaveChanges();
+            }
+            return prod;
+        }
+
+        public Ingredient UpdateIngredient(Guid productId, Ingredient ingredient)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Ingredient> GetAllIngredients(Guid productId){
+            return Context.Ingredients.Where(x => x.ProductId == productId);
         }
 
         public void Validate(Product product){

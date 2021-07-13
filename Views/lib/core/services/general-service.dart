@@ -66,9 +66,9 @@ class Service {
     }
   }
 
-  Future<ServerResponse> del<T extends DataModel>(T data, {String? route, dynamic Function(dynamic)? bodyParser}) async {
+  Future<ServerResponse> del<T>({String? route, required T uniqueID, dynamic Function(dynamic)? bodyParser}) async {
     try {
-      var result = await server.post(Uri.parse(path + (route ?? '')), body: data.toJson(), headers: getHeaders());
+      var result = await server.delete(Uri.parse(path + (route ?? '') + '/' + uniqueID.toString()), headers: getHeaders());
       return mountClientResponse(result, bodyParser);
     } catch (e) {
       print(e);

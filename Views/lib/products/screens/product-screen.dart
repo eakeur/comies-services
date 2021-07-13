@@ -43,7 +43,7 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductScreenAppBar(
-        onCopy: controller.copyProduct, onDelete: (){},
+        onCopy: controller.copyProduct, onDelete: controller.deleteProduct,
         status: controller.productStatus, isNew: isNew, stockLevel: 75, 
         name: isNew ? 'Novo produto' : (controller.product != null ? controller.product!.name! : widget.name ?? ''),
       ),
