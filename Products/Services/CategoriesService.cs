@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Comies.Contracts;
 using System.Linq;
 using System;
-using Comies;
 
 
 namespace Comies.Products {
@@ -14,19 +15,19 @@ namespace Comies.Products {
             Context = context; Applicant = applicant;
         }
 
-        public IEnumerable<CategoryView> GetAll()
+        public Task<IEnumerable<CategoryView>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public ProductCategory GetOne(Guid id)
+        public async Task<ProductCategory> GetOne(Guid id)
         {
-            return Context.ProductsCategories.FirstOrDefault(x => x.Id == id);
+            return await Context.ProductsCategories.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<CategoryView> GetSome(CategoryFilter filter)
+        public async Task<IEnumerable<CategoryView>> GetSome(CategoryFilter filter)
         {
-            return (
+            return await (
                 from p in Context.ProductsCategories
                 where
                     p.Active && p.StoreId == Applicant.StoreId &&
@@ -36,35 +37,35 @@ namespace Comies.Products {
                 select new CategoryView {
                     Id = p.Id, Name = p.Name, Parent = p.ParentId, Code = p.Code
                 }
-            ).Skip(filter.Skip).Take(50).ToList();
+            ).Skip(filter.Skip).Take(50).ToListAsync();
         }
 
-        public ProductCategory Remove(Guid id)
+        public async Task<ProductCategory> Remove(Guid id)
         {
-            var prod = Context.ProductsCategories.FirstOrDefault(x => x.Id == id);
+            var prod = await Context.ProductsCategories.FirstOrDefaultAsync(x => x.Id == id);
             if (prod != null){
                 prod.Active = false;
                 Context.ProductsCategories.Update(prod);
-                Context.SaveChanges();
+                await Context.SaveChangesAsync();
             } else throw new ComiesNotFoundException("Ops! Não foi possível encontrar essa categoria");
             return prod;
         }
 
-        public ProductCategory Save(ProductCategory category)
+        public async Task<ProductCategory> Save(ProductCategory category)
         {
             Validate(category);
             category.StoreId = Applicant.StoreId;
             Context.ProductsCategories.Add(category);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return category;
         }
 
-        public ProductCategory Update(Guid id, ProductCategory category)
+        public async Task<ProductCategory> Update(Guid id, ProductCategory category)
         {
             Validate(category);
             category.Id = id;
             Context.ProductsCategories.Update(category);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return category;
         }
 

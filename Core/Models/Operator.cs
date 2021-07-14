@@ -6,8 +6,7 @@ namespace Comies
 {
     public class Operator : StoreOwnedEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        
 
         [Required(ErrorMessage="Ops! Você precisa informar um nome")]
         [MaxLength(200)]

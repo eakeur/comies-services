@@ -5,9 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Comies {
     public class Profile : StoreOwnedEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-        public Guid Id { get; set; }
-
+        
         [MaxLength(50)]
         public string ProfileName { get; set; }
 

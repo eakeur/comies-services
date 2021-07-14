@@ -26,6 +26,9 @@
     <ProjectReference Include="..\Products\Products.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Customers\Customers.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Authentication\Authentication.csproj" />
   </ItemGroup>
 </Project>

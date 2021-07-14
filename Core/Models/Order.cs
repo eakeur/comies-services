@@ -7,8 +7,7 @@ namespace Comies
 {
     public class Order : StoreOwnedEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        
         public DateTime Placed { get; set; }
         public Status Status { get; set; }
         public PaymentMethod PaymentMethod { get; set; }

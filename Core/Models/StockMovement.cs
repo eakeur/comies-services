@@ -6,8 +6,7 @@ namespace Comies
 {
     public class StockMovement : StoreOwnedEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-		public Guid Id { get; set; }
+        
 		[Required]
 		public Guid StockId { get; set; }
 		

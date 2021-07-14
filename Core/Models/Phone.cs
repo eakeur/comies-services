@@ -5,8 +5,7 @@ namespace Comies
 {
     public class Phone : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        
 
         [MaxLength(2)]
         public string DDD { get; set; }

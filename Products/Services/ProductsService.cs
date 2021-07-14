@@ -1,34 +1,31 @@
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Comies.Contracts;
 using System.Linq;
 using System;
-using Comies;
 
 
 namespace Comies.Products {
-    public class ProductsService : IProductsService
+    public class ProductsService : Service<Product, ProductView, ProductFilter>, IProductsService
     {
-        ComiesContext Context;
-        IAuthenticatedOperator Applicant;
+        // ComiesContext Context;
+        // IAuthenticatedOperator Applicant;
 
-        public ProductsService(ComiesContext context, IAuthenticatedOperator applicant){
-            Context = context; Applicant = applicant;
+        public ProductsService(ComiesContext context, IAuthenticatedOperator applicant): base(context, applicant)
+        {
+            
         }
 
-        public IEnumerable<ProductView> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        // public async Task<Product> GetOne(Guid id)
+        // {
+        //     return await Context.Products.FirstOrDefaultAsync(x => x.Id == id && x.Active);
+        // }
 
-        public Product GetOne(Guid id)
-        {
-            return Context.Products.FirstOrDefault(x => x.Id == id && x.Active);
-        }
-
-        public IEnumerable<ProductView> GetSome(ProductFilter filter)
+        public override async Task<IEnumerable<ProductView>> GetSome(ProductFilter filter)
         {
 
-            return (from p in Context.Products
+            return await (from p in Context.Products
                     join s in Context.Stocks on p.StockId equals s.Id into stocks from stockref in stocks.DefaultIfEmpty()
                     join c in Context.ProductsCategories on p.CategoryId equals c.Id into cats from cat in cats.DefaultIfEmpty()
                     where
@@ -46,70 +43,67 @@ namespace Comies.Products {
                         StockLevel = stockref == null ? 0.00 : Math.Round(stockref.Actual * 100 / stockref.Maximum),
                         CategotyId = p.CategoryId.GetValueOrDefault(),
                         CategoryName = cat.Name
-                    }).ToList();
+                    }).ToListAsync();
         }
 
-        public Product Remove(Guid id)
-        {
-            var prod = Context.Products.FirstOrDefault(x => x.Id == id);
-            if (prod != null){
-                prod.Active = false;
-                Context.Products.Update(prod);
-                Context.SaveChanges();
-            }
-            return prod;
-        }
+        // public async Task<Product> Remove(Guid id)
+        // {
+        //     var prod = await Context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        //     if (prod != null){
+        //         prod.Active = false;
+        //         Context.Products.Update(prod);
+        //         await Context.SaveChangesAsync();
+        //     }
+        //     return prod;
+        // }
 
 
-        public Product Save(Product product)
+        public override async Task<Product> Save(Product product)
         {
             Validate(product);
             product.StoreId = Applicant.StoreId;
             product.Active = true;
-            Context.Products.Add(product);
-            Context.SaveChanges();
-            return product;
+            return await base.Save(product);
         }
 
-        public Product Update(Guid id, Product product)
+        public override async Task<Product> Update(Guid id, Product product)
         {
-            Validate(product);
-            product.Id = id;
-            Context.Products.Update(product);
-            Context.SaveChanges();
-            return product;
+            Validate(product); product.Id = id;
+            return await base.Update(id, product);
         }
 
-        public Ingredient SaveIngredient(Guid productId, Ingredient ingredient)
+        // public Ingredient SaveIngredient(Guid productId, Ingredient ingredient)
+        // {
+        //     ingredient.ProductId = productId;
+        //     ingredient.Active = true;
+        //     ingredient.StoreId = Applicant.Id;
+        //     Context.Ingredients.Add(ingredient);
+        //     await Context.SaveChangesAsync();
+        //     return ingredient;
+        // }
+        // public Ingredient RemoveIngredient(Guid id)
+        // {
+        //     var prod = await Context.Ingredients.FirstOrDefaultAsync(x => x.Id == id);
+        //     if (prod != null){
+        //         prod.Active = false;
+        //         Context.Ingredients.Remove(prod);
+        //         await Context.SaveChangesAsync();
+        //     }
+        //     return prod;
+        // }
+
+        // public Ingredient UpdateIngredient(Guid productId, Ingredient ingredient)
+        // {
+        //     throw new NotImplementedException();
+        // }
+
+        // public IEnumerable<Ingredient> GetAllIngredients(Guid productId){
+        //     return Context.Ingredients.Where(x => x.ProductId == productId);
+        // }
+
+        public override void Validate(Product product)
         {
-            ingredient.ProductId = productId;
-            ingredient.Active = true;
-            ingredient.StoreId = Applicant.Id;
-            Context.Ingredients.Add(ingredient);
-            Context.SaveChanges();
-            return ingredient;
-        }
-        public Ingredient RemoveIngredient(Guid id)
-        {
-            var prod = Context.Ingredients.FirstOrDefault(x => x.Id == id);
-            if (prod != null){
-                prod.Active = false;
-                Context.Ingredients.Remove(prod);
-                Context.SaveChanges();
-            }
-            return prod;
-        }
-
-        public Ingredient UpdateIngredient(Guid productId, Ingredient ingredient)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Ingredient> GetAllIngredients(Guid productId){
-            return Context.Ingredients.Where(x => x.ProductId == productId);
-        }
-
-        public void Validate(Product product){
+            base.Validate(product);
             if (product.Price <= 0) 
                 throw new ComiesArgumentException(message: "Ops! O produto precisa que o preço seja maior que 0");
             if (product.Value <= 0)

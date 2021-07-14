@@ -5,8 +5,7 @@ namespace Comies
 {
     public class OrderItem : StoreOwnedEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        
         public Guid OrderId { get; set; }
         public int Group { get; set; }
         public double Quantity { get; set; }
