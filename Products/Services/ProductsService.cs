@@ -9,18 +9,7 @@ using System;
 namespace Comies.Products {
     public class ProductsService : Service<Product, ProductView, ProductFilter>, IProductsService
     {
-        // ComiesContext Context;
-        // IAuthenticatedOperator Applicant;
-
-        public ProductsService(ComiesContext context, IAuthenticatedOperator applicant): base(context, applicant)
-        {
-            
-        }
-
-        // public async Task<Product> GetOne(Guid id)
-        // {
-        //     return await Context.Products.FirstOrDefaultAsync(x => x.Id == id && x.Active);
-        // }
+        public ProductsService(ComiesContext context, IAuthenticatedOperator applicant): base(context, applicant){}
 
         public override async Task<IEnumerable<ProductView>> GetSome(ProductFilter filter)
         {
@@ -46,60 +35,7 @@ namespace Comies.Products {
                     }).ToListAsync();
         }
 
-        // public async Task<Product> Remove(Guid id)
-        // {
-        //     var prod = await Context.Products.FirstOrDefaultAsync(x => x.Id == id);
-        //     if (prod != null){
-        //         prod.Active = false;
-        //         Context.Products.Update(prod);
-        //         await Context.SaveChangesAsync();
-        //     }
-        //     return prod;
-        // }
-
-
-        public override async Task<Product> Save(Product product)
-        {
-            Validate(product);
-            product.StoreId = Applicant.StoreId;
-            product.Active = true;
-            return await base.Save(product);
-        }
-
-        public override async Task<Product> Update(Guid id, Product product)
-        {
-            Validate(product); product.Id = id;
-            return await base.Update(id, product);
-        }
-
-        // public Ingredient SaveIngredient(Guid productId, Ingredient ingredient)
-        // {
-        //     ingredient.ProductId = productId;
-        //     ingredient.Active = true;
-        //     ingredient.StoreId = Applicant.Id;
-        //     Context.Ingredients.Add(ingredient);
-        //     await Context.SaveChangesAsync();
-        //     return ingredient;
-        // }
-        // public Ingredient RemoveIngredient(Guid id)
-        // {
-        //     var prod = await Context.Ingredients.FirstOrDefaultAsync(x => x.Id == id);
-        //     if (prod != null){
-        //         prod.Active = false;
-        //         Context.Ingredients.Remove(prod);
-        //         await Context.SaveChangesAsync();
-        //     }
-        //     return prod;
-        // }
-
-        // public Ingredient UpdateIngredient(Guid productId, Ingredient ingredient)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
-        // public IEnumerable<Ingredient> GetAllIngredients(Guid productId){
-        //     return Context.Ingredients.Where(x => x.ProductId == productId);
-        // }
+        
 
         public override void Validate(Product product)
         {

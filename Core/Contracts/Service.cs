@@ -37,6 +37,7 @@ namespace Comies.Contracts
         public virtual async Task<Structure> Save(Structure entity)
         {
             Validate(entity);
+            if (entity.GetType() == typeof(StoreOwnedEntity)) entity.GetType().GetProperty("StoreId").SetValue(entity, Applicant.StoreId);
             entity.Active = true;
             Collection.Add(entity);
             await Context.SaveChangesAsync();

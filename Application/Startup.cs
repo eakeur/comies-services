@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Comies.Auth;
-using Comies.Products;
 using Comies.Contracts;
 namespace Comies
 {
@@ -96,11 +95,11 @@ namespace Comies
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<SignInManager<ApplicationUser>>();
 
-            services.AddTransient<IProductsService, ProductsService>();
-            services.AddTransient<ICategoriesService, CategoriesService>();
-            services.AddTransient<IStocksService, StocksService>();
+            services.AddTransient<Products.IProductsService, Products.ProductsService>();
+            services.AddTransient<Products.ICategoriesService, Products.CategoriesService>();
+            services.AddTransient<Products.IStocksService, Products.StocksService>();
+            services.AddTransient<Customers.ICustomersService, Customers.CustomersService>();
 
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
