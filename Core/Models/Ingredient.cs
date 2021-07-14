@@ -3,7 +3,6 @@ namespace Comies
 {
     public class Ingredient : StoreOwnedEntity
     {
-        public Guid Id { get; set; }
         public Guid ProductId { get; set; }
         public Guid IngredientId { get; set; }
         public double Quantity { get; set; }

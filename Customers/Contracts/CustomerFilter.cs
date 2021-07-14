@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Comies.Contracts;
 
-namespace Customers.Contracts
+namespace Comies.Customers
 {
-    class CustomerFilter : IFilter
+    public class CustomerFilter : IFilter
     {
         public int Skip { get; set; }
+
+        public string Name { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

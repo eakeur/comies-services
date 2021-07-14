@@ -7,8 +7,7 @@ namespace Comies
 {
     public class Address : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        
 
         [Required(ErrorMessage="Ops! Precisamos do CEP desse endereço.")]
         [MaxLength(8)]

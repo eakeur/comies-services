@@ -7,8 +7,7 @@ namespace Comies
 {
     public class ProductCategory : StoreOwnedEntity
     {   
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        
 
         [Required(ErrorMessage="Ops! Precisamos do código dessa categoria.")]
         [MaxLength(6, ErrorMessage="Ops! É preciso que o código tenha 6 ou menos caracteres")]

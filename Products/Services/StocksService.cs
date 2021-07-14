@@ -3,7 +3,7 @@ using Comies.Contracts;
 using System.Linq;
 using System;
 using Comies;
-
+using System.Threading.Tasks;
 
 namespace Comies.Products {
     public class StocksService : IStocksService
@@ -63,6 +63,31 @@ namespace Comies.Products {
         public void Validate(Stock entity)
         {
             throw new NotImplementedException(); 
+        }
+
+        Task<Stock> IService<Stock, ProductView, StockFilter>.GetOne(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<ProductView>> IService<Stock, ProductView, StockFilter>.GetSome(StockFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Stock> IService<Stock, ProductView, StockFilter>.Remove(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Stock> IService<Stock, ProductView, StockFilter>.Save(Stock entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Stock> IService<Stock, ProductView, StockFilter>.Update(Guid id, Stock entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
