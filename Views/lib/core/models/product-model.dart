@@ -10,7 +10,7 @@ class Product extends DataModel {
 
   bool? active;
   DateTime? creationDate;
-  
+
   String? code;
   String? name;
   String? display;
@@ -22,7 +22,6 @@ class Product extends DataModel {
   double? price;
   double? value;
   int? type;
-
 
   Product({
     this.storeId,
@@ -44,13 +43,24 @@ class Product extends DataModel {
     this.type,
   });
 
-  Product.empty({
-    this.storeId = guidEmpty, this.active = false, 
-    required this.creationDate, this.id = guidEmpty, this.code = '', this.name = '', this.display = '', this.description = '', this.sellUnity = 0, this.minimum = 0, this.categoryId, this.stockId, this.tags = '', this.discount = 0, this.price = 0, this.value = 0, this.type = 0});
-
-
-  
-  
+  Product.empty(
+      {this.storeId = guidEmpty,
+      this.active = false,
+      required this.creationDate,
+      this.id = guidEmpty,
+      this.code = '',
+      this.name = '',
+      this.display = '',
+      this.description = '',
+      this.sellUnity = 0,
+      this.minimum = 0,
+      this.categoryId,
+      this.stockId,
+      this.tags = '',
+      this.discount = 0,
+      this.price = 0,
+      this.value = 0,
+      this.type = 0});
 
   Product copyWith({
     String? storeId,
@@ -127,11 +137,11 @@ class Product extends DataModel {
       display: map['display'],
       description: map['description'],
       sellUnity: map['sellUnity'],
-      minimum: map['minimum'],
+      minimum: map['minimum'] * 1.00,
       tags: map['tags'],
-      discount: map['discount'],
-      price: map['price'],
-      value: map['value'],
+      discount: map['discount'] * 1.00,
+      price: map['price'] * 1.00,
+      value: map['value'] * 1.00,
       type: map['type'],
     );
   }
@@ -148,45 +158,45 @@ class Product extends DataModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Product &&
-      other.storeId == storeId &&
-      other.id == id &&
-      other.categoryId == categoryId &&
-      other.stockId == stockId &&
-      other.active == active &&
-      other.creationDate == creationDate &&
-      other.code == code &&
-      other.name == name &&
-      other.display == display &&
-      other.description == description &&
-      other.sellUnity == sellUnity &&
-      other.minimum == minimum &&
-      other.tags == tags &&
-      other.discount == discount &&
-      other.price == price &&
-      other.value == value &&
-      other.type == type;
+        other.storeId == storeId &&
+        other.id == id &&
+        other.categoryId == categoryId &&
+        other.stockId == stockId &&
+        other.active == active &&
+        other.creationDate == creationDate &&
+        other.code == code &&
+        other.name == name &&
+        other.display == display &&
+        other.description == description &&
+        other.sellUnity == sellUnity &&
+        other.minimum == minimum &&
+        other.tags == tags &&
+        other.discount == discount &&
+        other.price == price &&
+        other.value == value &&
+        other.type == type;
   }
 
   @override
   int get hashCode {
     return storeId.hashCode ^
-      id.hashCode ^
-      categoryId.hashCode ^
-      stockId.hashCode ^
-      active.hashCode ^
-      creationDate.hashCode ^
-      code.hashCode ^
-      name.hashCode ^
-      display.hashCode ^
-      description.hashCode ^
-      sellUnity.hashCode ^
-      minimum.hashCode ^
-      tags.hashCode ^
-      discount.hashCode ^
-      price.hashCode ^
-      value.hashCode ^
-      type.hashCode;
+        id.hashCode ^
+        categoryId.hashCode ^
+        stockId.hashCode ^
+        active.hashCode ^
+        creationDate.hashCode ^
+        code.hashCode ^
+        name.hashCode ^
+        display.hashCode ^
+        description.hashCode ^
+        sellUnity.hashCode ^
+        minimum.hashCode ^
+        tags.hashCode ^
+        discount.hashCode ^
+        price.hashCode ^
+        value.hashCode ^
+        type.hashCode;
   }
 }

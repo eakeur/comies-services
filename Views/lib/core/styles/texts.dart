@@ -9,11 +9,12 @@ TextStyle getPageTitle({double size = 28, FontWeight weight = FontWeight.w600, C
 TextStyle getButtonText({double size = 16, FontWeight weight = FontWeight.w600, Color? color = White}) {
   return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
 }
-TextStyle getSubtitleText({double size = 20, FontWeight weight = FontWeight.w500, Color? color = White}) {
+
+TextStyle getSubtitleText({double size = 18, FontWeight weight = FontWeight.w500, Color? color = White}) {
   return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
 }
 
-TextStyle getMainText({double size = 18, FontWeight weight = FontWeight.w400, Color? color = White}) {
+TextStyle getMainText({double size = 16, FontWeight weight = FontWeight.w400, Color? color = White}) {
   return GoogleFonts.barlow(fontSize: size, fontWeight: weight, color: color);
 }
 

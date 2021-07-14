@@ -52,8 +52,6 @@ class ProductController {
           productStatus.value = LoadStatus.LOADING;
           var res = await service.getOne(uniqueID: id, route: '/products');
           if (!res.success) showFeedback(context, title: res.message ?? '', success: res.success);
-          print(res.data['creationDate']);
-          print(res.data['sellUnity']);
           product = Product.fromMap(res.data as Map<String, dynamic>);
         }
       }
