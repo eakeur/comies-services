@@ -15,7 +15,7 @@ namespace Comies.Products {
         {
 
             return await (from p in Context.Products
-                    join s in Context.Stocks on p.StockId equals s.Id into stocks from stockref in stocks.DefaultIfEmpty()
+                    join s in Context.Stocks on p.Id equals s.ProductId into stocks from stockref in stocks.DefaultIfEmpty()
                     join c in Context.ProductsCategories on p.CategoryId equals c.Id into cats from cat in cats.DefaultIfEmpty()
                     where
                         p.Active && p.StoreId == Applicant.StoreId &&

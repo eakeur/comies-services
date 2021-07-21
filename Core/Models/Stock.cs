@@ -6,7 +6,6 @@ namespace Comies
 {
     public class Stock : StoreOwnedEntity
     {
-        
         public Guid ProductId { get; set; }
 		public DateTime Date { get; set; }
 		public double Minimum { get; set; }

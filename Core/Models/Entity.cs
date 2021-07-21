@@ -8,7 +8,7 @@ namespace Comies {
         
         [Required(ErrorMessage="É preciso especificar uma loja à qual este item pertence")]
         public Guid StoreId { get; set; }
-        public Store Store { get; set; }
+        public virtual Store Store { get; set; }
     }
 
     public abstract class Entity

@@ -22,8 +22,8 @@ namespace Comies
         public string Color { get; set; }
 
         [MaxLength(200)]
-        public Guid Description { get; set; }
-        public Guid ParentId { get; set; }
+        public string Description { get; set; }
+        public Guid? ParentId { get; set; }
         public virtual ProductCategory Parent { get; set; }
         public virtual IList<ProductCategory> Children { get; set; }
         public virtual IList<Product> Products { get; set; }
