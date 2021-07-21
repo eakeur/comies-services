@@ -19,33 +19,38 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     controller = ProductController(context);
-    controller.loadProduct(widget.id);
+    controller.loadOne(widget.id);
     super.initState();
   }
 
   bool get isNew => widget.id == 'new';
 
-  Widget get firstRow => Flex(direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal, children: [
-        Expanded(
-          flex: isWidthSmall(context) ? 0 : 50,
-          child: ValueListenableBuilder<LoadStatus>(
-            valueListenable: controller.productStatus,
-            builder: (context, status, child) {
-              return ProductForm(isNew: isNew, product: controller.product, onSubmit: controller.saveProduct, submitStatus: status);
-            },
+  Widget get firstRow => Flex(
+        direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
+        children: [
+          Expanded(
+            flex: isWidthSmall(context) ? 0 : 50,
+            child: ValueListenableBuilder<LoadStatus>(
+              valueListenable: controller.status,
+              builder: (context, status, child) {
+                return ProductForm(isNew: isNew, product: controller.model, onSubmit: controller.save, submitStatus: status);
+              },
+            ),
           ),
-        ),
-        Expanded(flex: isWidthSmall(context) ? 0 : 50, child: Center(child: Container(child: Text('Aqui vão informações sobre o estoque')))),
-      ],
-    );
+          Expanded(flex: isWidthSmall(context) ? 0 : 50, child: Center(child: Container(child: Text('Aqui vão informações sobre o estoque')))),
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductScreenAppBar(
-        onCopy: controller.copyProduct, onDelete: controller.deleteProduct,
-        status: controller.productStatus, isNew: isNew, stockLevel: 75, 
-        name: isNew ? 'Novo produto' : (controller.product != null ? controller.product!.name! : widget.name ?? ''),
+        onCopy: controller.copyProduct,
+        onDelete: controller.delete,
+        status: controller.status,
+        isNew: isNew,
+        stockLevel: 75,
+        name: isNew ? 'Novo produto' : (controller.model != null ? controller.model!.name! : widget.name ?? ''),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: isWidthSmall(context) ? 0 : 20),

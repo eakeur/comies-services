@@ -42,11 +42,11 @@ class ProductViewWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(prod.code, style: getSubtitleText()),
+              Text(getTextView(prod.code), style: getSubtitleText()),
               SizedBox(width: 20),
-              Expanded(child: Material(color: Colors.transparent, child: Text(prod.name, style: getMainText()))),
+              Expanded(child: Material(color: Colors.transparent, child: Text(getTextView(prod.name), style: getMainText()))),
               SizedBox(width: 20),
-              Text('R\$ ${prod.value.toStringAsFixed(2)}', style: getSubtitleText(), textAlign: TextAlign.right),
+              Text('R\$ ${getCurrencyView(prod.value)}', style: getSubtitleText(), textAlign: TextAlign.right),
             ],
           ),
           Padding(

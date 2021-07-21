@@ -2,147 +2,137 @@ import 'dart:convert';
 
 import 'package:comies/core.dart';
 
-class Product extends DataModel {
-  String? storeId;
-  String? id;
+class Product implements StoreOwnedEntity {
   String? categoryId;
   String? stockId;
-
-  bool? active;
-  DateTime? creationDate;
-
+  String? tags;
   String? code;
   String? name;
   String? display;
   String? description;
-  int? sellUnity;
+
   double? minimum;
-  String? tags;
   double? discount;
   double? price;
   double? value;
+
   int? type;
 
+  int? sellUnity;
+
+  @override
+  bool? active;
+
+  @override
+  DateTime? creationDate;
+
+  @override
+  String? id;
+
+  @override
+  String? storeId;
+
   Product({
-    this.storeId,
-    this.id,
     this.categoryId,
     this.stockId,
-    this.active,
-    this.creationDate,
+    this.tags,
     this.code,
     this.name,
     this.display,
     this.description,
-    this.sellUnity,
     this.minimum,
-    this.tags,
     this.discount,
     this.price,
     this.value,
     this.type,
+    this.sellUnity,
+    this.active,
+    this.creationDate,
+    this.id,
+    this.storeId,
   });
 
-  Product.empty(
-      {this.storeId = guidEmpty,
-      this.active = false,
-      required this.creationDate,
-      this.id = guidEmpty,
-      this.code = '',
-      this.name = '',
-      this.display = '',
-      this.description = '',
-      this.sellUnity = 0,
-      this.minimum = 0,
-      this.categoryId,
-      this.stockId,
-      this.tags = '',
-      this.discount = 0,
-      this.price = 0,
-      this.value = 0,
-      this.type = 0});
-
   Product copyWith({
-    String? storeId,
-    String? id,
     String? categoryId,
     String? stockId,
-    bool? active,
-    DateTime? creationDate,
+    String? tags,
     String? code,
     String? name,
     String? display,
     String? description,
-    int? sellUnity,
     double? minimum,
-    String? tags,
     double? discount,
     double? price,
     double? value,
     int? type,
+    int? sellUnity,
+    bool? active,
+    DateTime? creationDate,
+    String? id,
+    String? storeId,
   }) {
     return Product(
-      storeId: storeId ?? this.storeId,
-      id: id ?? this.id,
       categoryId: categoryId ?? this.categoryId,
       stockId: stockId ?? this.stockId,
-      active: active ?? this.active,
-      creationDate: creationDate ?? this.creationDate,
+      tags: tags ?? this.tags,
       code: code ?? this.code,
       name: name ?? this.name,
       display: display ?? this.display,
       description: description ?? this.description,
-      sellUnity: sellUnity ?? this.sellUnity,
       minimum: minimum ?? this.minimum,
-      tags: tags ?? this.tags,
       discount: discount ?? this.discount,
       price: price ?? this.price,
       value: value ?? this.value,
       type: type ?? this.type,
+      sellUnity: sellUnity ?? this.sellUnity,
+      active: active ?? this.active,
+      creationDate: creationDate ?? this.creationDate,
+      id: id ?? this.id,
+      storeId: storeId ?? this.storeId,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'storeId': storeId,
-      'id': id,
       'categoryId': categoryId,
       'stockId': stockId,
-      'active': active,
-      'creationDate': creationDate?.toIso8601String(),
+      'tags': tags,
       'code': code,
       'name': name,
       'display': display,
       'description': description,
-      'sellUnity': sellUnity,
-      'minimum': minimum,
-      'tags': tags,
-      'discount': discount,
-      'price': price,
-      'value': value,
-      'type': type,
+      'minimum': minimum ?? 0,
+      'discount': discount ?? 0,
+      'price': price ?? 0,
+      'value': value ?? 0,
+      'type': type ?? 0,
+      'sellUnity': sellUnity ?? 0,
+      'active': active ?? false,
+      'creationDate': creationDate?.toIso8601String(),
+      'id': id,
+      'storeId': storeId,
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      storeId: map['storeId'],
-      id: map['id'],
       categoryId: map['categoryId'],
       stockId: map['stockId'],
-      active: map['active'],
-      creationDate: DateTime.parse(map['creationDate']),
+      tags: map['tags'],
       code: map['code'],
       name: map['name'],
       display: map['display'],
       description: map['description'],
-      sellUnity: map['sellUnity'],
       minimum: map['minimum'] * 1.00,
-      tags: map['tags'],
       discount: map['discount'] * 1.00,
       price: map['price'] * 1.00,
       value: map['value'] * 1.00,
       type: map['type'],
+      sellUnity: map['sellUnity'],
+      active: map['active'],
+      creationDate: DateTime.parse(map['creationDate']),
+      id: map['id'],
+      storeId: map['storeId'],
     );
   }
 
@@ -152,7 +142,7 @@ class Product extends DataModel {
 
   @override
   String toString() {
-    return 'Product(storeId: $storeId, id: $id, categoryId: $categoryId, stockId: $stockId, active: $active, creationDate: $creationDate, code: $code, name: $name, display: $display, description: $description, sellUnity: $sellUnity, minimum: $minimum, tags: $tags, discount: $discount, price: $price, value: $value, type: $type)';
+    return 'Product(categoryId: $categoryId, stockId: $stockId, tags: $tags, code: $code, name: $name, display: $display, description: $description, minimum: $minimum, discount: $discount, price: $price, value: $value, type: $type, sellUnity: $sellUnity, active: $active, creationDate: $creationDate, id: $id, storeId: $storeId)';
   }
 
   @override
@@ -160,43 +150,43 @@ class Product extends DataModel {
     if (identical(this, other)) return true;
 
     return other is Product &&
-        other.storeId == storeId &&
-        other.id == id &&
         other.categoryId == categoryId &&
         other.stockId == stockId &&
-        other.active == active &&
-        other.creationDate == creationDate &&
+        other.tags == tags &&
         other.code == code &&
         other.name == name &&
         other.display == display &&
         other.description == description &&
-        other.sellUnity == sellUnity &&
         other.minimum == minimum &&
-        other.tags == tags &&
         other.discount == discount &&
         other.price == price &&
         other.value == value &&
-        other.type == type;
+        other.type == type &&
+        other.sellUnity == sellUnity &&
+        other.active == active &&
+        other.creationDate == creationDate &&
+        other.id == id &&
+        other.storeId == storeId;
   }
 
   @override
   int get hashCode {
-    return storeId.hashCode ^
-        id.hashCode ^
-        categoryId.hashCode ^
+    return categoryId.hashCode ^
         stockId.hashCode ^
-        active.hashCode ^
-        creationDate.hashCode ^
+        tags.hashCode ^
         code.hashCode ^
         name.hashCode ^
         display.hashCode ^
         description.hashCode ^
-        sellUnity.hashCode ^
         minimum.hashCode ^
-        tags.hashCode ^
         discount.hashCode ^
         price.hashCode ^
         value.hashCode ^
-        type.hashCode;
+        type.hashCode ^
+        sellUnity.hashCode ^
+        active.hashCode ^
+        creationDate.hashCode ^
+        id.hashCode ^
+        storeId.hashCode;
   }
 }
