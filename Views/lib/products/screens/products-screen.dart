@@ -17,14 +17,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState() {
     controller = ProductController(context);
-    controller.loadProducts();
+    controller.loadMany();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(tooltip: 'Adicionar produto', child: Icon(Icons.add), onPressed: () => Navigator.pushNamed(context, '/products/new', arguments: '')),
       appBar: AppBar(title: Text('Produtos', style: getPageTitle())),
       body: Padding(
@@ -33,14 +33,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
           flexes: [30, 70],
           children: [
             ValueListenableBuilder<LoadStatus>(
-              valueListenable: controller.productsListStatus,
+              valueListenable: controller.listStatus,
               builder: (context, status, child) {
                 if (status == LoadStatus.LOADED)
                   return Card(
                       child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: ProductsList(
-                        products: controller.products,
+                        products: controller.list,
                         onTap: (prod) {
                           Navigator.pushNamed(context, '/products/${prod.id}', arguments: prod.name);
                         }),

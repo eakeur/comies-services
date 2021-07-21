@@ -29,14 +29,14 @@ class _ProductFormState extends State<ProductForm> {
   late GlobalKey<FormState> formState;
 
   void setFields() {
-    codeController = TextEditingController(text: widget.product?.code)..addListener(() { widget.product?.code = codeController.text;});
-    nameController = TextEditingController(text: widget.product?.name)..addListener(() { widget.product?.name = nameController.text;});
-    descriptionController = TextEditingController(text: widget.product?.description)..addListener(() { widget.product?.description = descriptionController.text;});
-    displayController = TextEditingController(text: widget.product?.display)..addListener(() { widget.product?.display = displayController.text;});
-    tagsController = TextEditingController(text: widget.product?.tags)..addListener(() { widget.product?.tags = tagsController.text;});
-    priceController = TextEditingController(text: widget.product?.price?.toStringAsFixed(2))..addListener(() { widget.product?.price = double.tryParse(priceController.text.replaceAll(',', '.')) ?? 0;});
-    valueController = TextEditingController(text: widget.product?.value?.toStringAsFixed(2))..addListener(() { widget.product?.value = double.tryParse(valueController.text.replaceAll(',', '.')) ?? 0;});
-    discountController = TextEditingController(text: widget.product?.discount?.toStringAsFixed(2))..addListener(() { widget.product?.discount = double.tryParse(discountController.text.replaceAll(',', '.')) ?? 0;});
+    codeController = TextEditingController(text: getTextView(widget.product?.code))..addListener(() => widget.product?.code = getTextValue(codeController.text));
+    nameController = TextEditingController(text: getTextView(widget.product?.name))..addListener(() => widget.product?.name = getTextValue(nameController.text));
+    descriptionController = TextEditingController(text: getTextView(widget.product?.description))..addListener(() => widget.product?.description = getTextValue(descriptionController.text));
+    displayController = TextEditingController(text: getTextView(widget.product?.display))..addListener(() => widget.product?.display = getTextValue(displayController.text));
+    tagsController = TextEditingController(text: getTextView(widget.product?.tags))..addListener(() => widget.product?.tags = getTextValue(tagsController.text));
+    priceController = TextEditingController(text: getCurrencyView(widget.product?.price))..addListener(() => widget.product?.price = getDoubleValue(priceController.text));
+    valueController = TextEditingController(text: getCurrencyView(widget.product?.value))..addListener(() => widget.product?.value = getDoubleValue(valueController.text));
+    discountController = TextEditingController(text: getCurrencyView(widget.product?.discount))..addListener(() => widget.product?.discount = getDoubleValue(discountController.text));
   }
 
   @override
@@ -151,10 +151,7 @@ class _ProductFormState extends State<ProductForm> {
               child: TextFormField(
                 controller: priceController,
                 validator: isPriceValid,
-                decoration: InputDecoration(
-                  labelText: 'Custo', helperText: 'O valor qur você investe para produzir esse produto',
-                  prefix: Text('R\$   ')
-                ),
+                decoration: InputDecoration(labelText: 'Custo', helperText: 'O valor qur você investe para produzir esse produto', prefix: Text('R\$   ')),
               ),
             ),
             SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
@@ -163,10 +160,7 @@ class _ProductFormState extends State<ProductForm> {
               child: TextFormField(
                 controller: valueController,
                 validator: isPriceValid,
-                decoration: InputDecoration(
-                  labelText: 'Preço de venda', helperText: 'O preço que você venderá esses produtos',
-                  prefix: Text('R\$   ')
-                ),
+                decoration: InputDecoration(labelText: 'Preço de venda', helperText: 'O preço que você venderá esses produtos', prefix: Text('R\$   ')),
               ),
             ),
             SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
@@ -175,10 +169,7 @@ class _ProductFormState extends State<ProductForm> {
               child: TextFormField(
                 controller: discountController,
                 validator: isPriceValid,
-                decoration: InputDecoration(
-                  labelText: 'Desconto máximo', helperText: 'O máximo de desconto que pode ser aplicado a esse produto',
-                  suffix: Text('%')
-                ),
+                decoration: InputDecoration(labelText: 'Desconto máximo', helperText: 'O máximo de desconto que pode ser aplicado a esse produto', suffix: Text('%')),
               ),
             ),
           ],
@@ -194,7 +185,7 @@ class _ProductFormState extends State<ProductForm> {
               loadingLabel: 'Salvando...',
               isLoading: widget.submitStatus == LoadStatus.LOADING,
               onTap: () {
-                if (formState.currentState!.validate()){
+                if (formState.currentState!.validate()) {
                   widget.onSubmit();
                 }
               },

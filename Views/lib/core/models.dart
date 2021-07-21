@@ -1,10 +1,4 @@
-export 'models/conntype.dart';
-export 'models/screensize.dart';
-export 'models/route.dart';
-export 'models/datamodel.dart';
-export 'models/serverresponse.dart';
-export 'models/filtermodel.dart';
 export 'models/authentication-parameters.dart';
-export 'models/returntype.dart';
-export 'models/loadstatus.dart';
-export 'models/product-model.dart';
+export 'models/product.dart';
+export 'models/category.dart';
+export 'models/entity.dart';

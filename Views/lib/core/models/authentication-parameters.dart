@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'datamodel.dart';
+import 'package:comies/core.dart';
 
 class AuthenticationParameters implements DataModel {
   final String nickname;
@@ -45,10 +45,8 @@ class AuthenticationParameters implements DataModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is AuthenticationParameters &&
-      other.nickname == nickname &&
-      other.password == password;
+
+    return other is AuthenticationParameters && other.nickname == nickname && other.password == password;
   }
 
   @override
