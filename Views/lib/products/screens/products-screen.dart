@@ -24,7 +24,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(tooltip: 'Adicionar produto', child: Icon(Icons.add), onPressed: () => Navigator.pushNamed(context, '/products/new', arguments: '')),
       appBar: AppBar(title: Text('Produtos', style: getPageTitle())),
       body: Padding(

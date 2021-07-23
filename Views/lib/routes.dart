@@ -49,7 +49,15 @@ List<Route> routes = [
     path: '/customers',
     name: 'Clientes',
     icon: Icons.people_rounded,
-    screen: HomeScreen(),
+    screen: CustomersScreen(),
     segments: 1,
+  ),
+    Route(
+    path: '/customers',
+    name: 'Detalhes do cliente',
+    icon: Icons.people_rounded,
+    segments: 2,
+    showmenu: false,
+    builder: (settings, uri) => CustomerScreen(id: uri.pathSegments[1], name: (settings.arguments ?? '') as String),
   ),
 ];
