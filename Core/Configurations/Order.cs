@@ -10,10 +10,8 @@ namespace Comies.ModelsSettings
             builder.HasKey(op => op.Id);
 
             builder.Property(op => op.Placed).IsRequired(true);
-            builder.Property(op => op.CostumerId).IsRequired(true);
-            builder.Property(op => op.AddressId).IsRequired(true).HasMaxLength(10);
 
-            builder.HasIndex(i => new { i.CostumerId, i.StoreId, i.Placed }).IsUnique();
+            builder.HasIndex(i => new { i.CustomerId, i.StoreId, i.Placed }).IsUnique();
         }
     }
 }

@@ -12,14 +12,15 @@ namespace Comies
         public Status Status { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public DeliverType DeliverType { get; set; }
-        public Guid AddressId { get; set; }
-        public Guid CostumerId { get; set; }
+        public Guid? AddressId { get; set; }
+        public Guid? CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public Guid OperatorId { get; set; }
         public decimal Price { get; set; }
         public decimal FinalPrice { get; set; }
         public virtual Operator Operator { get; set; }
         public virtual Address Address { get; set; }
-        public virtual Costumer Costumer { get; set; }
+        public virtual Customer Costumer { get; set; }
         public virtual IList<OrderItem> OrderItems { get; set; }
 
     }
