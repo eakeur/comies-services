@@ -7,7 +7,7 @@ using System;
 
 
 namespace Comies.Customers {
-    public class CustomersService : Service<Costumer, CustomerView, CustomerFilter>, ICustomersService
+    public class CustomersService : ServiceBase<Costumer, CustomerView, CustomerFilter>, ICustomersService
     {
         public CustomersService(ComiesContext context, IAuthenticatedOperator applicant): base(context, applicant) {}
 

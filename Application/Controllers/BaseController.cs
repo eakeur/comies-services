@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Comies.Controllers
 {
     [ApiController]
-    public class BaseController<Structure, View, FilterType> : ControllerBase where View : class where Structure : Entity where FilterType : IFilter
+    public class BaseController<Structure, View, FilterType> : Microsoft.AspNetCore.Mvc.ControllerBase where View : class where Structure : Entity where FilterType : IFilter
     {
         protected readonly IService<Structure, View, FilterType> Service;
         public BaseController(IService<Structure, View, FilterType> service) 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Comies.Contracts
 {
-    public abstract class Service<Structure, View, FilterType> : IService<Structure, View, FilterType> where View : class where Structure : Entity where FilterType : IFilter
+    public abstract class ServiceBase<Structure, View, FilterType> : IService<Structure, View, FilterType> where View : class where Structure : Entity where FilterType : IFilter
     {
 
         public ComiesContext Context { get; set; }
@@ -15,7 +15,7 @@ namespace Comies.Contracts
 
         public IAuthenticatedOperator Applicant { get; set; }
 
-        public Service(ComiesContext context, IAuthenticatedOperator applicant)
+        public ServiceBase(ComiesContext context, IAuthenticatedOperator applicant)
         {
             Context = context; Applicant = applicant; Collection = Context.Set<Structure>();
         }
@@ -26,7 +26,7 @@ namespace Comies.Contracts
         }
         public virtual async Task<Structure> Remove(Guid id)
         {
-            var entity = await Collection.FirstOrDefaultAsync(x => true);
+            var entity = await GetOne(id);
             if (entity != null){
                 entity.Active = false;
                 Collection.Update(entity);
