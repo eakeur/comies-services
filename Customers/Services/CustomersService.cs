@@ -25,20 +25,28 @@ namespace Comies.Customers {
             }).Skip(filter.Skip).Take(50).ToListAsync();
         }
 
+        public override void Validate(Customer product)
+        {
+            base.Validate(product);
+            if (product.Name.Length < 1 && product.Name.Length > 200)
+                throw new ComiesArgumentException(message: "Ops! O nome do cliente deve ter de 1 a 200 caracteres");
+        }
+
         #region Addresses
 
-        public async Task<Address> SaveAddress(Address entity)
+        public async Task<Address> SaveAddress(Address entity, Guid customerId)
         {
             ValidateAddress(entity);
             entity.Active = true;
+            entity.CustomerId = customerId;
             Context.Addresses.Add(entity);
             await Context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<Address> UpdateAddress(Guid id, Address entity)
+        public async Task<Address> UpdateAddress(Guid id, Address entity, Guid customerId)
         {
-            ValidateAddress(entity); entity.Id = id;
+            ValidateAddress(entity); entity.Id = id; entity.CustomerId = customerId;
             Context.Addresses.Update(entity);
             await Context.SaveChangesAsync();
             return entity;
@@ -73,11 +81,53 @@ namespace Comies.Customers {
 
         #endregion
 
-        public override void Validate(Customer product)
+        #region Phones
+
+        public async Task<Phone> SavePhone(Phone entity, Guid customerId)
         {
-            base.Validate(product);
-            if (product.Name.Length < 1 && product.Name.Length > 200) 
-                throw new ComiesArgumentException(message: "Ops! O nome do cliente deve ter de 1 a 200 caracteres");
+            ValidatePhone(entity);
+            entity.Active = true;
+            entity.CustomerId = customerId;
+            Context.Phones.Add(entity);
+            await Context.SaveChangesAsync();
+            return entity;
         }
+
+        public async Task<Phone> UpdatePhone(Guid id, Phone entity, Guid customerId)
+        {
+            ValidatePhone(entity); entity.Id = id; entity.CustomerId = customerId;
+            Context.Phones.Update(entity);
+            await Context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<Phone> RemovePhone(Guid id, Guid customerId)
+        {
+            var entity = await GetPhone(id, customerId);
+            if (entity != null)
+            {
+                entity.Active = false;
+                Context.Phones.Update(entity);
+                await Context.SaveChangesAsync();
+            }
+            return entity;
+        }
+
+        public async Task<Phone> GetPhone(Guid id, Guid customerId)
+        {
+            return await Context.Phones.FirstOrDefaultAsync(x => x.Active && x.Id == id && x.CustomerId == customerId);
+        }
+
+        public async Task<IEnumerable<Phone>> GetPhones(Guid customerId)
+        {
+            return await Context.Phones.Where(x => x.CustomerId == customerId && x.Active).ToListAsync();
+        }
+
+        public void ValidatePhone(Phone entity)
+        {
+            if (entity == null) throw new ComiesArgumentException("Ops! O telefone é inválido.");
+        }
+        
+        #endregion
     }
 }

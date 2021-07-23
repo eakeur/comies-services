@@ -4,7 +4,7 @@ namespace Comies.Controllers
 {
     [ApiController]
     [Route(("api/v1/stocks"))]
-    public class StocksController : BaseController<Stock, ProductView, StockFilter>
+    public class StocksController : BaseController<Stock, ProductView, StockFilter, IStocksService>
     {
         public StocksController(IStocksService service) : base(service) {}
     }
