@@ -64,9 +64,9 @@ namespace Comies.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                throw new Exception();
+                throw ex;
             }
         }
 
@@ -149,12 +149,14 @@ namespace Comies.Controllers
 
         [ApiExplorerSettings(IgnoreApi = true)]
         [NonAction]
-        public async Task<ActionResult<P>> SaveSent<P>(Func<Task<P>> provider, string getterMethodName) where P : Entity
+        public async Task<ActionResult<P>> SaveSent<P>(Func<Task<P>> provider, string getterMethodName, Func<P, object> routeValuesBuilder = null) where P : Entity
         {
             try
             {
                 var structure = await provider();
-                return CreatedAtAction(getterMethodName, new { id = structure.Id }, structure);
+                object routeValues = new { id = structure.Id };
+                if (routeValuesBuilder != null) routeValues = routeValuesBuilder(structure);
+                return CreatedAtAction(getterMethodName, routeValues, structure);
             }
             catch (System.Exception ex)
             {

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace Comies {
     public abstract class StoreOwnedEntity : Entity
@@ -18,7 +19,11 @@ namespace Comies {
         public Entity() { CreationDate = DateTime.Now;}
         public bool Active { get; set; }
         public DateTime CreationDate { get; set; }
+
+        
     }
+
+    
 
 
 }

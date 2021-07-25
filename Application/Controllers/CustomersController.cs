@@ -60,7 +60,7 @@ namespace Comies.Controllers
         [HttpPost("{customerId}/phones")]
         public async Task<ActionResult<Phone>> SavePhone(Guid customerId, Phone structure)
         {
-            return await base.SaveSent<Phone>(() => Service.SavePhone(structure, customerId), "GetPhone");
+            return await base.SaveSent<Phone>(() => Service.SavePhone(structure, customerId), "GetPhone", (p) => new { id = p.Id, customerId = p.CustomerId});
         }
 
         [HttpGet("{customerId}/phones/{id}")]
