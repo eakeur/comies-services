@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Comies.Controllers
 {
     [ApiController]
-    public class BaseController<Structure, View, FilterType> : ControllerBase where View : class where Structure : Entity where FilterType : IFilter
+    public class BaseController<Structure, View, FilterType, ServiceType> : Microsoft.AspNetCore.Mvc.ControllerBase where View : class where Structure : Entity where FilterType : IFilter where ServiceType : IService<Structure, View, FilterType>
     {
-        protected readonly IService<Structure, View, FilterType> Service;
-        public BaseController(IService<Structure, View, FilterType> service) 
-        { 
+        protected readonly ServiceType Service;
+        public BaseController(ServiceType service)
+        {
             Service = service;
         }
 
@@ -39,7 +39,7 @@ namespace Comies.Controllers
 
         [HttpPost]
         public virtual async Task<ActionResult<Structure>> Save(Structure structure)
-        {           
+        {
             try
             {
                 structure = await Service.Save(structure);
@@ -72,7 +72,7 @@ namespace Comies.Controllers
 
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Remove(Guid id)
-        {           
+        {
             try
             {
                 await Service.Remove(id);
@@ -89,8 +89,8 @@ namespace Comies.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult<Structure>> Update(Guid id, Structure entity)
-        {           
+        public virtual async Task<IActionResult> Update(Guid id, Structure entity)
+        {
             try
             {
                 if (id != entity.Id) return BadRequest();
@@ -106,5 +106,99 @@ namespace Comies.Controllers
                 throw new Exception();
             }
         }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
+        public async Task<ActionResult<IEnumerable<P>>> SendSome<P>(Func<Task<IEnumerable<P>>> provider) where P : Entity
+        {
+            try
+            {
+                var list = await provider(); if (list == null) return NotFound();
+                Utils.SetTotalCountHeaders(Response, list.Count());
+                return Ok(list);
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
+        public async Task<ActionResult<P>> SendOne<P>(Func<Task<P>> provider) where P : Entity
+        {
+            try
+            {
+                var structure = await provider();
+                if (structure == null) return NotFound();
+                return Ok(structure);
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
+        public async Task<ActionResult<P>> SaveSent<P>(Func<Task<P>> provider, string getterMethodName) where P : Entity
+        {
+            try
+            {
+                var structure = await provider();
+                return CreatedAtAction(getterMethodName, new { id = structure.Id }, structure);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
+        public async Task<IActionResult> UpdateSent(Func<Task> provider)
+        {
+            try
+            {
+                await provider();
+                return NoContent();
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
+        public async Task<IActionResult> RemoveSent(Func<Task> provider)
+        {
+            try
+            {
+                await provider();
+                return NoContent();
+            }
+            catch (ComiesArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (System.Exception)
+            {
+                throw new Exception();
+            }
+        }
+            
     }
 }

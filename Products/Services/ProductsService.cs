@@ -7,7 +7,7 @@ using System;
 
 
 namespace Comies.Products {
-    public class ProductsService : Service<Product, ProductView, ProductFilter>, IProductsService
+    public class ProductsService : ServiceBase<Product, ProductView, ProductFilter>, IProductsService
     {
         public ProductsService(ComiesContext context, IAuthenticatedOperator applicant): base(context, applicant){}
 

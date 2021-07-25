@@ -11,7 +11,7 @@ namespace Comies {
         {
             builder.ApplyConfiguration(new AddressConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
-            builder.ApplyConfiguration(new CostumerConfiguration());
+            builder.ApplyConfiguration(new CustomerConfiguration());
             builder.ApplyConfiguration(new IngredientConfiguration());
             builder.ApplyConfiguration(new OperatorConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
@@ -35,7 +35,7 @@ namespace Comies {
         }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ProductCategory> ProductsCategories { get; set; }
-        public DbSet<Costumer> Costumers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Order> Orders { get; set; }

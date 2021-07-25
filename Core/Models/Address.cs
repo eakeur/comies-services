@@ -37,8 +37,8 @@ namespace Comies
 
         [MaxLength(50)]
         public string Country { get; set; }
-        public Guid? CostumerId { get; set; }
-        public virtual Costumer Costumer { get; set; }
+        public Guid? CustomerId { get; set; }
+        public virtual Customer Costumer { get; set; }
     }
 
 }

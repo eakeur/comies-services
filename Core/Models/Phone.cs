@@ -12,7 +12,7 @@ namespace Comies
 
         [MaxLength(9)]
         public string Number { get; set; }
-        public Guid? CostumerId { get; set; }
-        public virtual Costumer Costumer { get; set; }
+        public Guid? CustomerId { get; set; }
+        public virtual Customer Costumer { get; set; }
     }
 }

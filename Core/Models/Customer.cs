@@ -5,7 +5,7 @@ using System;
 
 namespace Comies
 {
-    public class Costumer : Entity
+    public class Customer : StoreOwnedEntity
     {
         
         
@@ -14,7 +14,6 @@ namespace Comies
         public string Name { get; set; }
 
         [MaxLength(20)]
-        [MinLength(3)]
         public string Document { get; set; }
         public DateTime MemberSince { get; set; }
         public virtual IList<Address> Addresses { get; set; }
