@@ -20,9 +20,9 @@ class Phone implements Entity {
     this.ddd,
     this.number,
     this.customerId,
-    this.active,
+    this.active = true,
     this.creationDate,
-    this.id,
+    this.id = guidEmpty,
   });
 
   

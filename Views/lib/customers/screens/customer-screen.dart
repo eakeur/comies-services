@@ -1,3 +1,4 @@
+import 'package:comies/components.dart';
 import 'package:comies/core.dart';
 import 'package:comies/customers/controller.dart';
 import 'package:comies/customers/widgets.dart';
@@ -15,6 +16,7 @@ class CustomerScreen extends StatefulWidget {
 
 class _CustomerScreenState extends State<CustomerScreen> {
   late CustomerController controller;
+  late int? editPhoneIndex;
 
   @override
   void initState() {
@@ -25,21 +27,31 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   bool get isNew => widget.id == 'new';
 
-  Widget get firstRow => Flex(
-        direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
-        children: [
-          Expanded(
-            flex: isWidthSmall(context) ? 0 : 50,
-            child: ValueListenableBuilder<LoadStatus>(
-              valueListenable: controller.status,
-              builder: (context, status, child) {
-                return CustomerForm(isNew: isNew, customer: controller.model, onSubmit: controller.save, submitStatus: status);
-              },
-            ),
-          ),
-          Expanded(flex: isWidthSmall(context) ? 0 : 50, child: Center(child: Container(child: Text('Aqui vão informações sobre o telefone')))),
-        ],
-      );
+  Widget get firstRow => ValueListenableBuilder<LoadStatus>(
+      valueListenable: controller.status,
+      builder: (context, status, child) => Flex(
+            direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
+            children: [
+              Expanded(
+                flex: isWidthSmall(context) ? 0 : 50,
+                child: CustomerForm(isNew: isNew, customer: controller.model, onSubmit: controller.save, submitStatus: status),
+              ),
+              Expanded(
+                  flex: isWidthSmall(context) ? 0 : 50,
+                  child: !isNew
+                      ? ValueListenableBuilder<LoadStatus>(
+                          valueListenable: controller.phonesController!.listStatus,
+                          builder: (context, status, child) {
+                            return PhonesWidget(
+                              phones: controller.phonesController?.list,
+                              model: controller.phonesController?.model,
+                              onDelete: controller.phonesController?.delete,
+                              onSave: controller.phonesController?.save,
+                            );
+                          })
+                      : Container(child: Text('Aqui vão informações sobre o telefone'))),
+            ],
+          ));
 
   @override
   Widget build(BuildContext context) {
