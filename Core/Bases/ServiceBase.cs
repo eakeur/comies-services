@@ -22,7 +22,10 @@ namespace Comies.Contracts
         public abstract Task<IEnumerable<View>> GetSome(FilterType filter);
         public virtual async Task<Structure> GetOne(Guid id)
         {
-            return await Collection.FirstOrDefaultAsync(x => x.Active && x.Id == id && (x.GetType().IsSubclassOf(typeof(StoreOwnedEntity)) ? (Guid) x.GetType().GetProperty("StoreId").GetValue(x, null) == Applicant.StoreId : true));
+            var result =  await Collection.FirstOrDefaultAsync(x => x.Active && x.Id == id);
+            if (result != null && typeof(Structure).IsSubclassOf(typeof(StoreOwnedEntity)) && (Guid)result.GetType().GetProperty("StoreId").GetValue(result, null) != Applicant.StoreId)
+                result = null;
+            return result;
         }
         public virtual async Task<Structure> Remove(Guid id)
         {

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Comies.Contracts;
 using System.Linq;
 using System;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Comies.Customers {
     public class CustomersService : ServiceBase<Customer, CustomerView, CustomerFilter>, ICustomersService
@@ -14,7 +14,7 @@ namespace Comies.Customers {
         public override async Task<IEnumerable<CustomerView>> GetSome(CustomerFilter filter)
         {
             
-            return await (from c in Collection
+            var customerPhones =  await (from c in Collection
             join p in Context.Phones on c.Id equals p.CustomerId into phones from phoneref in phones.DefaultIfEmpty()
             where 
                 (string.IsNullOrEmpty(filter.PhoneNumber) || phoneref.Number.StartsWith(filter.PhoneNumber) || phoneref.Number.EndsWith(filter.PhoneNumber)) &&
@@ -23,6 +23,8 @@ namespace Comies.Customers {
             {
                 Id = c.Id, Name = c.Name, Phone = phoneref //$"+55 ({phoneref.DDD}) {phoneref.Number}"
             }).Skip(filter.Skip).Take(50).ToListAsync();
+
+            return customerPhones.Distinct(new CustomerViewEqualityComparer());
         }
 
         public override void Validate(Customer product)
