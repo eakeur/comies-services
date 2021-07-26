@@ -1,3 +1,3 @@
 enum LoadStatus {
-  START, LOADING, LOADED, FAILED
+  LOADING, LOADED, FAILED
 }

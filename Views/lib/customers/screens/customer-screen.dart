@@ -27,31 +27,33 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   bool get isNew => widget.id == 'new';
 
-  Widget get firstRow => ValueListenableBuilder<LoadStatus>(
-      valueListenable: controller.status,
-      builder: (context, status, child) => Flex(
-            direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
-            children: [
-              Expanded(
-                flex: isWidthSmall(context) ? 0 : 50,
-                child: CustomerForm(isNew: isNew, customer: controller.model, onSubmit: controller.save, submitStatus: status),
-              ),
-              Expanded(
-                  flex: isWidthSmall(context) ? 0 : 50,
-                  child: !isNew
-                      ? ValueListenableBuilder<LoadStatus>(
-                          valueListenable: controller.phonesController!.listStatus,
-                          builder: (context, status, child) {
-                            return PhonesWidget(
-                              phones: controller.phonesController?.list,
-                              model: controller.phonesController?.model,
-                              onDelete: controller.phonesController?.delete,
-                              onSave: controller.phonesController?.save,
-                            );
-                          })
-                      : Container(child: Text('Aqui vão informações sobre o telefone'))),
-            ],
-          ));
+  Widget get firstRow => LoadStatusWidget(
+    status: controller.status, 
+    loadWidget: Flex(
+      direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
+      children: [
+        Expanded(
+          flex: isWidthSmall(context) ? 0 : 50,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: CustomerForm(isNew: isNew, customer: controller.model, onSubmit: controller.save, submitStatus: controller.status.value),
+          ),
+        ),
+        if (!isNew && controller.phones != null)
+          Expanded(
+            flex: isWidthSmall(context) ? 0 : 50,
+            child: LoadStatusWidget(
+              status: controller.phones!.listStatus, 
+              loadWidget: Padding(
+                padding: const EdgeInsets.all(10),
+                child: PhonesWidget(controller: controller.phones!)
+              )
+            )
+          ) else Container(child: Text('Aqui vão informações sobre o telefone'),
+        ) ,
+      ],
+    )
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +75,34 @@ class _CustomerScreenState extends State<CustomerScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PhonesContainer extends StatelessWidget {
+  const PhonesContainer({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final CustomerPhonesController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text('Telefones', style: getSubtitleText(size: 16)),
+          ValueListenableBuilder<LoadStatus>(
+            valueListenable: controller.listStatus,
+            builder: (context, status, child) {
+              return PhonesWidget(controller: controller);
+            },
+          ),
+        ],
       ),
     );
   }

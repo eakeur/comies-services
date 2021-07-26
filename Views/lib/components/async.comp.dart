@@ -1,3 +1,46 @@
+import 'package:comies/components.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:comies/core.dart';
+
+class LoadStatusWidget extends StatelessWidget {
+  final Widget loadWidget;
+
+  final Widget? failWidget;
+
+  final Widget? loadingWidget;
+
+  final ValueListenable<LoadStatus> status;
+
+  const LoadStatusWidget({Key? key, required this.status, required this.loadWidget, this.failWidget, this.loadingWidget}) : super(key: key);
+
+  Widget get failWidgetTemplate => ErrorWidget2();
+
+  Widget get loadingWidgetTemplate => Center(child: CircularProgressIndicator());
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<LoadStatus>(
+      valueListenable: status, 
+      builder: (context, value, child){
+        switch (value) {
+          case LoadStatus.LOADED:
+            return loadWidget;
+          case LoadStatus.LOADING:
+            return loadingWidget ?? loadingWidgetTemplate;
+          case LoadStatus.FAILED:
+            return failWidget ?? failWidgetTemplate;
+        }
+      }
+    );
+  }
+}
+
+
+
+
+
+
 // import 'package:comies/utils/declarations/environment.dart';
 // import 'package:comies/structures/structures.dart';
 // import 'package:flutter/material.dart';

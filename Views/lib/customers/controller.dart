@@ -20,13 +20,13 @@ class CustomerController extends GeneralController<Customer, CustomerView, Custo
   @override
   Future<Customer?> loadOne(String? id) async {
     await super.loadOne(id);
-    phonesController = CustomerPhonesController(context, model?.id);
-    await phonesController?.loadOne("new");
-    await phonesController?.loadMany();
+    phones = CustomerPhonesController(context, model?.id);
+    await phones?.loadOne("new");
+    await phones?.loadMany();
     return model;
   }
 
-  CustomerPhonesController? phonesController;
+  CustomerPhonesController? phones;
 }
 
 class CustomerPhonesController extends GeneralController<Phone, Phone, CustomerFilter> {
@@ -43,4 +43,13 @@ class CustomerPhonesController extends GeneralController<Phone, Phone, CustomerF
 
   @override
   Phone Function(Map<String, dynamic> map) viewParser = (map) => Phone.fromMap(map);
+
+  @override
+  bool navigate = false;
+
+  Future<Phone> save() async {
+    var phone = await super.save();
+    super.list.add(phone!);
+    return phone;
+  }
 }

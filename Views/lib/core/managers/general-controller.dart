@@ -10,6 +10,8 @@ abstract class GeneralController<Model extends Entity, View extends DataModel, F
 
   late ValueNotifier<LoadStatus> status;
 
+  late bool navigate;
+
   abstract FilterType filter;
 
   late String route;
@@ -28,8 +30,8 @@ abstract class GeneralController<Model extends Entity, View extends DataModel, F
 
   GeneralController(this.context, this.route) {
     service = getProvider(context).service;
-    listStatus = ValueNotifier<LoadStatus>(LoadStatus.START);
-    status = ValueNotifier<LoadStatus>(LoadStatus.START);
+    listStatus = ValueNotifier<LoadStatus>(LoadStatus.LOADED);
+    status = ValueNotifier<LoadStatus>(LoadStatus.LOADED);
   }
 
   void _setSkipValue() {
@@ -104,7 +106,7 @@ abstract class GeneralController<Model extends Entity, View extends DataModel, F
           res = await service.del(route: route, uniqueID: model!.id!);
           status.value = res.success ? LoadStatus.LOADED : LoadStatus.FAILED;
           showFeedback(context, title: res.message ?? '', success: res.success);
-          Navigator.of(context).pop();
+          if (navigate) Navigator.of(context).pop();
         }
       }
     } catch (e) {}
