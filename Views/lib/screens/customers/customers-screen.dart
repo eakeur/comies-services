@@ -1,10 +1,8 @@
 import 'package:comies/components.dart';
 import 'package:comies/components/layouts/general-list.dart';
 import 'package:comies/core.dart';
-import 'package:comies/customers/controller.dart';
+import 'package:comies/controllers/customers-controller.dart';
 import 'package:flutter/material.dart';
-
-import '../models.dart';
 
 class CustomersScreen extends StatefulWidget {
   const CustomersScreen({Key? key}) : super(key: key);
@@ -26,19 +24,19 @@ class _CustomersScreenState extends State<CustomersScreen> {
   Widget get list => ValueListenableBuilder<LoadStatus>(
         valueListenable: controller.listStatus,
         builder: (context, status, child) {
-          return status == LoadStatus.LOADED ?
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: GeneralList<CustomerView>(
-                  modelList: controller.list,
-                  onTap: (p) => Navigator.pushNamed(context, '/customers/${p.id}', arguments: p.name),
-                  titleGetter: (p) => getTextView(p.name),
-                  subtitleGetter: (p) => '+55 (${getTextView(p.phone?.ddd)}) ${getTextView(p.phone?.number)}',
-                ),
-              ),
-            ) :
-          ErrorWidget2(message: 'Ops! Não encontramos nenhum cliente');
+          return status == LoadStatus.LOADED
+              ? Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: GeneralList<CustomerView>(
+                      modelList: controller.list,
+                      onTap: (p) => Navigator.pushNamed(context, '/customers/${p.id}', arguments: p.name),
+                      titleGetter: (p) => getTextView(p.name),
+                      subtitleGetter: (p) => '+55 (${getTextView(p.phone?.ddd)}) ${getTextView(p.phone?.number)}',
+                    ),
+                  ),
+                )
+              : ErrorWidget2(message: 'Ops! Não encontramos nenhum cliente');
         },
       );
 
@@ -51,10 +49,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: isWidthSmall(context) ? 0 : 20),
         child: ResponsiveWidget(
           flexes: [30, 70],
-          children: [
-            list,
-            Container()
-          ],
+          children: [list, Container()],
         ),
       ),
     );

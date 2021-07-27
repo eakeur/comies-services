@@ -1,6 +1,5 @@
 import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
-import 'models.dart';
 
 class ProductController extends GeneralController<Product, ProductView, ProductFilter> {
   ProductController(BuildContext context) : super(context, '/products');

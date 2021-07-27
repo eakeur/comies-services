@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart' show runApp;
 import 'package:provider/provider.dart' show ChangeNotifierProvider;
 import 'package:comies/core.dart' show ComiesController;
-import 'package:comies/startup/screens.dart' show MainScreen;
+import 'package:comies/screens.dart' show MainScreen;
 
 Future<void> main() async {
   HttpOverrides.global = ComiesHttpOverrides();

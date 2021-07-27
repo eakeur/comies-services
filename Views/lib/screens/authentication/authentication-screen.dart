@@ -1,6 +1,5 @@
-import 'package:comies/authentication/controller.dart';
-import 'package:comies/components/buttons/default-button.dart';
-import 'package:comies/components/buttons/main-button.dart';
+import 'package:comies/components.dart';
+import 'package:comies/controllers.dart';
 import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
 
@@ -30,9 +29,7 @@ class Authentication extends State<AuthenticationScreen> {
         child: Container(
           height: MediaQuery.of(context).size.height * 0.9,
           width: MediaQuery.of(context).size.height * 0.7,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10)
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Form(
@@ -74,18 +71,27 @@ class Authentication extends State<AuthenticationScreen> {
                     padding: const EdgeInsets.only(top: 20),
                     child: Row(
                       children: [
-                        Expanded(flex: 40,
-                          child: DefaultButton(label: 'Registrar', disabled: true, onTap: (){
-                            if (formKey.currentState!.validate()) controller.authenticate(nickname: nickname.text, password: password.text);
-                          }),
+                        Expanded(
+                          flex: 40,
+                          child: DefaultButton(
+                              label: 'Registrar',
+                              disabled: true,
+                              onTap: () {
+                                if (formKey.currentState!.validate()) controller.authenticate(nickname: nickname.text, password: password.text);
+                              }),
                         ),
                         SizedBox(width: 30),
                         ValueListenableBuilder<LoadStatus>(
-                          valueListenable: controller.loadStatus, 
-                          builder: (context, status, child) => Expanded(flex: 60,
-                            child: MainButton(label: 'Entrar', isLoading: status == LoadStatus.LOADING, loadingLabel: 'Entrando...', onTap: (){
-                              if (formKey.currentState!.validate()) controller.authenticate(nickname: nickname.text, password: password.text, remember: keepConnected);
-                            }),
+                          valueListenable: controller.loadStatus,
+                          builder: (context, status, child) => Expanded(
+                            flex: 60,
+                            child: MainButton(
+                                label: 'Entrar',
+                                isLoading: status == LoadStatus.LOADING,
+                                loadingLabel: 'Entrando...',
+                                onTap: () {
+                                  if (formKey.currentState!.validate()) controller.authenticate(nickname: nickname.text, password: password.text, remember: keepConnected);
+                                }),
                           ),
                         )
                       ],

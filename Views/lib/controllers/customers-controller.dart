@@ -1,6 +1,5 @@
 import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
-import 'models.dart';
 
 class CustomerController extends GeneralController<Customer, CustomerView, CustomerFilter> {
   CustomerController(BuildContext context) : super(context, '/customers');

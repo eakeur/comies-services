@@ -1,6 +1,6 @@
-import 'package:comies/components/buttons/main-button.dart';
 import 'package:comies/core.dart';
 import 'package:flutter/material.dart';
+import 'package:comies/components.dart';
 
 class ProductForm extends StatefulWidget {
   final Product? product;

@@ -1,7 +1,6 @@
 import 'package:comies/components.dart';
 import 'package:comies/core.dart';
-import 'package:comies/customers/controller.dart';
-import 'package:comies/customers/widgets.dart';
+import 'package:comies/controllers/customers-controller.dart';
 import 'package:flutter/material.dart';
 
 class CustomerScreen extends StatefulWidget {
@@ -28,32 +27,27 @@ class _CustomerScreenState extends State<CustomerScreen> {
   bool get isNew => widget.id == 'new';
 
   Widget get firstRow => LoadStatusWidget(
-    status: controller.status, 
-    loadWidget: Flex(
-      direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
-      children: [
-        Expanded(
-          flex: isWidthSmall(context) ? 0 : 50,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: CustomerForm(isNew: isNew, customer: controller.model, onSubmit: controller.save, submitStatus: controller.status.value),
-          ),
-        ),
-        if (!isNew && controller.phones != null)
+      status: controller.status,
+      loadWidget: Flex(
+        direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
+        children: [
           Expanded(
             flex: isWidthSmall(context) ? 0 : 50,
-            child: LoadStatusWidget(
-              status: controller.phones!.listStatus, 
-              loadWidget: Padding(
-                padding: const EdgeInsets.all(10),
-                child: PhonesForm(controller: controller.phones!)
-              )
-            )
-          ) else Container(child: Text('Aqui vão informações sobre o telefone'),
-        ) ,
-      ],
-    )
-  );
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomerForm(isNew: isNew, customer: controller.model, onSubmit: controller.save, submitStatus: controller.status.value),
+            ),
+          ),
+          if (!isNew && controller.phones != null)
+            Expanded(
+                flex: isWidthSmall(context) ? 0 : 50,
+                child: LoadStatusWidget(status: controller.phones!.listStatus, loadWidget: Padding(padding: const EdgeInsets.all(10), child: PhonesForm(controller: controller.phones!))))
+          else
+            Container(
+              child: Text('Aqui vão informações sobre o telefone'),
+            ),
+        ],
+      ));
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:comies/core.dart';
-import 'package:comies/products/controller.dart';
-import 'package:comies/products/widgets/widgets.dart';
+import 'package:comies/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:comies/components.dart';
 
 class ProductScreen extends StatefulWidget {
   final String? id;

@@ -1,6 +1,6 @@
 import 'package:comies/components.dart';
 import 'package:comies/core.dart';
-import 'package:comies/customers/controller.dart';
+import 'package:comies/controllers/customers-controller.dart';
 import 'package:flutter/material.dart';
 
 class PhonesForm extends StatefulWidget {
@@ -82,7 +82,8 @@ class _PhonesFormState extends State<PhonesForm> {
               editIndex = e;
             }),
             onCancelAction: (f) => setState(() {
-              editIndex = -1; f.currentState?.reset();
+              editIndex = -1;
+              f.currentState?.reset();
             }),
           )
         ],

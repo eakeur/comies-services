@@ -1,7 +1,7 @@
 import 'package:comies/core.dart' as Core;
 import 'package:comies/routes.dart';
-import 'package:comies/startup/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:comies/components.dart';
 
 class MainScreen extends StatefulWidget {
   @override
