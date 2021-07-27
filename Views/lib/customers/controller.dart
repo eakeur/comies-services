@@ -22,7 +22,7 @@ class CustomerController extends GeneralController<Customer, CustomerView, Custo
     await super.loadOne(id);
     phones = CustomerPhonesController(context, model?.id);
     await phones?.loadOne("new");
-    await phones?.loadMany();
+    await phones?.loadMany(overwrite: true);
     return model;
   }
 

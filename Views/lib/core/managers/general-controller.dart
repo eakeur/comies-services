@@ -38,13 +38,14 @@ abstract class GeneralController<Model extends Entity, View extends DataModel, F
     filter.skip = recordsToSkip;
   }
 
-  Future<List<View>> loadMany({String? localRoute}) async {
+  Future<List<View>> loadMany({String? localRoute, bool overwrite = false}) async {
     ServerResponse res;
     try {
       listStatus.value = LoadStatus.LOADING;
       _setSkipValue();
       res = await service.getMany(filter: filter, route: localRoute ?? route);
       totalRecords = res.records ?? 0;
+      if (overwrite) list = (res.data as List).map((x) => viewParser(x as Map<String, dynamic>)).toList();
       list.addAll((res.data as List).map((x) => viewParser(x as Map<String, dynamic>)));
       listStatus.value = LoadStatus.LOADED;
       return list;

@@ -46,7 +46,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
               status: controller.phones!.listStatus, 
               loadWidget: Padding(
                 padding: const EdgeInsets.all(10),
-                child: PhonesWidget(controller: controller.phones!)
+                child: PhonesForm(controller: controller.phones!)
               )
             )
           ) else Container(child: Text('Aqui vão informações sobre o telefone'),
@@ -99,7 +99,7 @@ class PhonesContainer extends StatelessWidget {
           ValueListenableBuilder<LoadStatus>(
             valueListenable: controller.listStatus,
             builder: (context, status, child) {
-              return PhonesWidget(controller: controller);
+              return PhonesForm(controller: controller);
             },
           ),
         ],

@@ -1,2 +1,2 @@
 export 'widgets/customer-form.dart';
-export 'widgets/phones-widget.dart';
+export 'widgets/phones-form.dart';

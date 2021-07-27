@@ -10,9 +10,11 @@ class LoadStatusWidget extends StatelessWidget {
 
   final Widget? loadingWidget;
 
+  final Widget? initialWidget;
+
   final ValueListenable<LoadStatus> status;
 
-  const LoadStatusWidget({Key? key, required this.status, required this.loadWidget, this.failWidget, this.loadingWidget}) : super(key: key);
+  const LoadStatusWidget({Key? key, required this.status, required this.loadWidget, this.failWidget, this.loadingWidget, this.initialWidget}) : super(key: key);
 
   Widget get failWidgetTemplate => ErrorWidget2();
 
@@ -30,6 +32,8 @@ class LoadStatusWidget extends StatelessWidget {
             return loadingWidget ?? loadingWidgetTemplate;
           case LoadStatus.FAILED:
             return failWidget ?? failWidgetTemplate;
+          case LoadStatus.INITIAL:
+            return initialWidget ?? loadWidget;
         }
       }
     );

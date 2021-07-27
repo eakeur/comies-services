@@ -5,7 +5,7 @@ class AuthenticationController {
   late AuthenticationParameters authenticationParameters;
   late BuildContext context;
   late Service service;
-  final ValueNotifier<LoadStatus> loadStatus = ValueNotifier(LoadStatus.START);
+  final ValueNotifier<LoadStatus> loadStatus = ValueNotifier(LoadStatus.LOADED);
 
   AuthenticationController(this.context) {
     service = getProvider(context).service;

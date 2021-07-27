@@ -3,16 +3,16 @@ import 'package:comies/core.dart';
 import 'package:comies/customers/controller.dart';
 import 'package:flutter/material.dart';
 
-class PhonesWidget extends StatefulWidget {
+class PhonesForm extends StatefulWidget {
   final CustomerPhonesController controller;
 
-  const PhonesWidget({Key? key, required this.controller}) : super(key: key);
+  const PhonesForm({Key? key, required this.controller}) : super(key: key);
 
   @override
-  _PhonesWidgetState createState() => _PhonesWidgetState();
+  _PhonesFormState createState() => _PhonesFormState();
 }
 
-class _PhonesWidgetState extends State<PhonesWidget> {
+class _PhonesFormState extends State<PhonesForm> {
   int editIndex = -1;
 
   CustomerPhonesController get controller => widget.controller;
@@ -70,23 +70,20 @@ class _PhonesWidgetState extends State<PhonesWidget> {
             editIndex: editIndex,
             onSaveAction: () {
               widget.controller.save();
-              widget.controller.list.clear();
-              widget.controller.loadMany();
+              widget.controller.loadMany(overwrite: true);
             },
             onDeleteAction: (m) {
               widget.controller.model = m;
               widget.controller.delete();
-              widget.controller.list.clear();
-              widget.controller.loadMany();
+              widget.controller.loadMany(overwrite: true);
             },
             onEditAction: (e) => setState(() {
               widget.controller.model = widget.controller.list[e];
               editIndex = e;
             }),
-            onCancelAction: (f) {
-              setState(() => editIndex = -1);
-              f.currentState?.reset();
-            },
+            onCancelAction: (f) => setState(() {
+              editIndex = -1; f.currentState?.reset();
+            }),
           )
         ],
       ),
