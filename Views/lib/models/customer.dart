@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:comies/core.dart';
+import 'package:datacontext/datacontext.dart';
 
 class Customer implements Entity {
   String? name;
@@ -21,8 +22,8 @@ class Customer implements Entity {
     this.memberSince,
     this.active = true,
     this.creationDate,
-    this.id  = guidEmpty,
-  });
+    this.id = guidEmpty,
+  }) : phones = DataSet<Phone>(Phone(), route: 'customers/$id/phones');
 
   Customer copyWith({
     String? name,
@@ -53,6 +54,8 @@ class Customer implements Entity {
     };
   }
 
+  Customer fromMap(Map<String, dynamic> map) => Customer.fromMap(map);
+
   factory Customer.fromMap(Map<String, dynamic> map) {
     return Customer(
       name: map['name'],
@@ -76,23 +79,14 @@ class Customer implements Entity {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is Customer &&
-      other.name == name &&
-      other.document == document &&
-      other.memberSince == memberSince &&
-      other.active == active &&
-      other.creationDate == creationDate &&
-      other.id == id;
+
+    return other is Customer && other.name == name && other.document == document && other.memberSince == memberSince && other.active == active && other.creationDate == creationDate && other.id == id;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^
-      document.hashCode ^
-      memberSince.hashCode ^
-      active.hashCode ^
-      creationDate.hashCode ^
-      id.hashCode;
+    return name.hashCode ^ document.hashCode ^ memberSince.hashCode ^ active.hashCode ^ creationDate.hashCode ^ id.hashCode;
   }
+
+  late DataSet<Phone> phones;
 }

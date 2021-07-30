@@ -114,6 +114,8 @@ class Product implements StoreOwnedEntity {
     };
   }
 
+  Product fromMap(Map<String, dynamic> map) => Product.fromMap(map);
+
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
       categoryId: map['categoryId'],

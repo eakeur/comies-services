@@ -1,7 +1,9 @@
 import 'package:comies/components.dart';
 import 'package:comies/core.dart';
-import 'package:comies/controllers/products-controller.dart';
+import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
+
+import 'product-list.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({Key? key}) : super(key: key);
@@ -11,12 +13,12 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
-  late ProductController controller;
+  late DataSet<ProductView> products;
 
   @override
   void initState() {
-    controller = ProductController(context);
-    controller.loadMany();
+    products = getProvider(context).productViews;
+    products.get(filters: ProductFilter().toMap());
     super.initState();
   }
 
@@ -30,21 +32,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
         child: ResponsiveWidget(
           flexes: [30, 70],
           children: [
-            ValueListenableBuilder<LoadStatus>(
-              valueListenable: controller.listStatus,
-              builder: (context, status, child) {
-                if (status == LoadStatus.LOADED)
-                  return Card(
-                      child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: ProductsList(
-                        products: controller.list,
-                        onTap: (prod) {
-                          Navigator.pushNamed(context, '/products/${prod.id}', arguments: prod.name);
-                        }),
-                  ));
-                return Container();
-              },
+            LoadStatusWidget(
+              status: products.loadStatus,
+              initialWidget: (context) => Container(),
+              loadWidget: (context) => Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ProductsList(
+                    products: products.list,
+                    onTap: (prod) => Navigator.pushNamed(context, '/products/${prod.id}', arguments: prod.name)
+                  ),
+                ),
+              ),
             ),
             Container()
           ],

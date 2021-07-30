@@ -25,8 +25,6 @@ class Phone implements Entity {
     this.id = guidEmpty,
   });
 
-  
-
   Phone copyWith({
     String? ddd,
     String? number,
@@ -56,13 +54,15 @@ class Phone implements Entity {
     };
   }
 
+  Phone fromMap(Map<String, dynamic> map) => Phone.fromMap(map);
+
   factory Phone.fromMap(Map<String, dynamic> map) {
     return Phone(
       ddd: map['ddd'],
       number: map['number'],
       customerId: map['customerId'],
       active: map['active'],
-      creationDate: DateTime.tryParse(map['creationDate']??''),
+      creationDate: DateTime.tryParse(map['creationDate'] ?? ''),
       id: map['id'],
     );
   }
@@ -79,23 +79,12 @@ class Phone implements Entity {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is Phone &&
-      other.ddd == ddd &&
-      other.number == number &&
-      other.customerId == customerId &&
-      other.active == active &&
-      other.creationDate == creationDate &&
-      other.id == id;
+
+    return other is Phone && other.ddd == ddd && other.number == number && other.customerId == customerId && other.active == active && other.creationDate == creationDate && other.id == id;
   }
 
   @override
   int get hashCode {
-    return ddd.hashCode ^
-      number.hashCode ^
-      customerId.hashCode ^
-      active.hashCode ^
-      creationDate.hashCode ^
-      id.hashCode;
+    return ddd.hashCode ^ number.hashCode ^ customerId.hashCode ^ active.hashCode ^ creationDate.hashCode ^ id.hashCode;
   }
 }

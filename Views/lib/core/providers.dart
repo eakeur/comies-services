@@ -1,10 +1,11 @@
 import 'package:comies/core.dart';
+import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart' as Constants;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ComiesController extends ChangeNotifier {
+class ComiesController extends DataContext {
   late SharedPreferences session;
   late Service service;
   late String token;
@@ -18,7 +19,7 @@ class ComiesController extends ChangeNotifier {
       if (session.getKeys().isEmpty)
         createSession(context);
       else {
-        if (true /**session.getBool('SETUP') ?? false */ ) {
+        if (true /**session.getBool('SETUP') ?? false */) {
           var token = session.getString('TOKEN');
           if (token == null)
             route = '/auth';
@@ -35,6 +36,8 @@ class ComiesController extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
+      super.
+      changeOrigin(session.getString('URL') ?? Constants.defaultAPIUrl);
       service = Service(context: context);
       Navigator.pushReplacementNamed(context, route);
     }
@@ -54,4 +57,13 @@ class ComiesController extends ChangeNotifier {
   }
 
   String? get operatorName => operatorProperties['unique_name'];
+
+  DataSet<Product> products = DataSet<Product>(Product(), route: '/products');
+  DataSet<ProductView> productViews = DataSet<ProductView>(ProductView(id: Constants.guidEmpty, value: 0, code: '', name: ''), route: '/products');
+
+  DataSet<Customer> customers = DataSet<Customer>(Customer(), route: '/customers');
+  DataSet<CustomerView> customerViews = DataSet<CustomerView>(CustomerView(), route: '/customers');
+
+  @override
+  String origin = '';
 }

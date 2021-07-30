@@ -1,8 +1,7 @@
 import 'dart:convert';
+import 'package:datacontext/datacontext.dart';
 
-import 'package:comies/core.dart';
-
-class CategoryView extends DataModel {
+class CategoryView extends DataClass {
   String? description;
   int? skip;
   String? code;
@@ -43,6 +42,7 @@ class CategoryView extends DataModel {
     };
   }
 
+  CategoryView fromMap(Map<String, dynamic> map) => CategoryView.fromMap(map);
   factory CategoryView.fromMap(Map<String, dynamic> map) {
     return CategoryView(
       description: map['description'],

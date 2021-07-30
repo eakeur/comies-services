@@ -43,6 +43,8 @@ class Category implements StoreOwnedEntity {
     };
   }
 
+  Category fromMap(Map<String, dynamic> map) => Category.fromMap(map);
+
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
       code: map['code'],

@@ -73,6 +73,10 @@ int getNumericValue(String? value) {
   }
 }
 
+Axis getRelativeAxis(BuildContext context) => isWidthSmall(context) ? Axis.vertical : Axis.horizontal;
+
+int getRelativeFlex(BuildContext context, {int small = 0, int big = 50}) => isWidthSmall(context) ? small : big;
+
 void showFeedback(BuildContext context, {required String title, String? details, bool success = true, VoidCallback? action}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

@@ -26,6 +26,7 @@ dependencies:
   path_provider: any
   dart_ipify: ^1.0.2
   carousel_slider: ^2.3.1
+  datacontext: ^1.0.6
   shared_preferences: ^2.0.6
   uuid: 3.0.4
   http: ^0.13.0

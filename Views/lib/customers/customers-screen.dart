@@ -1,7 +1,7 @@
 import 'package:comies/components.dart';
 import 'package:comies/components/layouts/general-list.dart';
 import 'package:comies/core.dart';
-import 'package:comies/controllers/customers-controller.dart';
+import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
 
 class CustomersScreen extends StatefulWidget {
@@ -12,33 +12,31 @@ class CustomersScreen extends StatefulWidget {
 }
 
 class _CustomersScreenState extends State<CustomersScreen> {
-  late CustomerController controller;
+  late DataSet<CustomerView> customers;
 
   @override
   void initState() {
-    controller = CustomerController(context);
-    controller.loadMany();
+    customers = getProvider(context).customerViews;
+    customers.get();
     super.initState();
   }
 
-  Widget get list => ValueListenableBuilder<LoadStatus>(
-        valueListenable: controller.listStatus,
-        builder: (context, status, child) {
-          return status == LoadStatus.LOADED
-              ? Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: GeneralList<CustomerView>(
-                      modelList: controller.list,
-                      onTap: (p) => Navigator.pushNamed(context, '/customers/${p.id}', arguments: p.name),
-                      titleGetter: (p) => getTextView(p.name),
-                      subtitleGetter: (p) => '+55 (${getTextView(p.phone?.ddd)}) ${getTextView(p.phone?.number)}',
-                    ),
-                  ),
-                )
-              : ErrorWidget2(message: 'Ops! Não encontramos nenhum cliente');
-        },
-      );
+  Widget get list {
+    return LoadStatusWidget(
+      status: customers.loadStatus,
+      loadWidget: (context) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: GeneralList<CustomerView>(
+            modelList: customers.data.list,
+            onTap: (p) => Navigator.pushNamed(context, '/customers/${p.id}', arguments: p.name),
+            titleGetter: (p) => getTextView(p.name),
+            subtitleGetter: (p) => '+55 (${getTextView(p.phone?.ddd)}) ${getTextView(p.phone?.number)}',
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

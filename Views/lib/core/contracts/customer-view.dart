@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:comies/core.dart';
+import 'package:datacontext/datacontext.dart';
 
-class CustomerView implements DataModel {
+class CustomerView implements DataClass {
   String? id;
   String? name;
   Phone? phone;
@@ -33,6 +33,7 @@ class CustomerView implements DataModel {
     };
   }
 
+  CustomerView fromMap(Map<String, dynamic> map) => CustomerView.fromMap(map);
   factory CustomerView.fromMap(Map<String, dynamic> map) {
     return CustomerView(
       id: map['id'],

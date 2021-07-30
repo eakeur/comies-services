@@ -6,8 +6,8 @@ export 'screens/home/home-screen.dart';
 
 export 'screens/authentication/authentication-screen.dart';
 
-export 'screens/products/product-screen.dart';
-export 'screens/products/products-screen.dart';
+export 'products/product-screen.dart';
+export 'products/products-screen.dart';
 
-export 'screens/customers/customer-screen.dart';
-export 'screens/customers/customers-screen.dart';
+export 'customers/customer-screen.dart';
+export 'customers/customers-screen.dart';

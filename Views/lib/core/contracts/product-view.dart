@@ -1,8 +1,7 @@
 import 'dart:convert';
+import 'package:datacontext/datacontext.dart';
 
-import 'package:comies/core.dart';
-
-class ProductView implements DataModel {
+class ProductView implements DataClass {
   final String id;
   final String code;
   final String name;
@@ -52,6 +51,7 @@ class ProductView implements DataModel {
     };
   }
 
+  ProductView fromMap(Map<String, dynamic> map) => ProductView.fromMap(map);
   factory ProductView.fromMap(Map<String, dynamic> map) {
     return ProductView(
       id: map['id'],
@@ -76,25 +76,19 @@ class ProductView implements DataModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is ProductView &&
-      other.id == id &&
-      other.code == code &&
-      other.name == name &&
-      other.value == value &&
-      other.categotyId == categotyId &&
-      other.stockLevel == stockLevel &&
-      other.categoryName == categoryName;
+        other.id == id &&
+        other.code == code &&
+        other.name == name &&
+        other.value == value &&
+        other.categotyId == categotyId &&
+        other.stockLevel == stockLevel &&
+        other.categoryName == categoryName;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
-      code.hashCode ^
-      name.hashCode ^
-      value.hashCode ^
-      categotyId.hashCode ^
-      stockLevel.hashCode ^
-      categoryName.hashCode;
+    return id.hashCode ^ code.hashCode ^ name.hashCode ^ value.hashCode ^ categotyId.hashCode ^ stockLevel.hashCode ^ categoryName.hashCode;
   }
 }
