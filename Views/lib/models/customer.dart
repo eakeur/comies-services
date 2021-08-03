@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:comies/core.dart';
-import 'package:datacontext/datacontext.dart';
 
 class Customer implements Entity {
   String? name;
@@ -23,7 +22,7 @@ class Customer implements Entity {
     this.active = true,
     this.creationDate,
     this.id = guidEmpty,
-  }) : phones = DataSet<Phone>(Phone(), route: 'customers/$id/phones');
+  });
 
   Customer copyWith({
     String? name,
@@ -87,6 +86,4 @@ class Customer implements Entity {
   int get hashCode {
     return name.hashCode ^ document.hashCode ^ memberSince.hashCode ^ active.hashCode ^ creationDate.hashCode ^ id.hashCode;
   }
-
-  late DataSet<Phone> phones;
 }

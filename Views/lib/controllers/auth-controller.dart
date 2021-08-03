@@ -18,7 +18,7 @@ class AuthenticationController {
     try {
       var r = await service.addOne<AuthenticationParameters>(authenticationParameters, route: '/auth');
       if (r.success) {
-        if (r.token != null){
+        if (r.token != null) {
           service.token = r.token!;
           getProvider(context).token = r.token!;
           Navigator.pushReplacementNamed(context, '/home');

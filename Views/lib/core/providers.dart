@@ -1,6 +1,7 @@
 import 'package:comies/core.dart';
 import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'constants.dart' as Constants;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +10,12 @@ class ComiesController extends DataContext {
   late SharedPreferences session;
   late Service service;
   late String token;
+  late BuildContext context;
 
   Map<String, dynamic> get operatorProperties => JwtDecoder.decode(token);
 
   Future<void> loadNewSession(BuildContext context) async {
+    context = context;
     var route = '/auth';
     try {
       session = await SharedPreferences.getInstance();
@@ -36,8 +39,7 @@ class ComiesController extends DataContext {
     } catch (e) {
       print(e);
     } finally {
-      super.
-      changeOrigin(session.getString('URL') ?? Constants.defaultAPIUrl);
+      super.changeOrigin(session.getString('URL') ?? Constants.defaultAPIUrl);
       service = Service(context: context);
       Navigator.pushReplacementNamed(context, route);
     }
@@ -61,9 +63,33 @@ class ComiesController extends DataContext {
   DataSet<Product> products = DataSet<Product>(Product(), route: '/products');
   DataSet<ProductView> productViews = DataSet<ProductView>(ProductView(id: Constants.guidEmpty, value: 0, code: '', name: ''), route: '/products');
 
-  DataSet<Customer> customers = DataSet<Customer>(Customer(), route: '/customers');
+  DataSet<Customer> customers = DataSet<Customer>(Customer(), route: '/customers').addChild('phones', Phone(), '/customers/:parentId/phones');
   DataSet<CustomerView> customerViews = DataSet<CustomerView>(CustomerView(), route: '/customers');
+
+  DataSet<Category> categories = DataSet<Category>(Category(), route: '/categories');
+  DataSet<CategoryView> categoryViews = DataSet<CategoryView>(CategoryView(), route: '/categories');
 
   @override
   String origin = '';
+
+  @override
+  void onReceiving(Response result) {
+    try {
+      print(result.body);
+      if ([200, 204, 201].contains(result.statusCode)) {
+        return;
+      }
+      if (result.statusCode == 401) Navigator.of(context).pushNamed('/auth');
+      throw result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  void onSending(Uri uri, Map<String, String> headers, Map<String, dynamic>? data, DataOperation operation) {
+    setHeader("Accept-Language", "pt-BR");
+    setHeader("Content-Type", "application/json");
+    setHeader("Authorization", 'Bearer $token');
+  }
 }

@@ -21,13 +21,12 @@ class _CustomerScreenState extends State<CustomerScreen> {
   DataSet<Customer> get customers => getProvider(context).customers;
   DataSet<Phone> get phones => customers.rel<Phone>('phones', parentId: widget.id);
 
-  DataController<Customer> get controller => customers.data;
-
   @override
   void initState() {
     if (!isNew) {
       customers.getOne(widget.id).then((customer) {
-        phones.data.setModel(Phone()); phones.get(); 
+        phones.data = Phone();
+        phones.get();
       });
     }
     super.initState();
@@ -38,7 +37,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget get customerform {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: CustomerForm(isNew: isNew, customer: customers.data.model, onSubmit: () => customers.add(customers.data.model!), submitStatus: customers.changeStatus.value),
+      child: CustomerForm(isNew: isNew, customer: customers.data, onSubmit: () => customers.add(customers.data!), submitStatus: customers.changeStatus.value),
     );
   }
 
@@ -48,8 +47,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
       child: LoadStatusWidget(
         status: phones.loadStatus,
         loadWidget: (context) => PhonesForm(
-          data: phones.data,
+          phones: phones.list,
+          data: phones.data!,
           onSave: (p) => phones.add(p),
+          onEdit: (p) => phones.data = p,
+          onCancel: () => phones.data = Phone(),
           onDelete: (p) => phones.remove(p.id),
         ),
       ),

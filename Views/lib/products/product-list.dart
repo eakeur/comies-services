@@ -1,3 +1,4 @@
+import 'package:comies/components.dart';
 import 'package:flutter/material.dart';
 import 'package:comies/core.dart';
 import 'stock-level-widget.dart';
@@ -5,19 +6,22 @@ import 'stock-level-widget.dart';
 class ProductsList extends StatelessWidget {
   final List<ProductView> products;
   final Function(ProductView) onTap;
-  const ProductsList({Key? key, required this.products, required this.onTap}) : super(key: key);
+  final VoidCallback onAddTap;
+  const ProductsList({Key? key, required this.products, required this.onTap, required this.onAddTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemExtent: 80,
-      itemCount: products.length,
+      itemCount: products.length + 1,
       itemBuilder: (context, index) {
+        if (index == 0) {
+          return DefaultButton(label: 'Adicionar produto', onTap: onAddTap, icon: Icons.add);
+        }
         return InkWell(
-          onTap: () => onTap(products[index]),
+          onTap: () => onTap(products[index - 1]),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: ProductViewWidget(prod: products[index]),
+            child: ProductViewWidget(prod: products[index - 1]),
           ),
         );
       },

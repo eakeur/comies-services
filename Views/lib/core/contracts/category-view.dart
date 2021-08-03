@@ -1,55 +1,44 @@
 import 'dart:convert';
+
 import 'package:datacontext/datacontext.dart';
 
 class CategoryView extends DataClass {
-  String? description;
-  int? skip;
+  String? id;
   String? code;
   String? name;
-  String? parentId;
 
   CategoryView({
-    this.description,
-    this.skip,
+    this.id,
     this.code,
     this.name,
-    this.parentId,
   });
 
   CategoryView copyWith({
-    String? description,
-    int? skip,
+    String? id,
     String? code,
     String? name,
-    String? parentId,
   }) {
     return CategoryView(
-      description: description ?? this.description,
-      skip: skip ?? this.skip,
+      id: id ?? this.id,
       code: code ?? this.code,
       name: name ?? this.name,
-      parentId: parentId ?? this.parentId,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'description': description,
-      'skip': skip,
+      'id': id,
       'code': code,
       'name': name,
-      'parentId': parentId,
     };
   }
 
   CategoryView fromMap(Map<String, dynamic> map) => CategoryView.fromMap(map);
   factory CategoryView.fromMap(Map<String, dynamic> map) {
     return CategoryView(
-      description: map['description'],
-      skip: map['skip'],
+      id: map['id'],
       code: map['code'],
       name: map['name'],
-      parentId: map['parentId'],
     );
   }
 
@@ -58,19 +47,15 @@ class CategoryView extends DataClass {
   factory CategoryView.fromJson(String source) => CategoryView.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'CategoryFilter(description: $description, skip: $skip, code: $code, name: $name, parentId: $parentId)';
-  }
+  String toString() => 'CategoryView(id: $id, code: $code, name: $name)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CategoryView && other.description == description && other.skip == skip && other.code == code && other.name == name && other.parentId == parentId;
+    return other is CategoryView && other.id == id;
   }
 
   @override
-  int get hashCode {
-    return description.hashCode ^ skip.hashCode ^ code.hashCode ^ name.hashCode ^ parentId.hashCode;
-  }
+  int get hashCode => id.hashCode ^ code.hashCode ^ name.hashCode;
 }

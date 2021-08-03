@@ -10,7 +10,7 @@ class ProductFilter implements DataModel, Filter {
   final String? tag;
   ProductFilter({
     this.skip = 0,
-    this.categoryId,
+    this.categoryId = guidEmpty,
     this.code,
     this.name,
     this.tag,

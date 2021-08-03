@@ -27,7 +27,10 @@ class _ProductFormState extends State<ProductForm> {
   late TextEditingController priceController;
   late TextEditingController valueController;
   late TextEditingController discountController;
+  late TextEditingController minimumController;
   late GlobalKey<FormState> formState;
+
+  late DataSet<CategoryView> categories;
 
   void setFields() {
     codeController = TextEditingController(text: getTextView(widget.product?.code))..addListener(() => widget.product?.code = getTextValue(codeController.text));
@@ -38,12 +41,14 @@ class _ProductFormState extends State<ProductForm> {
     priceController = TextEditingController(text: getCurrencyView(widget.product?.price))..addListener(() => widget.product?.price = getDoubleValue(priceController.text));
     valueController = TextEditingController(text: getCurrencyView(widget.product?.value))..addListener(() => widget.product?.value = getDoubleValue(valueController.text));
     discountController = TextEditingController(text: getCurrencyView(widget.product?.discount))..addListener(() => widget.product?.discount = getDoubleValue(discountController.text));
+    minimumController = TextEditingController(text: getDoubleView(widget.product?.minimum, 2))..addListener(() => widget.product?.minimum = getDoubleValue(minimumController.text));
   }
 
   @override
   void initState() {
     super.initState();
     formState = GlobalKey<FormState>();
+    categories = getProvider(context).categoryViews;
     setFields();
   }
 
@@ -72,6 +77,12 @@ class _ProductFormState extends State<ProductForm> {
       : 'Ops! Precisamos de um nome para esse produto ser mostrado aos seus clientes.';
 
   String? isPriceValid(String? name) => name != null
+      ? name.length >= 0
+          ? null
+          : 'Ops! O preço é inválido'
+      : 'Ops! O preço é inválido.';
+
+  String? isMinimumValid(String? name) => name != null
       ? name.length >= 0
           ? null
           : 'Ops! O preço é inválido'
@@ -170,7 +181,72 @@ class _ProductFormState extends State<ProductForm> {
               child: TextFormField(
                 controller: discountController,
                 validator: isPriceValid,
-                decoration: InputDecoration(labelText: 'Desconto máximo', helperText: 'O máximo de desconto que pode ser aplicado a esse produto', suffix: Text('%')),
+                decoration: InputDecoration(labelText: 'Desconto máximo', helperText: 'O máximo de desconto que pode ser aplicado', suffix: Text('%')),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget get fifthRow => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Flex(
+          direction: isWidthSmall(context) ? Axis.vertical : Axis.horizontal,
+          children: [
+            Expanded(
+              flex: isWidthSmall(context) ? 0 : 33,
+              child: DropdownButtonFormField<int>(
+                onChanged: (v) => widget.product!.sellUnity = Unity.values[v ?? 0],
+                decoration: InputDecoration(labelText: 'Unidade de venda', helperText: 'Em qual unidade de medida esse produto será vendido?'),
+                items: Unity.values.map((e) {
+                  var text;
+                  switch (e) {
+                    case Unity.KILOGRAM:
+                      text = 'quilogramas';
+                      break;
+                    case Unity.LITRE:
+                      text = 'litros';
+                      break;
+                    case Unity.MILIGRAM:
+                      text = 'miligramas';
+                      break;
+                    case Unity.MILILITRE:
+                      text = 'mililitros';
+                      break;
+                    case Unity.UNITY:
+                      text = 'unidade';
+                      break;
+                  }
+                  return DropdownMenuItem<int>(child: Text(text), value: e.index);
+                }).toList(),
+              ),
+            ),
+            SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
+            Expanded(
+              flex: isWidthSmall(context) ? 0 : 33,
+              child: TextFormField(
+                controller: minimumController,
+                validator: isMinimumValid,
+                decoration: InputDecoration(labelText: 'Quantidade mínima', helperText: 'A quantidade mínima que pode ser vendida por pedido'),
+              ),
+            ),
+            SizedBox(width: isWidthSmall(context) ? 0 : 20, height: isWidthSmall(context) ? 20 : 0),
+            Expanded(
+              flex: isWidthSmall(context) ? 0 : 33,
+              child: LoadStatusWidget(
+                status: categories.loadStatus,
+                loadWidget: (context) => DropdownButtonFormField<String>(
+                    onChanged: (v) => widget.product!.categoryId = v,
+                    decoration: InputDecoration(labelText: 'Categoria', helperText: 'Em qual categoria esse produto se encaixa?'),
+                    items: [
+                      DropdownMenuItem<String>(child: Text('Nova categoria'), onTap: () {}),
+                      ...categories.list
+                          .map((e) => DropdownMenuItem<String>(
+                                child: Text(e.name!),
+                                value: e.id,
+                              ))
+                          .toList()
+                    ]),
               ),
             ),
           ],
@@ -204,7 +280,7 @@ class _ProductFormState extends State<ProductForm> {
         key: formState,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [firstRow, secondRow, thirdRow, fourthRow, formActions],
+          children: [firstRow, secondRow, thirdRow, fourthRow, fifthRow, formActions],
         ),
       ),
     );

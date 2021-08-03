@@ -28,7 +28,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: GeneralList<CustomerView>(
-            modelList: customers.data.list,
+            modelList: customers.list,
             onTap: (p) => Navigator.pushNamed(context, '/customers/${p.id}', arguments: p.name),
             titleGetter: (p) => getTextView(p.name),
             subtitleGetter: (p) => '+55 (${getTextView(p.phone?.ddd)}) ${getTextView(p.phone?.number)}',

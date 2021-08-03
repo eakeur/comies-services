@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:datacontext/datacontext.dart';
 
 class ProductView implements DataClass {
@@ -6,7 +7,7 @@ class ProductView implements DataClass {
   final String code;
   final String name;
   final double value;
-  final String? categotyId;
+  final String? categoryId;
   final int? stockLevel;
   final String? categoryName;
   ProductView({
@@ -14,7 +15,7 @@ class ProductView implements DataClass {
     required this.code,
     required this.name,
     required this.value,
-    this.categotyId,
+    this.categoryId,
     this.stockLevel,
     this.categoryName,
   });
@@ -24,7 +25,7 @@ class ProductView implements DataClass {
     String? code,
     String? name,
     double? value,
-    String? categotyId,
+    String? categoryId,
     int? stockLevel,
     String? categoryName,
   }) {
@@ -33,7 +34,7 @@ class ProductView implements DataClass {
       code: code ?? this.code,
       name: name ?? this.name,
       value: value ?? this.value,
-      categotyId: categotyId ?? this.categotyId,
+      categoryId: categoryId ?? this.categoryId,
       stockLevel: stockLevel ?? this.stockLevel,
       categoryName: categoryName ?? this.categoryName,
     );
@@ -45,7 +46,7 @@ class ProductView implements DataClass {
       'code': code,
       'name': name,
       'value': value,
-      'categotyId': categotyId,
+      'categoryId': categoryId,
       'stockLevel': stockLevel,
       'categoryName': categoryName,
     };
@@ -58,7 +59,7 @@ class ProductView implements DataClass {
       code: map['code'],
       name: map['name'],
       value: map['value'],
-      categotyId: map['categotyId'],
+      categoryId: map['categoryId'],
       stockLevel: map['stockLevel'],
       categoryName: map['categoryName'],
     );
@@ -70,7 +71,7 @@ class ProductView implements DataClass {
 
   @override
   String toString() {
-    return 'ProductView(id: $id, code: $code, name: $name, value: $value, categotyId: $categotyId, stockLevel: $stockLevel, categoryName: $categoryName)';
+    return 'ProductView(id: $id, code: $code, name: $name, value: $value, categoryId: $categoryId, stockLevel: $stockLevel, categoryName: $categoryName)';
   }
 
   @override
@@ -82,13 +83,13 @@ class ProductView implements DataClass {
         other.code == code &&
         other.name == name &&
         other.value == value &&
-        other.categotyId == categotyId &&
+        other.categoryId == categoryId &&
         other.stockLevel == stockLevel &&
         other.categoryName == categoryName;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ code.hashCode ^ name.hashCode ^ value.hashCode ^ categotyId.hashCode ^ stockLevel.hashCode ^ categoryName.hashCode;
+    return id.hashCode ^ code.hashCode ^ name.hashCode ^ value.hashCode ^ categoryId.hashCode ^ stockLevel.hashCode ^ categoryName.hashCode;
   }
 }

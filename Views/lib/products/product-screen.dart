@@ -20,7 +20,10 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     products = getProvider(context).products;
-    products.getOne(widget.id);
+    if (!isNew)
+      products.getOne(widget.id);
+    else
+      products.data = Product(creationDate: DateTime.now());
     super.initState();
   }
 
@@ -30,8 +33,11 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProductScreenAppBar(
-        onCopy: (){}, onDelete: () => products.remove(products.data!.id),
-        status: products.loadStatus, isNew: isNew, stockLevel: 75,
+        onCopy: () {},
+        onDelete: () => products.remove(products.data!.id),
+        status: products.loadStatus,
+        isNew: isNew,
+        stockLevel: 75,
         name: isNew ? 'Novo produto' : (products.data != null ? products.data!.name! : widget.name ?? ''),
       ),
       body: Padding(
@@ -40,11 +46,17 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Column(
             children: [
               LoadStatusWidget(
-                status: products.loadStatus, 
+                status: products.loadStatus,
                 loadWidget: (context) => Flex(
                   direction: getRelativeAxis(context),
                   children: [
-                    Expanded(flex: getRelativeFlex(context), child: ProductForm(isNew: isNew, product: products.data, onSubmit: () => products.add(products.data!), submitStatus: products.changeStatus.value)),
+                    Expanded(
+                        flex: getRelativeFlex(context),
+                        child: ProductForm(
+                            isNew: isNew,
+                            product: products.data,
+                            onSubmit: () => isNew ? products.add(products.data!) : products.update(products.data!.id, products.data!),
+                            submitStatus: products.changeStatus.value)),
                     Expanded(flex: getRelativeFlex(context), child: Center(child: Container(child: Text('Aqui vão informações sobre o estoque')))),
                   ],
                 ),

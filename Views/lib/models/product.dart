@@ -18,7 +18,7 @@ class Product implements StoreOwnedEntity {
 
   int? type;
 
-  int? sellUnity;
+  Unity? sellUnity;
 
   @override
   bool? active;
@@ -48,8 +48,8 @@ class Product implements StoreOwnedEntity {
     this.sellUnity,
     this.active,
     this.creationDate,
-    this.id,
-    this.storeId,
+    this.id = guidEmpty,
+    this.storeId = guidEmpty,
   });
 
   Product copyWith({
@@ -65,7 +65,7 @@ class Product implements StoreOwnedEntity {
     double? price,
     double? value,
     int? type,
-    int? sellUnity,
+    Unity? sellUnity,
     bool? active,
     DateTime? creationDate,
     String? id,
@@ -106,7 +106,7 @@ class Product implements StoreOwnedEntity {
       'price': price ?? 0,
       'value': value ?? 0,
       'type': type ?? 0,
-      'sellUnity': sellUnity ?? 0,
+      'sellUnity': sellUnity?.index ?? 0,
       'active': active ?? false,
       'creationDate': creationDate?.toIso8601String(),
       'id': id,
@@ -130,7 +130,7 @@ class Product implements StoreOwnedEntity {
       price: map['price'] * 1.00,
       value: map['value'] * 1.00,
       type: map['type'],
-      sellUnity: map['sellUnity'],
+      sellUnity: Unity.values[map['sellUnity'] ?? 0],
       active: map['active'],
       creationDate: DateTime.parse(map['creationDate']),
       id: map['id'],
