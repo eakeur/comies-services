@@ -7,7 +7,7 @@ namespace Comies.Products {
         public string Code { get; set; }
         public string Name { get; set; }
         public decimal Value { get; set; }
-        public Guid? CategotyId { get; set; }
+        public Guid? CategoryId { get; set; }
         public double? StockLevel { get; set; }
         public String CategoryName { get; set; }
 }
