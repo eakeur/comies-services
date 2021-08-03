@@ -30,7 +30,7 @@ namespace Comies.Products {
                         Code = p.Code,
                         Value = p.Value,
                         StockLevel = stockref == null ? 0.00 : Math.Round(stockref.Actual * 100 / stockref.Maximum),
-                        CategotyId = p.CategoryId.GetValueOrDefault(),
+                        CategoryId = p.CategoryId.GetValueOrDefault(),
                         CategoryName = cat.Name
                     }).ToListAsync();
         }
