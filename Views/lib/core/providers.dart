@@ -87,9 +87,10 @@ class ComiesController extends DataContext {
   }
 
   @override
-  void onSending(Uri uri, Map<String, String> headers, Map<String, dynamic>? data, DataOperation operation) {
+  void onSending(Uri uri, Map<String, String> headers, Map<String, dynamic>? map, DataOperation operation) {
     setHeader("Accept-Language", "pt-BR");
     setHeader("Content-Type", "application/json");
     setHeader("Authorization", 'Bearer $token');
+    print(uri);
   }
 }

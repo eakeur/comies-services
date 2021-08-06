@@ -13,6 +13,14 @@ bool isHeightSmall(BuildContext context) {
   return MediaQuery.of(context).size.height <= 600;
 }
 
+double getWidth(BuildContext context) {
+  return MediaQuery.of(context).size.width;
+}
+
+double getHeight(BuildContext context) {
+  return MediaQuery.of(context).size.height;
+}
+
 SharedPreferences getSession(BuildContext context) {
   return Provider.of<ComiesController>(context, listen: false).session;
 }

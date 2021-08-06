@@ -1,8 +1,7 @@
 import 'package:comies/core.dart';
 import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
-import 'product-form.dart';
-import 'product-screen-bar.dart';
+import 'package:comies/products/products.dart';
 
 class ProductScreen extends StatefulWidget {
   final String? id;
@@ -19,11 +18,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   void initState() {
-    products = getProvider(context).products;
-    if (!isNew)
-      products.getOne(widget.id);
-    else
-      products.data = Product(creationDate: DateTime.now());
+    products = ProductsController.getProduct(context, widget.id);
     super.initState();
   }
 
@@ -51,13 +46,22 @@ class _ProductScreenState extends State<ProductScreen> {
                   direction: getRelativeAxis(context),
                   children: [
                     Expanded(
-                        flex: getRelativeFlex(context),
-                        child: ProductForm(
-                            isNew: isNew,
-                            product: products.data,
-                            onSubmit: () => isNew ? products.add(products.data!) : products.update(products.data!.id, products.data!),
-                            submitStatus: products.changeStatus.value)),
-                    Expanded(flex: getRelativeFlex(context), child: Center(child: Container(child: Text('Aqui vão informações sobre o estoque')))),
+                      flex: getRelativeFlex(context),
+                      child: ProductForm(
+                        isNew: isNew,
+                        product: products.data,
+                        onSubmit: () => isNew ? products.add(products.data!) : products.update(products.data!.id, products.data!),
+                        submitStatus: products.changeStatus.value,
+                      ),
+                    ),
+                    Expanded(
+                      flex: getRelativeFlex(context),
+                      child: Center(
+                        child: Container(
+                          child: Text('Aqui vão informações sobre o estoque'),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
