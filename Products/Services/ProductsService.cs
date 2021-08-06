@@ -20,7 +20,7 @@ namespace Comies.Products {
                     where
                         p.Active && p.StoreId == Applicant.StoreId &&
                         (filter.Code != null ? p.Code.Contains(filter.Code) : true) &&
-                        (filter.Name != null ? p.Name.Contains(filter.Code) : true) &&
+                        (filter.Name != null ? p.Name.Contains(filter.Name) : true) &&
                         (filter.Tag != null ? p.Tags.Contains(filter.Tag) : true) &&
                         (filter.CategoryId != Guid.Empty ? p.CategoryId == filter.CategoryId : true)
                     select new ProductView
