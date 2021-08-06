@@ -4,10 +4,10 @@ import 'package:comies/core.dart';
 
 class ProductFilter implements DataModel, Filter {
   int? skip;
-  final String? categoryId;
-  final String? code;
-  final String? name;
-  final String? tag;
+  String? categoryId;
+  String? code;
+  String? name;
+  String? tag;
   ProductFilter({
     this.skip = 0,
     this.categoryId = guidEmpty,

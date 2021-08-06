@@ -17,7 +17,11 @@ class _StockLevelWidgetState extends State<StockLevelWidget> with TickerProvider
 
   double get value => widget.value / 100;
 
-  Color get color => animation.value <= 0.33 ? ErrorDarkColor : animation.value <= 0.66 ? PrimaryColor : SuccessDarkColor;
+  Color get color => animation.value <= 0.33
+      ? ErrorDarkColor
+      : animation.value <= 0.66
+          ? PrimaryColor
+          : SuccessDarkColor;
 
   @override
   void initState() {
@@ -26,6 +30,7 @@ class _StockLevelWidgetState extends State<StockLevelWidget> with TickerProvider
     controller.forward();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -35,6 +40,7 @@ class _StockLevelWidgetState extends State<StockLevelWidget> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
           flex: 90,

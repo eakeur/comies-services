@@ -1,5 +1,6 @@
 import 'package:comies/components/screen-top-bar.dart';
 import 'package:comies/core.dart';
+import 'package:comies/products/products.dart';
 import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
 
@@ -33,31 +34,19 @@ class ProductScreenAppBar extends AppBar {
 }
 
 class ProductsScreenBar extends PageBar {
-  ProductsScreenBar(BuildContext context)
+  ProductsScreenBar(BuildContext context, Function(ProductFilter) onSearch, VoidCallback onCancelSearch)
       : super(
           pageName: 'Produtos',
           actions: isWidthSmall(context)
               ? null
               : [
                   SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          decoration: InputDecoration(labelText: 'Pesquise'),
-                        ),
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.6),
+                    child: Padding(padding: const EdgeInsets.only(top: 8.0), child: ProductSearcher(onSearch: onSearch, onCancel: onCancelSearch)),
+                    width: MediaQuery.of(context).size.width * 0.6,
+                  ),
                 ],
           bottom: isWidthSmall(context)
-              ? PreferredSize(
-                  preferredSize: Size.fromHeight(80),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(prefixIcon: Icon(Icons.search), labelText: 'Pesquise'),
-                    ),
-                  ),
-                )
+              ? PreferredSize(preferredSize: Size.fromHeight(80), child: Padding(padding: const EdgeInsets.only(top: 2.0), child: ProductSearcher(onSearch: onSearch, onCancel: onCancelSearch)))
               : null,
         );
 }
