@@ -51,5 +51,57 @@ namespace Comies.Products {
             if (product.Display.Length < 3 && product.Display.Length > 70) 
                 throw new ComiesArgumentException(message: "Ops! O nome de exibição do produto deve ter de 3 a 70 caracteres");
         }
+
+        #region Ingredients
+
+        public async Task<Ingredient> AddIngredient(Ingredient entity, Guid productId)
+        {
+            ValidateIngredient(entity);
+            entity.Active = true;
+            entity.ProductId = productId;
+            Context.Ingredients.Add(entity);
+            await Context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<Ingredient> UpdateIngredient(Guid id, Ingredient entity, Guid productId)
+        {
+            ValidateIngredient(entity); entity.Id = id; entity.ProductId = productId;
+            Context.Ingredients.Update(entity);
+            await Context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<Ingredient> RemoveIngredient(Guid id, Guid productId)
+        {
+            var entity = await GetIngredient(id, productId);
+            if (entity != null)
+            {
+                entity.Active = false;
+                Context.Ingredients.Update(entity);
+                await Context.SaveChangesAsync();
+            }
+            return entity;
+        }
+
+        public async Task<Ingredient> GetIngredient(Guid id, Guid productId)
+        {
+            return await Context.Ingredients.FirstOrDefaultAsync(x => x.Active && x.Id == id && x.ProductId == productId);
+        }
+
+        public async Task<IEnumerable<Ingredient>> GetIngredients(Guid productId)
+        {
+            return await Context.Ingredients.Where(x => x.ProductId == productId).ToListAsync();
+        }
+
+        private void ValidateIngredient(Ingredient entity)
+        {
+            if (entity == null) throw new ComiesArgumentException("Ops! O ingrediente passado é inválido");
+        }
+
+        #endregion
     }
+
+
+     
 }

@@ -1,7 +1,7 @@
-export 'category-form.dart';
-export 'product-form.dart';
-export 'product-list.dart';
-export 'product-screen-bar.dart';
-export 'stock-level-widget.dart';
-export 'products-by-category-widget.dart';
-export 'product-searcher.dart';
+export 'functional/category-form.dart';
+export 'functional/product-form.dart';
+export 'groups/product-list.dart';
+export 'functional/product-screen-bar.dart';
+export 'functional/stock-level-widget.dart';
+export 'groups/products-by-category-widget.dart';
+export 'functional/product-searcher.dart';

@@ -1,7 +1,7 @@
 import 'package:comies/components.dart';
+import 'package:comies/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:comies/core.dart';
-import 'stock-level-widget.dart';
 
 class ProductsList extends StatelessWidget {
   final List<ProductView> products;

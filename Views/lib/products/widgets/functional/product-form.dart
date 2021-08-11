@@ -196,6 +196,7 @@ class _ProductFormState extends State<ProductForm> {
             Expanded(
               flex: isWidthSmall(context) ? 0 : 33,
               child: DropdownButtonFormField<int>(
+                value: widget.product!.sellUnity?.index ?? 0,
                 onChanged: (v) => widget.product!.sellUnity = Unity.values[v ?? 0],
                 decoration: InputDecoration(labelText: 'Unidade de venda', helperText: 'Em qual unidade de medida esse produto será vendido?'),
                 items: Unity.values.map((e) {
@@ -236,6 +237,7 @@ class _ProductFormState extends State<ProductForm> {
               child: LoadStatusWidget(
                 status: categories.loadStatus,
                 loadWidget: (context) => DropdownButtonFormField<String>(
+                    value: widget.product!.categoryId,
                     onChanged: (v) => widget.product!.categoryId = v,
                     decoration: InputDecoration(labelText: 'Categoria', helperText: 'Em qual categoria esse produto se encaixa?'),
                     items: [
