@@ -1,5 +1,5 @@
-export 'functional/category-form.dart';
-export 'functional/product-form.dart';
+export 'forms/category-form.dart';
+export 'forms/product-form.dart';
 export 'groups/product-list.dart';
 export 'functional/product-screen-bar.dart';
 export 'functional/stock-level-widget.dart';
