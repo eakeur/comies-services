@@ -3,10 +3,13 @@ using Comies.Products;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Comies.Controllers
 {
     [ApiController]
     [Route(("api/v1/products"))]
+    [Authorize]
     public class ProductsController : BaseController<Product, ProductView, ProductFilter, IProductsService>
     {
         public ProductsController(IProductsService service) : base(service) {}
