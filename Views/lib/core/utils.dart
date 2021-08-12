@@ -1,4 +1,5 @@
 import 'package:comies/core.dart';
+import 'package:http/http.dart';
 
 import 'providers.dart';
 import 'package:flutter/material.dart';
@@ -97,4 +98,27 @@ void showFeedback(BuildContext context, {required String title, String? details,
       ),
     ),
   );
+}
+
+void launchFuture(Future future, BuildContext context) {
+  future.then((value) => showSuccessFeedback(context)).catchError((e) {
+    showErrorFeedback(e, context);
+  });
+}
+
+void showErrorFeedback(dynamic result, BuildContext context) {
+  var provider = getProvider(context);
+  if (result is Response) {
+    if (result.statusCode == 400) provider.notify(context, message: result.body, isError: true);
+    if (result.statusCode == 401) provider.notify(context, message: 'Parece que você não está conectado. Vamos resolver isso?', isError: true, action: () => Navigator.of(context).pushNamed('/auth'));
+    if (result.statusCode == 403) provider.notify(context, title: 'Ih! Fecharam a cozinha', message: 'Você não tem permissão para executar essa ação', isError: true);
+    if (result.statusCode == 404) provider.notify(context, title: 'Ué! Cadê?', message: 'Não encontramos o que você procura. Digitou tudo certinho?', isError: true);
+    if (result.statusCode >= 500) provider.notify(context, message: 'Não se preocupe, foi falha nossa. Que tal reportar para o responsável pelo app, esse doido?', isError: true);
+  } else
+    provider.notify(context, message: 'Não se preocupe, foi falha nossa. Que tal reportar para o responsável pelo app, esse doido?', isError: true);
+}
+
+void showSuccessFeedback(BuildContext context) {
+  var provider = getProvider(context);
+  provider.notify(context, message: 'Sua operação foi realizada com sucesso e tempero!');
 }

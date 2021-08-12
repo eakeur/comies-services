@@ -13,11 +13,24 @@ class ProductController {
 
   ProductController(this.context, [this.id = 'new']) {
     products = getProvider(context).products;
-    if (id != 'new') ingredients = products.rel('ingredients', parentId: id);
+    ingredients = products.rel('ingredients', parentId: id);
   }
 
-  Future<void> get() async {
-    await products.getOne(id);
-    ingredients.get();
+  void get() {
+    if (id == 'new') {
+      products.create(Product(creationDate: DateTime.now()));
+    } else {
+      products.getOne(id).then((value) => ingredients.get()).catchError((e) {
+        showErrorFeedback(e, context);
+      });
+    }
   }
+
+  void add() => launchFuture(products.add(), context);
+  void update() => launchFuture(products.update(id), context);
+  void delete() => launchFuture(products.remove(id), context);
+
+  void addIngredient() => launchFuture(ingredients.add(ingredients.local['editingIngredient']), context);
+  void updateIngredient() => launchFuture(products.update(ingredients.data!.id), context);
+  void deleteIngredient([String? id]) => launchFuture(products.remove(id ?? ingredients.data!.id), context);
 }

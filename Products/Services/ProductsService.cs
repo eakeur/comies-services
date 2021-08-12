@@ -35,8 +35,6 @@ namespace Comies.Products {
                     }).ToListAsync();
         }
 
-        
-
         public override void Validate(Product product)
         {
             base.Validate(product);
@@ -50,6 +48,10 @@ namespace Comies.Products {
                 throw new ComiesArgumentException(message: "Ops! O nome do produto deve ter de 3 a 150 caracteres");
             if (product.Display.Length < 3 && product.Display.Length > 70) 
                 throw new ComiesArgumentException(message: "Ops! O nome de exibição do produto deve ter de 3 a 70 caracteres");
+            
+            if (product.Id == Guid.Empty){
+                if (Context.Products.Where(x => x.Code == product.Code).Count() > 0) throw new ComiesArgumentException($"Ops! Esse código de produto já existe. Que tal tentar outro?");
+            }
         }
 
         #region Ingredients
@@ -96,7 +98,7 @@ namespace Comies.Products {
 
         public async Task<IEnumerable<Ingredient>> GetIngredients(Guid productId)
         {
-            var entities = await Context.Ingredients.Where(x => x.ProductId == productId && x.StoreId == Applicant.StoreId).ToListAsync();
+            var entities = await Context.Ingredients.Where(x => x.ProductId == productId && x.StoreId == Applicant.StoreId && x.Active).ToListAsync();
             foreach (var entity in entities)
             {
                 entity.Component = await GetOne(entity.IngredientId);

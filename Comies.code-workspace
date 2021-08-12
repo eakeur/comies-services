@@ -14,7 +14,12 @@
 		},
 		{
 			"path": "Customers"
+		},
+		{
+			"path": "Web"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"razor.disableBlazorDebugPrompt": true
+	}
 }

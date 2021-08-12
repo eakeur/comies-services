@@ -15,7 +15,7 @@ class ComiesController extends DataContext {
   Map<String, dynamic> get operatorProperties => JwtDecoder.decode(token);
 
   Future<void> loadNewSession(BuildContext context) async {
-    context = context;
+    this.context = context;
     var route = '/auth';
     try {
       session = await SharedPreferences.getInstance();
@@ -75,7 +75,7 @@ class ComiesController extends DataContext {
   @override
   void onReceiving(Response result) {
     try {
-      print(result.body);
+      //print(result.body);
       if ([200, 204, 201].contains(result.statusCode)) {
         return;
       }
@@ -84,6 +84,29 @@ class ComiesController extends DataContext {
     } catch (e) {
       throw e;
     }
+  }
+
+  void notify(BuildContext context, {String? message, String? title, bool isError = false, VoidCallback? action}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: isError ? ErrorDarkColor : SuccessDarkColor,
+        margin: EdgeInsets.all(10),
+        content: Container(
+          height: getHeight(context) * 0.07,
+          decoration: BoxDecoration(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(child: Text(title ?? (isError ? 'Ops! Algo deu errado' : 'Oba! Deu tudo certo.'), style: getSubtitleText(), textAlign: TextAlign.start)),
+              if (message != null) SizedBox(height: 10),
+              if (message != null) Expanded(child: Text(message, style: getMainText(), textAlign: TextAlign.start)),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override

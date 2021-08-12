@@ -66,7 +66,7 @@ namespace Comies.Controllers
             }
             catch (System.Exception)
             {
-                throw new Exception();
+                return StatusCode(500);
             }
         }
     }
