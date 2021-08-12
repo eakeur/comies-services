@@ -23,7 +23,7 @@ namespace Comies.Controllers
         [HttpPost("{productId}/ingredients")]
         public async Task<ActionResult<Ingredient>> SaveIngredient(Guid productId, Ingredient structure)
         {
-            return await base.SaveSent<Ingredient>(() => Service.AddIngredient(structure, productId), "GetIngredient");
+            return await base.SaveSent<Ingredient>(() => Service.AddIngredient(structure, productId), "GetIngredient", (p) => new { id = p.Id, productId = p.ProductId});
         }
 
         [HttpGet("{productId}/ingredients/{id}")]

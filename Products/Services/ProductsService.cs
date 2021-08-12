@@ -59,6 +59,7 @@ namespace Comies.Products {
             ValidateIngredient(entity);
             entity.Active = true;
             entity.ProductId = productId;
+            entity.StoreId = Applicant.StoreId;
             Context.Ingredients.Add(entity);
             await Context.SaveChangesAsync();
             entity.Component = await GetOne(entity.IngredientId);
@@ -88,14 +89,14 @@ namespace Comies.Products {
 
         public async Task<Ingredient> GetIngredient(Guid id, Guid productId)
         {
-            var entity =  await Context.Ingredients.FirstOrDefaultAsync(x => x.Active && x.Id == id && x.ProductId == productId);
+            var entity =  await Context.Ingredients.FirstOrDefaultAsync(x => x.Active && x.Id == id && x.ProductId == productId && x.StoreId == Applicant.StoreId);
             entity.Component = await GetOne(entity.IngredientId);
             return entity;
         }
 
         public async Task<IEnumerable<Ingredient>> GetIngredients(Guid productId)
         {
-            var entities = await Context.Ingredients.Where(x => x.ProductId == productId).ToListAsync();
+            var entities = await Context.Ingredients.Where(x => x.ProductId == productId && x.StoreId == Applicant.StoreId).ToListAsync();
             foreach (var entity in entities)
             {
                 entity.Component = await GetOne(entity.IngredientId);

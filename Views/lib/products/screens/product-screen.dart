@@ -14,11 +14,11 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  late DataSet<Product> products;
+  late ProductController data;
 
   @override
   void initState() {
-    products = ProductsController.getProduct(context, widget.id);
+    data = ProductController(context, widget.id ?? 'new');
     super.initState();
   }
 
@@ -29,11 +29,11 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       appBar: ProductScreenAppBar(
         onCopy: () {},
-        onDelete: () => products.remove(products.data!.id),
-        status: products.loadStatus,
+        onDelete: () => data.products.remove(data.products.data!.id),
+        status: data.products.loadStatus,
         isNew: isNew,
         stockLevel: 75,
-        name: isNew ? 'Novo produto' : (products.data != null ? products.data!.name! : widget.name ?? ''),
+        name: isNew ? 'Novo produto' : (data.products.data != null ? data.products.data!.name! : widget.name ?? ''),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: isWidthSmall(context) ? 0 : 20),
@@ -41,7 +41,7 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Column(
             children: [
               LoadStatusWidget(
-                status: products.loadStatus,
+                status: data.products.loadStatus,
                 loadWidget: (context) => Flex(
                   direction: getRelativeAxis(context),
                   children: [
@@ -49,17 +49,27 @@ class _ProductScreenState extends State<ProductScreen> {
                       flex: getRelativeFlex(context),
                       child: ProductForm(
                         isNew: isNew,
-                        product: products.data,
-                        onSubmit: () => isNew ? products.add(products.data!) : products.update(products.data!.id, products.data!),
-                        submitStatus: products.changeStatus.value,
+                        product: data.products.data,
+                        onSubmit: () => isNew ? data.products.add(data.products.data!) : data.products.update(data.products.data!.id, data.products.data!),
+                        submitStatus: data.products.changeStatus.value,
                       ),
                     ),
                     Expanded(
                       flex: getRelativeFlex(context),
-                      child: Center(
-                        child: Container(
-                          child: Text('Aqui vão informações sobre o estoque'),
+                      child: IsNullWidget<String>(
+                        value: isNew ? null : widget.id,
+                        child: (context, val, child) => LoadStatusWidget(
+                          status: data.ingredients.loadStatus,
+                          loadWidget: (context) => IngredientsForm(
+                            data: data.ingredients.data ?? Ingredient(creationDate: DateTime.now()),
+                            ingredients: data.ingredients.list,
+                            onSave: (ing) => data.ingredients.add(ing),
+                            onDelete: (id) => data.ingredients.remove(id),
+                            onEdit: (ing) => data.ingredients.data = ing,
+                            onCancel: () => data.ingredients.clearModel(),
+                          ),
                         ),
+                        nullWidget: (context, val, child) => Container(child: Text('Aqui vão informações sobre os ingredientes')),
                       ),
                     ),
                   ],

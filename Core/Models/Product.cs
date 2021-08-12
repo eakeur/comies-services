@@ -1,6 +1,7 @@
 using Comies;
 using System.Collections.Generic;
 using System;
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 namespace Comies
@@ -38,7 +39,11 @@ namespace Comies
         public decimal Value { get; set; }
         public virtual ProductCategory Category { get; set; }
         public virtual IList<OrderItem> Orders { get; set; }
+
+        [JsonIgnore]
         public virtual IList<Ingredient> Ingredients { get; set; }
+
+        [JsonIgnore]
         public virtual IList<Ingredient> Featuring { get; set; }
         public ProductType Type { get; set; }
 

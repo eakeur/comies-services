@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:comies/core.dart';
 
 class Ingredient implements StoreOwnedEntity {
+  String? productId;
+
   String? ingredientId;
 
   double? quantity;
@@ -22,6 +24,7 @@ class Ingredient implements StoreOwnedEntity {
   String? storeId;
 
   Ingredient({
+    this.productId = guidEmpty,
     this.ingredientId = guidEmpty,
     this.quantity = 0,
     this.component,
@@ -31,7 +34,10 @@ class Ingredient implements StoreOwnedEntity {
     this.storeId = guidEmpty,
   });
 
+  factory Ingredient.fromJson(String source) => Ingredient.fromMap(json.decode(source));
+
   Ingredient copyWith({
+    String? productId,
     String? ingredientId,
     double? quantity,
     Product? component,
@@ -41,6 +47,7 @@ class Ingredient implements StoreOwnedEntity {
     String? storeId,
   }) {
     return Ingredient(
+      productId: productId ?? this.productId,
       ingredientId: ingredientId ?? this.ingredientId,
       quantity: quantity ?? this.quantity,
       component: component ?? this.component,
@@ -53,6 +60,7 @@ class Ingredient implements StoreOwnedEntity {
 
   Map<String, dynamic> toMap() {
     return {
+      'productId': productId,
       'ingredientId': ingredientId,
       'quantity': quantity,
       'component': component?.toMap(),
@@ -67,8 +75,9 @@ class Ingredient implements StoreOwnedEntity {
 
   factory Ingredient.fromMap(Map<String, dynamic> map) {
     return Ingredient(
+      productId: map['productId'],
       ingredientId: map['ingredientId'],
-      quantity: map['quantity'],
+      quantity: map['quantity'] * 1.00,
       component: Product.fromMap(map['component']),
       active: map['active'],
       creationDate: DateTime.parse(map['creationDate']),
@@ -79,11 +88,9 @@ class Ingredient implements StoreOwnedEntity {
 
   String toJson() => json.encode(toMap());
 
-  factory Ingredient.fromJson(String source) => Ingredient.fromMap(json.decode(source));
-
   @override
   String toString() {
-    return 'Ingredient(ingredientId: $ingredientId, quantity: $quantity, component: $component, active: $active, creationDate: $creationDate, id: $id, storeId: $storeId)';
+    return 'Ingredient(productId: $productId, ingredientId: $ingredientId, quantity: $quantity, component: $component, active: $active, creationDate: $creationDate, id: $id, storeId: $storeId)';
   }
 
   @override
@@ -91,6 +98,7 @@ class Ingredient implements StoreOwnedEntity {
     if (identical(this, other)) return true;
 
     return other is Ingredient &&
+        other.productId == productId &&
         other.ingredientId == ingredientId &&
         other.quantity == quantity &&
         other.component == component &&
@@ -102,6 +110,6 @@ class Ingredient implements StoreOwnedEntity {
 
   @override
   int get hashCode {
-    return ingredientId.hashCode ^ quantity.hashCode ^ component.hashCode ^ active.hashCode ^ creationDate.hashCode ^ id.hashCode ^ storeId.hashCode;
+    return productId.hashCode ^ ingredientId.hashCode ^ quantity.hashCode ^ component.hashCode ^ active.hashCode ^ creationDate.hashCode ^ id.hashCode ^ storeId.hashCode;
   }
 }

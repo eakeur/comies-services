@@ -19,6 +19,11 @@ class ProductsController {
     return dataset;
   }
 
+  static void searchProductsToLocalStorage(BuildContext context, ProductFilter filter, {String dataIdentifier = 'searchResults'}) {
+    var prov = getProvider(context).productViews;
+    prov.get(filters: filter.toMap()).then((value) => prov.local[dataIdentifier] = value);
+  }
+
   static searchProducts(BuildContext context, ProductFilter filter) {
     if ((filter.code != null && filter.code?.trim() != '') || (filter.name != null && filter.name?.trim() != '') || (filter.tag != null && filter.tag?.trim() != '')) {
       var prov = getProvider(context).productViews;
@@ -30,9 +35,11 @@ class ProductsController {
   static DataSet<Product> getProduct(BuildContext context, [String? id]) {
     var dataset = getProvider(context).products;
     dataset.clearModel();
-    if (id != null && id != 'new')
-      dataset.getOne(id);
-    else
+    if (id != null && id != 'new') {
+      dataset.getOne(id).then((p) {
+        dataset.rel<Ingredient>('ingredients', parentId: p.id).get();
+      });
+    } else
       dataset.data = Product(creationDate: DateTime.now());
     return dataset;
   }

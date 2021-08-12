@@ -1,4 +1,6 @@
 import 'package:comies/core.dart';
+import 'package:comies/products/products.dart';
+import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
 
 class IngredientsForm extends StatefulWidget {
@@ -58,17 +60,18 @@ class _IngredientsFormState extends State<IngredientsForm> {
         children: [
           Text('Ingredientes', style: getSubtitleText(size: 16)),
           DataTable(
-            columns: ['Quantidade', 'Ingrediente'].map((c) => DataColumn(label: Text(c), tooltip: c)).toList(),
+            columns: ['Quantidade', 'Ingrediente', 'Ações'].map((c) => DataColumn(label: Text(c), tooltip: c)).toList(),
             rows: [
               ...widget.ingredients.map((p) {
                 return editIndex != widget.ingredients.indexOf(p)
-                    ? DataExibitionRow(phone: p, onEdit: () => onEdit(p), onDelete: () => widget.onDelete(p))
-                    : DataEditionRow(phone: p, onSave: () => widget.onSave(p), onCancel: onCancel);
+                    ? DataExibitionRow(ingredient: p, onEdit: () => onEdit(p), onDelete: () => widget.onDelete(p), context: context)
+                    : DataEditionRow(ingredient: p, onSave: () => widget.onSave(p), onCancel: onCancel, context: context);
               }).toList(),
               DataEditionRow(
-                phone: widget.data,
+                ingredient: widget.data,
                 onSave: () => widget.onSave(widget.data),
                 onCancel: onCancel,
+                context: context,
               ),
             ],
           ),
@@ -82,40 +85,71 @@ class _IngredientsFormState extends State<IngredientsForm> {
 
 class DataEditionRow extends DataRow {
   DataEditionRow({
-    required Ingredient phone,
+    required Ingredient ingredient,
     required VoidCallback onSave,
     required VoidCallback onCancel,
-  }) : super(cells: <DataCell>[
-          DataCell(TextFormField(
-            onChanged: (s) => phone.quantity = getDoubleValue(s),
-            initialValue: getDoubleView(phone.quantity, 2),
-          )),
-          DataCell(TextFormField(
-            onChanged: (s) => phone.ingredientId = s,
-            initialValue: phone.ingredientId,
-          )),
-          DataCell(
-            Row(
-              children: [
-                IconButton(onPressed: () => onSave, icon: Icon(Icons.save)),
-                IconButton(onPressed: () => onCancel, icon: Icon(Icons.cancel)),
-              ],
+    required BuildContext context,
+  }) : super(
+          cells: <DataCell>[
+            DataCell(
+              TextFormField(
+                onChanged: (s) => ingredient.quantity = getDoubleValue(s),
+                initialValue: getDoubleView(ingredient.quantity, 2),
+              ),
             ),
-          )
-        ]);
+            DataCell(
+              TextButton(
+                  child: Text('Selecionar'),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return LoadStatusWidget(
+                            status: getProvider(context).productViews.loadStatus,
+                            loadWidget: (context) => ProductSelector(
+                              data: getProvider(context).productViews.local['selectorResults'] ?? [],
+                              onSearch: (f) => ProductsController.searchProductsToLocalStorage(context, f, dataIdentifier: 'selectorResults'),
+                              onCancelSearch: () => Navigator.pop(context),
+                              onTap: (p) {
+                                ingredient.ingredientId = p.id;
+                                Navigator.pop(context);
+                              },
+                            ),
+                          );
+                        });
+                  }),
+            ),
+            DataCell(
+              Row(
+                children: [
+                  IconButton(onPressed: onSave, icon: Icon(Icons.save)),
+                  IconButton(onPressed: onCancel, icon: Icon(Icons.cancel)),
+                ],
+              ),
+            ),
+          ],
+        );
 }
 
 class DataExibitionRow extends DataRow {
   DataExibitionRow({
-    required Ingredient phone,
+    required Ingredient ingredient,
     required VoidCallback onEdit,
     required VoidCallback onDelete,
+    required BuildContext context,
   }) : super(cells: <DataCell>[
-          DataCell(Text(getDoubleView(phone.quantity, 2))),
-          DataCell(Text(getTextView(phone.ingredientId))),
+          DataCell(Text(getDoubleView(ingredient.quantity, 2))),
+          DataCell(Text(getTextView(ingredient.component?.name))),
           DataCell(
             Row(
-              children: [IconButton(onPressed: onEdit, icon: Icon(Icons.edit)), IconButton(onPressed: onDelete, icon: Icon(Icons.delete))],
+              children: [
+                IconButton(
+                    tooltip: 'Acessar ingrediente',
+                    onPressed: () => Navigator.pushNamed(context, '/products/${ingredient.id}', arguments: ingredient.component?.name ?? ''),
+                    icon: Icon(Icons.navigate_next)),
+                IconButton(tooltip: 'Editar ingrediente', onPressed: onEdit, icon: Icon(Icons.edit)),
+                IconButton(tooltip: 'Excluir ingrediente', onPressed: onDelete, icon: Icon(Icons.delete))
+              ],
             ),
           ),
         ]);

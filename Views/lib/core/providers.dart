@@ -60,7 +60,7 @@ class ComiesController extends DataContext {
 
   String? get operatorName => operatorProperties['unique_name'];
 
-  DataSet<Product> products = DataSet<Product>(Product(), route: '/products');
+  DataSet<Product> products = DataSet<Product>(Product(), route: '/products').addChild<Ingredient>('ingredients', Ingredient(), '/products/:parentId/ingredients');
   DataSet<ProductView> productViews = DataSet<ProductView>(ProductView(id: Constants.guidEmpty, value: 0, code: '', name: ''), route: '/products');
 
   DataSet<Customer> customers = DataSet<Customer>(Customer(), route: '/customers').addChild('phones', Phone(), '/customers/:parentId/phones');
