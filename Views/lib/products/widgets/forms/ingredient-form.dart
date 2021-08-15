@@ -47,83 +47,66 @@ class _IngredientFormState extends State<IngredientForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: getHeight(context),
-      margin: EdgeInsets.only(left: getWidth(context) * (isWidthSmall(context) ? 0 : 0.7)),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Container(
-          child: Form(
-            key: formState,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            child: DefaultButton(
-                              label: 'Diminuir',
-                              icon: Icons.remove,
-                              onTap: () => quantityController.text = getDoubleView(getDoubleValue(quantityController.text) - 1, 2),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: quantityController,
-                            decoration: InputDecoration(labelText: 'Quantidade'),
-                          ),
-                        ),
-                        Center(
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            child: DefaultButton(
-                              label: 'Aumentar',
-                              icon: Icons.add,
-                              onTap: () => quantityController.text = getDoubleView(getDoubleValue(quantityController.text) + 1, 2),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (widget.ingredient!.component != null) Text('Produto: ' + nameController.text),
-                    Container(
-                      height: getHeight(context) * 0.6,
-                      child: LoadStatusWidget(
-                        status: getProvider(context).productViews.loadStatus,
-                        loadWidget: (context) => ProductSelector(
-                          data: getProvider(context).productViews.local['selectorResults'] ?? [],
-                          onSearch: (f) => ProductsController.searchProductsToLocalStorage(context, f, dataIdentifier: 'selectorResults'),
-                          onCancelSearch: () => getProvider(context).productViews.local['selectorResults'] = [],
-                          onTap: (p) {
-                            ingredientController.text = p.id;
-                            setState(() {
-                              nameController.text = p.name;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    MainButton(
-                      label: 'Salvar ingrediente',
-                      loadingLabel: 'Salvando ingrediente...',
-                      onTap: () {
-                        if (formState.currentState!.validate()) {
-                          widget.onSubmit();
-                        }
-                      },
-                    ),
-                  ],
+    return Form(
+      key: formState,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Center(
+                  child: DefaultIconButton(
+                    label: 'Diminuir',
+                    icon: Icons.remove,
+                    onTap: () => quantityController.text = getDoubleView(getDoubleValue(quantityController.text) - 1, 2),
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: quantityController,
+                    decoration: InputDecoration(labelText: 'Quantidade'),
+                  ),
+                ),
+                Center(
+                  child: DefaultIconButton(
+                    label: 'Aumentar',
+                    icon: Icons.add,
+                    onTap: () => quantityController.text = getDoubleView(getDoubleValue(quantityController.text) + 1, 2),
+                  ),
+                ),
+              ],
+            ),
+            if (widget.ingredient!.component != null) Text('Produto: ' + nameController.text),
+            Expanded(
+              child: Container(
+                height: getHeight(context) * 0.8,
+                child: LoadStatusWidget(
+                  status: getProvider(context).productViews.loadStatus,
+                  loadWidget: (context) => ProductSelector(
+                    data: getProvider(context).productViews.local['selectorResults'] ?? <ProductView>[],
+                    onSearch: (f) => ProductsController.searchProductsToLocalStorage(context, f, dataIdentifier: 'selectorResults'),
+                    onCancelSearch: () => getProvider(context).productViews.local['selectorResults'] = [],
+                    onTap: (p) {
+                      ingredientController.text = p.id;
+                      setState(() {
+                        nameController.text = p.name;
+                      });
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
+            MainButton(
+              label: 'Salvar ingrediente',
+              loadingLabel: 'Salvando ingrediente...',
+              onTap: () {
+                if (formState.currentState!.validate()) {
+                  widget.onSubmit();
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -44,7 +44,7 @@ class _ProductSearcherState extends State<ProductSearcher> {
       decoration: InputDecoration(
         labelText: 'Pesquise por código ou pelos filtros',
         suffix: Container(
-          constraints: BoxConstraints(maxWidth: getWidth(context) * 0.25, minWidth: getWidth(context) * 0.1),
+          constraints: BoxConstraints(maxWidth: getWidth(context) * 0.30, minWidth: getWidth(context) * 0.1),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -102,7 +102,7 @@ class ProductFilterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(100),
+      padding: isWidthSmall(context) ? const EdgeInsets.all(20) : const EdgeInsets.all(100),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

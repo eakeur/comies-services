@@ -100,8 +100,13 @@ void showFeedback(BuildContext context, {required String title, String? details,
   );
 }
 
-void launchFuture(Future future, BuildContext context) {
-  future.then((value) => showSuccessFeedback(context)).catchError((e) {
+void launchFuture(Future future, BuildContext context, [bool pop = false, VoidCallback? then]) {
+  future.then((value) {
+    showSuccessFeedback(context, pop);
+    if (then != null) {
+      then();
+    }
+  }).catchError((e) {
     showErrorFeedback(e, context);
   });
 }
@@ -118,7 +123,8 @@ void showErrorFeedback(dynamic result, BuildContext context) {
     provider.notify(context, message: 'Não se preocupe, foi falha nossa. Que tal reportar para o responsável pelo app, esse doido?', isError: true);
 }
 
-void showSuccessFeedback(BuildContext context) {
+void showSuccessFeedback(BuildContext context, [bool pop = false]) {
   var provider = getProvider(context);
+  if (pop) Navigator.of(context).pop();
   provider.notify(context, message: 'Sua operação foi realizada com sucesso e tempero!');
 }

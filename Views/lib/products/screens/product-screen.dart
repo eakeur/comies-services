@@ -124,7 +124,9 @@ class IngredientsContainer extends StatelessWidget {
                               children: [
                                 IconButton(
                                     tooltip: 'Acessar ingrediente',
-                                    onPressed: () => Navigator.pushNamed(context, '/products/${p.id}', arguments: p.component?.name ?? ''),
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/products/${p.component!.id}', arguments: p.component?.name ?? '');
+                                    },
                                     icon: Icon(Icons.navigate_next)),
                                 IconButton(tooltip: 'Editar ingrediente', onPressed: () => openIngredientForm(context, p), icon: Icon(Icons.edit)),
                                 IconButton(tooltip: 'Excluir ingrediente', onPressed: () => data.deleteIngredient(p.id), icon: Icon(Icons.delete))
@@ -149,18 +151,32 @@ class IngredientsContainer extends StatelessWidget {
     if (ingredient == null) {
       data.ingredients.create(Ingredient(creationDate: DateTime.now()));
     } else {
-      data.ingredients.data = ingredient.copyWith();
+      data.ingredients.data = ingredient;
     }
     showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (context) {
-          return IngredientForm(
-            isNew: ingredient == null,
-            ingredient: data.ingredients.data,
-            onSubmit: data.addIngredient,
-            submitStatus: LoadStatus.LOADED,
-          );
-        });
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      elevation: 24,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: new BorderRadius.only(topLeft: const Radius.circular(25.0), topRight: const Radius.circular(25.0)),
+          ),
+          margin: EdgeInsets.only(left: getWidth(context) * (isWidthSmall(context) ? 0 : 0.6)),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(ingredient == null ? 'Novo ingrediente' : 'Ingrediente: ' + ingredient.component!.name!),
+            ),
+            body: IngredientForm(
+              isNew: ingredient == null,
+              ingredient: data.ingredients.data,
+              onSubmit: data.ingredients.data!.id != guidEmpty ? data.updateIngredient : data.addIngredient,
+              submitStatus: LoadStatus.LOADED,
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -67,7 +67,14 @@ class ProductsController {
             padding: const EdgeInsets.all(20.0),
             child: LoadStatusWidget(
               status: cats.loadStatus,
-              loadWidget: (context) => CategoryForm(category: cats.data, onSubmit: () => isNew ? cats.add(cats.data!) : cats.update(cats.data!.id!, cats.data!), submitStatus: cats.changeStatus.value),
+              loadWidget: (context) => CategoryForm(
+                  category: cats.data,
+                  onSubmit: () {
+                    (isNew ? cats.add(cats.data!) : cats.update(cats.data!.id!, cats.data!))
+                        .then((value) => showSuccessFeedback(context, true))
+                        .catchError((result) => showErrorFeedback(result, context));
+                  },
+                  submitStatus: cats.changeStatus.value),
             ),
           ),
         ),

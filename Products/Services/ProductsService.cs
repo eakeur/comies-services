@@ -32,7 +32,7 @@ namespace Comies.Products {
                         StockLevel = stockref == null ? 0.00 : Math.Round(stockref.Actual * 100 / stockref.Maximum),
                         CategoryId = p.CategoryId.GetValueOrDefault(),
                         CategoryName = cat.Name
-                    }).ToListAsync();
+                    }).OrderBy(x => x.Code).ToListAsync();
         }
 
         public override void Validate(Product product)

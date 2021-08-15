@@ -114,6 +114,6 @@ class ComiesController extends DataContext {
     setHeader("Accept-Language", "pt-BR");
     setHeader("Content-Type", "application/json");
     setHeader("Authorization", 'Bearer $token');
-    print(uri);
+    print('METHOD: ' + operation.toString() + ' - URL: ' + uri.toString());
   }
 }

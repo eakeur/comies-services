@@ -12,8 +12,12 @@ class ProductController {
   late DataSet<Ingredient> ingredients;
 
   ProductController(this.context, [this.id = 'new']) {
-    products = getProvider(context).products;
-    ingredients = products.rel('ingredients', parentId: id);
+    try {
+      products = getProvider(context).products.replicate();
+      ingredients = products.rel<Ingredient>('ingredients', parentId: id);
+    } catch (e) {
+      print(e);
+    }
   }
 
   void get() {
@@ -26,11 +30,11 @@ class ProductController {
     }
   }
 
-  void add() => launchFuture(products.add(), context);
+  void add() => launchFuture(products.add(), context, false, () => Navigator.pushReplacementNamed(context, 'products/${products.data!.id}', arguments: products.data!.name));
   void update() => launchFuture(products.update(id), context);
   void delete() => launchFuture(products.remove(id), context);
 
-  void addIngredient() => launchFuture(ingredients.add(ingredients.local['editingIngredient']), context);
-  void updateIngredient() => launchFuture(products.update(ingredients.data!.id), context);
-  void deleteIngredient([String? id]) => launchFuture(products.remove(id ?? ingredients.data!.id), context);
+  void addIngredient() => launchFuture(ingredients.add(ingredients.local['editingIngredient']), context, true);
+  void updateIngredient() => launchFuture(ingredients.update(ingredients.data!.id), context, true);
+  void deleteIngredient([String? id]) => launchFuture(ingredients.remove(id ?? ingredients.data!.id), context);
 }

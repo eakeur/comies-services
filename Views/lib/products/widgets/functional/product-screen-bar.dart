@@ -4,8 +4,6 @@ import 'package:comies/products/products.dart';
 import 'package:datacontext/datacontext.dart';
 import 'package:flutter/material.dart';
 
-import 'stock-level-widget.dart';
-
 class ProductScreenAppBar extends AppBar {
   ProductScreenAppBar({required ValueNotifier<LoadStatus> status, bool isNew = true, String name = 'Novo produto', double stockLevel = 0, required VoidCallback onCopy, required VoidCallback onDelete})
       : super(
@@ -46,7 +44,7 @@ class ProductsScreenBar extends PageBar {
                   ),
                 ],
           bottom: isWidthSmall(context)
-              ? PreferredSize(preferredSize: Size.fromHeight(80), child: Padding(padding: const EdgeInsets.only(top: 2.0), child: ProductSearcher(onSearch: onSearch, onCancel: onCancelSearch)))
+              ? PreferredSize(preferredSize: Size.fromHeight(60), child: Padding(padding: const EdgeInsets.only(top: 2.0), child: ProductSearcher(onSearch: onSearch, onCancel: onCancelSearch)))
               : null,
         );
 }
