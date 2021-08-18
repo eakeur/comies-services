@@ -53,6 +53,11 @@ class _IngredientFormState extends State<IngredientForm> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            if (widget.ingredient!.component != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text('Produto: ' + nameController.text, style: getMainText(size: 22)),
+              ),
             Row(
               children: [
                 Center(
@@ -77,7 +82,6 @@ class _IngredientFormState extends State<IngredientForm> {
                 ),
               ],
             ),
-            if (widget.ingredient!.component != null) Text('Produto: ' + nameController.text),
             Expanded(
               child: Container(
                 height: getHeight(context) * 0.8,
@@ -86,7 +90,7 @@ class _IngredientFormState extends State<IngredientForm> {
                   loadWidget: (context) => ProductSelector(
                     data: getProvider(context).productViews.local['selectorResults'] ?? <ProductView>[],
                     onSearch: (f) => ProductsController.searchProductsToLocalStorage(context, f, dataIdentifier: 'selectorResults'),
-                    onCancelSearch: () => getProvider(context).productViews.local['selectorResults'] = [],
+                    onCancelSearch: () => getProvider(context).productViews.local['selectorResults'] = <ProductView>[],
                     onTap: (p) {
                       ingredientController.text = p.id;
                       setState(() {

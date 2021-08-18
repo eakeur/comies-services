@@ -59,8 +59,7 @@ namespace Comies.Customers {
             var entity = await GetAddress(id, customerId);
             if (entity != null)
             {
-                entity.Active = false;
-                Context.Addresses.Update(entity);
+                Context.Addresses.Remove(entity);
                 await Context.SaveChangesAsync();
             }
             return entity;
@@ -78,7 +77,7 @@ namespace Comies.Customers {
 
         private void ValidateAddress(Address address)
         {
-            if (address == null) throw new ComiesArgumentException("Ops! O endereço passado é inválido");
+            if (address == null) throw new ComiesArgumentException("Ops! O endereï¿½o passado ï¿½ invï¿½lido");
         }
 
         #endregion
@@ -108,8 +107,7 @@ namespace Comies.Customers {
             var entity = await GetPhone(id, customerId);
             if (entity != null)
             {
-                entity.Active = false;
-                Context.Phones.Update(entity);
+                Context.Phones.Remove(entity);
                 await Context.SaveChangesAsync();
             }
             return entity;
@@ -127,7 +125,7 @@ namespace Comies.Customers {
 
         public void ValidatePhone(Phone entity)
         {
-            if (entity == null) throw new ComiesArgumentException("Ops! O telefone é inválido.");
+            if (entity == null) throw new ComiesArgumentException("Ops! O telefone ï¿½ invï¿½lido.");
         }
         
         #endregion

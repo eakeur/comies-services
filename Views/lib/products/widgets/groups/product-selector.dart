@@ -27,7 +27,6 @@ class ProductSelector extends StatelessWidget {
               child: ProductsList(
                 products: data,
                 onTap: onTap,
-                onAddTap: () {},
               ),
             ),
           ],

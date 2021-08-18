@@ -1,1 +1,3 @@
 enum Unity { KILOGRAM, MILIGRAM, LITRE, MILILITRE, UNITY }
+
+enum StockMovementType { INPUT, OUTPUT, PROBLEM }

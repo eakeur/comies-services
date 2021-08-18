@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Comies.Contracts;
 using System.Linq;
@@ -6,88 +7,89 @@ using Comies;
 using System.Threading.Tasks;
 
 namespace Comies.Products {
-    public class StocksService : IStocksService
+    public class StocksService : ServiceBase<Stock, Stock, StockFilter>, IStocksService
     {
-        ComiesContext Context;
-        IAuthenticatedOperator Applicant;
 
-        public StocksService(ComiesContext context, IAuthenticatedOperator applicant){
-            Context = context; Applicant = applicant;
-        }
+        public StocksService(ComiesContext context, IAuthenticatedOperator applicant): base(context, applicant){}
 
-        public void DecreaseStock(double value, Guid stockId)
+        public async Task DecreaseStock(double value, Guid stockId)
         {
-            var stock = GetOne(stockId);
+            var stock = await GetOne(stockId);
             stock.Actual -= value;
-            Update(stockId, stock);
-
+            await Update(stockId, stock);
         }
 
-        public IEnumerable<ProductView> GetAll()
+        public async Task IncreaseStock(double value, Guid stockId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Stock GetOne(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<ProductView> GetSome(StockFilter filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void IncreaseStock(double value, Guid stockId)
-        {
-            var stock = GetOne(stockId);
+            var stock = await GetOne(stockId);
             stock.Actual += value;
-            Update(stockId, stock);
+            await Update(stockId, stock);
         }
 
-        public Stock Remove(Guid id)
+        public override async Task<IEnumerable<Stock>> GetSome(StockFilter filter)
         {
-            throw new NotImplementedException();
+            return await (
+                from s in Context.Stocks
+                where s.Active && s.StoreId == Applicant.StoreId &&
+                    (filter.ProductId != Guid.Empty ? s.ProductId == filter.ProductId : true) &&
+                    (filter.Date != null ? s.Date == filter.Date : true)
+                select s
+            ).OrderBy(x => x.Minimum).ToListAsync();
         }
 
-        public Stock Save(Stock entity)
+        public async Task<Stock> GetByProductId(Guid productId)
         {
-            throw new NotImplementedException();
+            return await Context.Stocks.FirstAsync(x => x.Active && x.StoreId == Applicant.StoreId && x.ProductId == productId);
+        }
+        public override void Validate(Stock entity)
+        {
+            base.Validate(entity);
         }
 
-        public Stock Update(Guid id, Stock entity)
+        #region Movements
+        public async Task<StockMovement> SaveStockMovement(StockMovement entity, Guid stockId)
         {
-            throw new NotImplementedException();
+            ValidateStockMovement(entity);
+            entity.Active = true;
+            entity.StockId = stockId;
+            Context.StocksMovements.Add(entity);
+            await Context.SaveChangesAsync();
+            return entity;
         }
 
-        public void Validate(Stock entity)
+        public async Task<StockMovement> UpdateStockMovement(Guid id, StockMovement entity, Guid stockId)
         {
-            throw new NotImplementedException(); 
+            ValidateStockMovement(entity); entity.Id = id; entity.StockId = stockId;
+            Context.StocksMovements.Update(entity);
+            await Context.SaveChangesAsync();
+            return entity;
         }
 
-        Task<Stock> IService<Stock, ProductView, StockFilter>.GetOne(Guid id)
+        public async Task<StockMovement> RemoveStockMovement(Guid id, Guid stockId)
         {
-            throw new NotImplementedException();
+            var entity = await GetStockMovement(id, stockId);
+            if (entity != null)
+            {
+                Context.StocksMovements.Remove(entity);
+                await Context.SaveChangesAsync();
+            }
+            return entity;
         }
 
-        Task<IEnumerable<ProductView>> IService<Stock, ProductView, StockFilter>.GetSome(StockFilter filter)
+        public async Task<StockMovement> GetStockMovement(Guid id, Guid stockId)
         {
-            throw new NotImplementedException();
+            return await Context.StocksMovements.FirstOrDefaultAsync(x => x.Active && x.Id == id && x.StockId == stockId);
         }
 
-        Task<Stock> IService<Stock, ProductView, StockFilter>.Remove(Guid id)
+        public async Task<IEnumerable<StockMovement>> GetStockMovements(Guid stockId)
         {
-            throw new NotImplementedException();
+            return await Context.StocksMovements.Where(x => x.StockId == stockId && x.Active).ToListAsync();
         }
 
-        Task<Stock> IService<Stock, ProductView, StockFilter>.Save(Stock entity)
+        public void ValidateStockMovement(StockMovement entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) throw new ComiesArgumentException("Ops! O telefone é inválido.");
         }
-
-        Task<Stock> IService<Stock, ProductView, StockFilter>.Update(Guid id, Stock entity)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

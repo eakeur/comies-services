@@ -9,6 +9,8 @@ namespace Comies {
         
         [Required(ErrorMessage="É preciso especificar uma loja à qual este item pertence")]
         public Guid StoreId { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual Store Store { get; set; }
     }
 

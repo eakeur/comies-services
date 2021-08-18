@@ -35,6 +35,12 @@ namespace Comies.Products {
                     }).OrderBy(x => x.Code).ToListAsync();
         }
 
+        public override async Task<Product> Save(Product product){
+            await base.Save(product);
+            var stock = new Stock { ProductId = product.Id, Date = DateTime.Now, Actual = 0, Minimum = product.Minimum, Maximum = product.Minimum, StockUnity = product.SellUnity };
+            await new StocksService(Context, Applicant).Save(stock);
+            return product;
+        }
         public override void Validate(Product product)
         {
             base.Validate(product);
@@ -82,8 +88,7 @@ namespace Comies.Products {
             var entity = await GetIngredient(id, productId);
             if (entity != null)
             {
-                entity.Active = false;
-                Context.Ingredients.Update(entity);
+                Context.Ingredients.Remove(entity);
                 await Context.SaveChangesAsync();
             }
             return entity;

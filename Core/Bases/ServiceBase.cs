@@ -31,8 +31,7 @@ namespace Comies.Contracts
         {
             var entity = await GetOne(id);
             if (entity != null){
-                entity.Active = false;
-                Collection.Update(entity);
+                Collection.Remove(entity);
                 await Context.SaveChangesAsync();
             }
             return entity;

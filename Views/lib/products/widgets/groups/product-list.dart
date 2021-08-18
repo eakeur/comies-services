@@ -6,18 +6,18 @@ import 'package:comies/core.dart';
 class ProductsList extends StatelessWidget {
   final List<ProductView> products;
   final Function(ProductView) onTap;
-  final VoidCallback onAddTap;
+  final VoidCallback? onAddTap;
   final bool isGrid;
-  const ProductsList({Key? key, required this.products, required this.onTap, required this.onAddTap, this.isGrid = false}) : super(key: key);
+  const ProductsList({Key? key, required this.products, required this.onTap, this.onAddTap, this.isGrid = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: isGrid ? Axis.horizontal : Axis.vertical,
-      itemCount: isGrid ? products.length : products.length + 1,
+      itemCount: isGrid || onAddTap == null ? products.length : products.length + 1,
       itemBuilder: (context, index) {
-        if (index == 0 && !isGrid) return DefaultButton(label: 'Adicionar produto', onTap: onAddTap, icon: Icons.add);
-        final product = isGrid ? products[index] : products[index - 1];
+        if (index == 0 && !isGrid && onAddTap != null) return DefaultButton(label: 'Adicionar produto', onTap: onAddTap, icon: Icons.add);
+        final product = (isGrid || onAddTap == null) ? products[index] : products[index - 1];
         return isGrid
             ? Container(
                 height: 180,

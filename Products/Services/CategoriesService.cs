@@ -44,8 +44,7 @@ namespace Comies.Products {
         {
             var prod = await Context.ProductsCategories.FirstOrDefaultAsync(x => x.Id == id);
             if (prod != null){
-                prod.Active = false;
-                Context.ProductsCategories.Update(prod);
+                Context.ProductsCategories.Remove(prod);
                 await Context.SaveChangesAsync();
             } else throw new ComiesNotFoundException("Ops! Não foi possível encontrar essa categoria");
             return prod;
