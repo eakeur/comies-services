@@ -5,7 +5,7 @@ import 'package:comies/core.dart';
 class StockMovement implements StoreOwnedEntity {
   String? stockId;
   StockMovementType? type;
-  String? effectiveDate;
+  DateTime? effectiveDate;
   double? quantity;
   double? unityPrice;
   double? otherCosts;
@@ -44,7 +44,7 @@ class StockMovement implements StoreOwnedEntity {
 
   StockMovement copyWith({
     String? stockId,
-    String? effectiveDate,
+    DateTime? effectiveDate,
     double? quantity,
     double? unityPrice,
     double? otherCosts,
@@ -79,7 +79,7 @@ class StockMovement implements StoreOwnedEntity {
   Map<String, dynamic> toMap() {
     return {
       'stockId': stockId,
-      'effectiveDate': effectiveDate,
+      'effectiveDate': effectiveDate?.toIso8601String(),
       'quantity': quantity,
       'unityPrice': unityPrice,
       'otherCosts': otherCosts,
@@ -100,7 +100,7 @@ class StockMovement implements StoreOwnedEntity {
   factory StockMovement.fromMap(Map<String, dynamic> map) {
     return StockMovement(
         stockId: map['stockId'],
-        effectiveDate: map['effectiveDate'],
+        effectiveDate: DateTime.parse(map['effectiveDate']),
         quantity: map['quantity'],
         unityPrice: map['unityPrice'],
         otherCosts: map['otherCosts'],
@@ -109,7 +109,7 @@ class StockMovement implements StoreOwnedEntity {
         document: map['document'],
         observations: map['observations'],
         active: map['active'],
-        creationDate: DateTime.fromMillisecondsSinceEpoch(map['creationDate']),
+        creationDate: DateTime.parse(map['creationDate']),
         id: map['id'],
         storeId: map['storeId'],
         type: StockMovementType.values[map['type'] ?? 0]);

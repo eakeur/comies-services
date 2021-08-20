@@ -37,7 +37,7 @@ namespace Comies.Products {
 
         public override async Task<Product> Save(Product product){
             await base.Save(product);
-            var stock = new Stock { ProductId = product.Id, Date = DateTime.Now, Actual = 0, Minimum = product.Minimum, Maximum = product.Minimum, StockUnity = product.SellUnity };
+            var stock = new Stock { Id = product.Id, ProductId = product.Id, Date = DateTime.Now, Actual = 0, Minimum = product.Minimum, Maximum = product.Minimum, StockUnity = product.SellUnity };
             await new StocksService(Context, Applicant).Save(stock);
             return product;
         }

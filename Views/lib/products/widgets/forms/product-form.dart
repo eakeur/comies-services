@@ -200,24 +200,7 @@ class _ProductFormState extends State<ProductForm> {
                 onChanged: (v) => widget.product!.sellUnity = Unity.values[v ?? 0],
                 decoration: InputDecoration(labelText: 'Unidade de venda', helperText: 'Em qual unidade de medida esse produto será vendido?'),
                 items: Unity.values.map((e) {
-                  var text;
-                  switch (e) {
-                    case Unity.KILOGRAM:
-                      text = 'quilogramas';
-                      break;
-                    case Unity.LITRE:
-                      text = 'litros';
-                      break;
-                    case Unity.MILIGRAM:
-                      text = 'miligramas';
-                      break;
-                    case Unity.MILILITRE:
-                      text = 'mililitros';
-                      break;
-                    case Unity.UNITY:
-                      text = 'unidade';
-                      break;
-                  }
+                  var text = getUnitName(e, false, true);
                   return DropdownMenuItem<int>(child: Text(text), value: e.index);
                 }).toList(),
               ),

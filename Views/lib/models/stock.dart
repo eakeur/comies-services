@@ -1,9 +1,5 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-
 import 'package:comies/core.dart';
-import 'package:comies/models/stock-movement.dart';
 
 class Stock implements StoreOwnedEntity {
   String? productId;
@@ -13,8 +9,6 @@ class Stock implements StoreOwnedEntity {
   double? actual;
   String? location;
   Unity? stockUnity;
-  String? mainSupplierId;
-  List<StockMovement>? movements;
 
   @override
   bool? active;
@@ -35,8 +29,6 @@ class Stock implements StoreOwnedEntity {
     this.actual = 0,
     this.location = "",
     this.stockUnity,
-    this.mainSupplierId = guidEmpty,
-    this.movements,
     this.active = true,
     this.creationDate,
     this.id = guidEmpty,
@@ -52,7 +44,6 @@ class Stock implements StoreOwnedEntity {
     String? location,
     Unity? stockUnity,
     String? mainSupplierId,
-    List<StockMovement>? movements,
     bool? active,
     DateTime? creationDate,
     String? id,
@@ -66,8 +57,6 @@ class Stock implements StoreOwnedEntity {
       actual: actual ?? this.actual,
       location: location ?? this.location,
       stockUnity: stockUnity ?? this.stockUnity,
-      mainSupplierId: mainSupplierId ?? this.mainSupplierId,
-      movements: movements ?? this.movements,
       active: active ?? this.active,
       creationDate: creationDate ?? this.creationDate,
       id: id ?? this.id,
@@ -84,8 +73,6 @@ class Stock implements StoreOwnedEntity {
       'actual': actual,
       'location': location,
       'stockUnity': stockUnity?.index,
-      'mainSupplierId': mainSupplierId,
-      'movements': movements?.map((x) => x.toMap()).toList(),
       'active': active,
       'creationDate': creationDate?.toIso8601String(),
       'id': id,
@@ -104,8 +91,6 @@ class Stock implements StoreOwnedEntity {
       actual: map['actual'] * 1.00,
       location: map['location'],
       stockUnity: Unity.values[map['stockUnity'] ?? 0],
-      mainSupplierId: map['mainSupplierId'],
-      movements: List<StockMovement>.from(map['movements']?.map((x) => StockMovement.fromMap(x))),
       active: map['active'],
       creationDate: DateTime.parse(map['creationDate']),
       id: map['id'],
@@ -119,7 +104,7 @@ class Stock implements StoreOwnedEntity {
 
   @override
   String toString() {
-    return 'Stock(productId: $productId, date: $date, minimum: $minimum, maximum: $maximum, actual: $actual, location: $location, stockUnity: $stockUnity, mainSupplierId: $mainSupplierId, movements: $movements, active: $active, creationDate: $creationDate, id: $id, storeId: $storeId)';
+    return 'Stock(productId: $productId, date: $date, minimum: $minimum, maximum: $maximum, actual: $actual, location: $location, stockUnity: $stockUnity, active: $active, creationDate: $creationDate, id: $id, storeId: $storeId)';
   }
 
   @override
@@ -134,8 +119,6 @@ class Stock implements StoreOwnedEntity {
         other.actual == actual &&
         other.location == location &&
         other.stockUnity == stockUnity &&
-        other.mainSupplierId == mainSupplierId &&
-        listEquals(other.movements, movements) &&
         other.active == active &&
         other.creationDate == creationDate &&
         other.id == id &&
@@ -151,8 +134,6 @@ class Stock implements StoreOwnedEntity {
         actual.hashCode ^
         location.hashCode ^
         stockUnity.hashCode ^
-        mainSupplierId.hashCode ^
-        movements.hashCode ^
         active.hashCode ^
         creationDate.hashCode ^
         id.hashCode ^

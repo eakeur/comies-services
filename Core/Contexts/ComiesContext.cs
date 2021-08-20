@@ -23,7 +23,6 @@ namespace Comies {
             builder.ApplyConfiguration(new StockMovementConfiguration());
             builder.ApplyConfiguration(new StoreConfiguration());
             builder.ApplyConfiguration(new StorePropertiesConfiguration());
-            builder.ApplyConfiguration(new SupplierConfiguration());
 
             
 
@@ -47,7 +46,6 @@ namespace Comies {
         public DbSet<StockMovement> StocksMovements { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<StoreProperty> StoresProperties { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
 
     }
 }

@@ -82,6 +82,28 @@ int getNumericValue(String? value) {
   }
 }
 
+String getUnitName(Unity unity, [bool abbreviate = true, bool plural = false]) {
+  try {
+    switch (unity) {
+      case Unity.KILOGRAM:
+        return (abbreviate ? "kg" : "quilograma" + (plural ? "s" : ""));
+      case Unity.MILIGRAM:
+        return (abbreviate ? "mg" : "miligrama" + (plural ? "s" : ""));
+      case Unity.LITRE:
+        return (abbreviate ? "L" : "litro" + (plural ? "s" : ""));
+      case Unity.MILILITRE:
+        return (abbreviate ? "ml" : "mililitro" + (plural ? "s" : ""));
+      case Unity.UNITY:
+        return (abbreviate ? "un" : "unidade" + (plural ? "s" : ""));
+      case Unity.GRAMM:
+        return (abbreviate ? "g" : "grama" + (plural ? "s" : ""));
+    }
+  } catch (e) {
+    print('its here');
+    return '';
+  }
+}
+
 Axis getRelativeAxis(BuildContext context) => isWidthSmall(context) ? Axis.vertical : Axis.horizontal;
 
 int getRelativeFlex(BuildContext context, {int small = 0, int big = 50}) => isWidthSmall(context) ? small : big;
@@ -127,4 +149,8 @@ void showSuccessFeedback(BuildContext context, [bool pop = false]) {
   var provider = getProvider(context);
   if (pop) Navigator.of(context).pop();
   provider.notify(context, message: 'Sua operação foi realizada com sucesso e tempero!');
+}
+
+Future<T?> openSheet<T>({required BuildContext context, required Widget Function(BuildContext) builder}) {
+  return showModalBottomSheet(context: context, backgroundColor: Colors.transparent, isScrollControlled: true, elevation: 24, builder: builder);
 }

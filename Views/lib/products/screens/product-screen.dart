@@ -45,19 +45,28 @@ class _ProductScreenState extends State<ProductScreen> {
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: isWidthSmall(context) ? 0 : 20),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               LoadStatusWidget(
                 status: data.products.loadStatus,
                 loadWidget: (context) => Flex(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   direction: getRelativeAxis(context),
                   children: [
                     Expanded(
                       flex: getRelativeFlex(context),
                       child: FormContainer(isNew: isNew, data: data),
                     ),
+                    if (isWidthSmall(context)) SizedBox(height: 50),
                     Expanded(
                       flex: getRelativeFlex(context),
-                      child: IngredientsContainer(isNew: isNew, data: data),
+                      child: Column(
+                        children: [
+                          IngredientsContainer(isNew: isNew, data: data),
+                          SizedBox(height: 50),
+                          StockMovementsContainer(isNew: isNew, data: data),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -117,7 +126,7 @@ class IngredientsContainer extends StatelessWidget {
                     .map(
                       (p) => DataRow(
                         cells: <DataCell>[
-                          DataCell(Text(getDoubleView(p.quantity, 2))),
+                          DataCell(Text(getDoubleView(p.quantity, 2) + ' ' + getUnitName(p.component!.sellUnity!, true, p.quantity! > 1))),
                           DataCell(Text(getTextView(p.component?.name))),
                           DataCell(
                             Row(
@@ -138,6 +147,7 @@ class IngredientsContainer extends StatelessWidget {
                     )
                     .toList(),
               ),
+              SizedBox(height: 25),
               DefaultButton(label: 'Adicionar ingrediente', onTap: () => openIngredientForm(context), icon: Icons.add)
             ],
           ),
@@ -158,6 +168,92 @@ class IngredientsContainer extends StatelessWidget {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       elevation: 24,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: new BorderRadius.only(topLeft: const Radius.circular(25.0), topRight: const Radius.circular(25.0)),
+          ),
+          margin: EdgeInsets.only(left: getWidth(context) * (isWidthSmall(context) ? 0 : 0.6)),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(ingredient == null ? 'Novo ingrediente' : 'Ingrediente: ' + ingredient.component!.name!),
+            ),
+            body: IngredientForm(
+              isNew: ingredient == null,
+              ingredient: data.ingredients.data,
+              onSubmit: data.ingredients.data!.id != guidEmpty ? data.updateIngredient : data.addIngredient,
+              submitStatus: LoadStatus.LOADED,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class StockMovementsContainer extends StatelessWidget {
+  const StockMovementsContainer({
+    Key? key,
+    required this.isNew,
+    required this.data,
+  }) : super(key: key);
+
+  final bool isNew;
+  final ProductController data;
+
+  @override
+  Widget build(BuildContext context) {
+    return IsNullWidget<String>(
+      value: isNew ? null : '',
+      child: (context, val, child) => LoadStatusWidget(
+        status: data.stock.loadStatus,
+        loadWidget: (context) => Container(
+          child: Column(
+            children: [
+              Text('Estoque', style: getSubtitleText(size: 16)),
+              LoadStatusWidget(
+                status: data.movements.loadStatus,
+                loadWidget: (context) => DataTable(
+                  columns: ['E/S', 'Quantidade', 'Valor unitário', 'Ações'].map((c) => DataColumn(label: Text(c), tooltip: c)).toList(),
+                  rows: data.movements.list
+                      .map(
+                        (p) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(Container(decoration: BoxDecoration(shape: BoxShape.circle, color: p.type == StockMovementType.INPUT ? SuccessDarkColor : ErrorDarkColor))),
+                            DataCell(Text(getDoubleView(p.quantity, 2))),
+                            DataCell(Text('R\$ ' + getCurrencyView(p.unityPrice))),
+                            DataCell(
+                              Row(
+                                children: [
+                                  //IconButton(tooltip: 'Editar entrada', onPressed: () => openIngredientForm(context, p), icon: Icon(Icons.edit)),
+                                  IconButton(tooltip: 'Excluir entrada', onPressed: () => data.deleteIngredient(p.id), icon: Icon(Icons.delete))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              SizedBox(height: 25),
+              DefaultButton(label: 'Adicionar ingrediente', onTap: () => openIngredientForm(context), icon: Icons.add)
+            ],
+          ),
+        ),
+      ),
+      nullWidget: (context, val, child) => Container(child: Text('Aqui vão informações sobre o estoque')),
+    );
+  }
+
+  void openIngredientForm(BuildContext context, [Ingredient? ingredient]) {
+    if (ingredient == null) {
+      data.ingredients.create(Ingredient(creationDate: DateTime.now()));
+    } else {
+      data.ingredients.data = ingredient;
+    }
+    openSheet(
+      context: context,
       builder: (context) {
         return Container(
           decoration: BoxDecoration(

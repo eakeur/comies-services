@@ -4,14 +4,16 @@ using Comies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Comies.Migrations
 {
     [DbContext(typeof(ComiesContext))]
-    partial class ComiesContextModelSnapshot : ModelSnapshot
+    [Migration("20210818181120_stock")]
+    partial class stock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -576,6 +578,9 @@ namespace Comies.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("MainSupplierId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("Maximum")
                         .HasColumnType("float");
 
@@ -591,13 +596,16 @@ namespace Comies.Migrations
                     b.Property<Guid>("StoreId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("Id", "StoreId")
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("ProductId", "StoreId")
                         .IsUnique();
 
                     b.ToTable("Stocks");
@@ -740,6 +748,57 @@ namespace Comies.Migrations
                         .HasFilter("[Key] IS NOT NULL");
 
                     b.ToTable("StoresProperties");
+                });
+
+            modelBuilder.Entity("Comies.Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CompanyName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ContactName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Document")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("MemberSince")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("PhoneId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("PhoneId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Comies.Address", b =>
@@ -939,6 +998,11 @@ namespace Comies.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Comies.Supplier", null)
+                        .WithMany("Stocks")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Product");
 
                     b.Navigation("Store");
@@ -988,6 +1052,33 @@ namespace Comies.Migrations
                         .IsRequired();
 
                     b.Navigation("Parent");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Comies.Supplier", b =>
+                {
+                    b.HasOne("Comies.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Comies.Phone", "Phone")
+                        .WithMany()
+                        .HasForeignKey("PhoneId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Comies.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Phone");
 
                     b.Navigation("Store");
                 });
@@ -1051,6 +1142,11 @@ namespace Comies.Migrations
             modelBuilder.Entity("Comies.StoreProperty", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("Comies.Supplier", b =>
+                {
+                    b.Navigation("Stocks");
                 });
 #pragma warning restore 612, 618
         }

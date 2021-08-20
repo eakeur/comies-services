@@ -13,7 +13,6 @@ namespace Comies
 		public double Actual { get; set; }
 		public string Location { get; set; }
 		public Unity StockUnity { get; set; }
-		public Guid? MainSupplierId { get; set; }
 
 		[System.Text.Json.Serialization.JsonIgnore]
 		public Product Product { get; set; }

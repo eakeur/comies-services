@@ -9,7 +9,7 @@ namespace Comies.ModelsSettings
         public void Configure(EntityTypeBuilder<Stock> builder){
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Actual).IsRequired(true);
-            builder.HasIndex(i => new { i.ProductId, i.StoreId }).IsUnique();
+            builder.HasIndex(i => new { i.Id, i.StoreId }).IsUnique();
         }
     }
 }

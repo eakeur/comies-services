@@ -69,6 +69,8 @@ class ComiesController extends DataContext {
   DataSet<Category> categories = DataSet<Category>(Category(), route: '/categories');
   DataSet<CategoryView> categoryViews = DataSet<CategoryView>(CategoryView(), route: '/categories');
 
+  DataSet<Stock> stocks = DataSet<Stock>(Stock(), route: '/stocks').addChild('stockMovements', StockMovement(), '/stocks/:parentId/stockMovements');
+
   @override
   String origin = '';
 
